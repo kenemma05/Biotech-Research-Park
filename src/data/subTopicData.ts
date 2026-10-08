@@ -1,3 +1,12 @@
+import { 
+  CAPABILITIES_GENERIC_CRO_IMAGE, 
+  CAPABILITIES_ANALYTICAL_IMAGE, 
+  CAPABILITIES_DRUG_DELIVERY_IMAGE,
+  CHEMICALS_LATTICE_IMAGE,
+  CHEMICALS_MICROFLUIDIC_IMAGE,
+  CHEMICALS_LIQUID_HANDLER_IMAGE
+} from './biotechData';
+
 export interface SubTopicPageData {
   id: string;
   slug: string;
@@ -5,8 +14,57 @@ export interface SubTopicPageData {
   category: 'Our Science' | 'UK Science' | 'Products' | 'Research' | string;
   subCategory?: string;
   heroBadge: string;
+  heroHeadline?: string;
+  heroSubheadline?: string;
+  valuePropBullets?: string[];
   executiveSummary: string;
   leadParagraph: string;
+  heroImage?: string;
+  galleryImages?: {
+    url: string;
+    caption: string;
+    tag: string;
+  }[];
+  lifecyclePhases?: {
+    phase: string;
+    title: string;
+    detail: string;
+    status: string;
+  }[];
+  detailedCapabilities?: {
+    title: string;
+    subtitle: string;
+    description: string;
+    highlights: string[];
+    image?: string;
+  }[];
+  productLines?: {
+    category: string;
+    tagline: string;
+    description: string;
+    purityThreshold: string;
+    coaAvailability: string;
+    endotoxinTesting: string;
+    packaging: string;
+    keyItems: string[];
+    technicalSpecs: { label: string; value: string }[];
+  }[];
+  qualityAssuranceHighlights?: {
+    title: string;
+    code: string;
+    description: string;
+    protocols: string[];
+  }[];
+  matrixItems?: {
+    name: string;
+    grade: string;
+    casNumber: string;
+    purity: string;
+    endotoxin: string;
+    assayMethod: string;
+    packagingOptions: string;
+    coaLotSample: string;
+  }[];
   keyStats: {
     label: string;
     value: string;
@@ -40,58 +98,211 @@ export const OUR_SCIENCE_PAGES: SubTopicPageData[] = [
     slug: 'our-science-capabilities',
     title: 'Capabilities & Core Research Infrastructure',
     category: 'Our Science',
-    subCategory: 'Infrastructure',
-    heroBadge: 'Core Enterprise Infrastructure',
-    executiveSummary: 'High-throughput bioprocess suites, automated genomics, mass spectrometry cores, and computational modeling platforms engineered for accelerated therapeutic translation.',
-    leadParagraph: 'Bedfordshire Biotech operates state-of-the-art life sciences infrastructure spanning 45,000 square meters of specialized cleanrooms, discovery laboratories, and analytical suites. Our integrated technological ecosystem bridges discovery biology with scalable clinical manufacturing.',
+    subCategory: 'Generic Drug Development & Full-Lifecycle CRO/CDMO',
+    heroBadge: 'Generic Drug R&D · CDMO · ANDA & 505(b)(2) Filings',
+    executiveSummary: 'Comprehensive generic drug development and contract research services: bridging discovery R&D to scale-up, exhibit batches, clinical studies, and commercial manufacturing. Featuring full analytical method validation, ICH stability testing, IP-oriented formulation engineering, Para IV / NCE-1 / 505(b)(2) pathways, and resilient API supply chain integration.',
+    leadParagraph: 'Bedfordshire Biotech operates an integrated pharmaceutical research and contract manufacturing ecosystem designed to accelerate generic and specialty drug commercialization. Our cross-functional teams shepherd compounds from early laboratory formulation through pilot scale-up, regulatory exhibit batch manufacturing, bioequivalence/clinical trials, and high-volume commercial production. Backed by direct API manufacturer integration, innovative IP-driven formulation design, and a veteran regulatory affairs department, we streamline MHRA, US FDA ANDA, and global dossier approvals while minimizing cost of goods.',
+    heroImage: CAPABILITIES_GENERIC_CRO_IMAGE,
+    galleryImages: [
+      {
+        url: CAPABILITIES_GENERIC_CRO_IMAGE,
+        caption: 'Generic Drug Development Suites & Robotic Assay Automation',
+        tag: 'R&D to Scale-Up'
+      },
+      {
+        url: CAPABILITIES_ANALYTICAL_IMAGE,
+        caption: 'Analytical Method Validation & Walk-In ICH Stability Testing Chambers',
+        tag: 'Analytical & Stability'
+      },
+      {
+        url: CAPABILITIES_DRUG_DELIVERY_IMAGE,
+        caption: 'Novel Drug Delivery Systems (NDDS) & Nanoparticle Carrier Formulations',
+        tag: 'NDDS & Para IV'
+      }
+    ],
+    lifecyclePhases: [
+      { phase: '01', title: 'R&D Formulation', detail: 'Pre-formulation screening, excipient compatibility, reverse engineering & QbD optimization', status: 'Active Discovery' },
+      { phase: '02', title: 'Scale-Up & Pilot', detail: 'Process engineering, critical process parameter (CPP) mapping & tech transfer', status: 'Pilot Suites' },
+      { phase: '03', title: 'Contract Manufacturing', detail: 'cGMP single-use & stainless cleanrooms (ISO Class 5-8 / Grade A-D)', status: 'GMP Licensed' },
+      { phase: '04', title: 'Exhibit Batches', detail: 'Three consecutive pivotal regulatory exhibit batches conforming to US FDA/MHRA standards', status: 'Regulatory Ready' },
+      { phase: '05', title: 'Clinical Studies', detail: 'Clinical trial materials (Phase I-III) & pivotal bioequivalence (BE) batch supply', status: 'GCP Compliant' },
+      { phase: '06', title: 'Commercial Manufacturing', detail: 'High-throughput commercial packaging, robotic fill-finish & global logistics', status: 'Market Supply' }
+    ],
+    detailedCapabilities: [
+      {
+        title: 'Generic Drug Development and Contract Research Services',
+        subtitle: 'Comprehensive CRO & Formulation Services',
+        description: 'Full-spectrum contract research covering solid orals, injectables, ophthalmics, and modified-release therapeutics with rapid turnaround and rigorous scientific precision.',
+        highlights: [
+          'Pre-formulation screening and excipient compatibility profiling',
+          'De-formulation and quantitative Q1/Q2/Q3 sameness verification',
+          'Design of Experiments (DoE) and Quality by Design (QbD) protocols'
+        ],
+        image: CAPABILITIES_GENERIC_CRO_IMAGE
+      },
+      {
+        title: 'R&D to Scale Up to Contract Manufacturing to Exhibit Batches to Clinical Studies to Commercial Manufacturing',
+        subtitle: 'End-to-End Drug Lifecycle Pipeline',
+        description: 'Complete unbroken progression bridging laboratory bench formulation, process scale-up, pilot exhibit batch manufacturing, clinical trials, and high-volume commercial supply.',
+        highlights: [
+          'Seamless tech transfer protocols avoiding reformulation delays',
+          'Execution of pivotal regulatory exhibit batches for filing packages',
+          'Clinical trial material (CTM) manufacturing and commercial scale production'
+        ],
+        image: CAPABILITIES_GENERIC_CRO_IMAGE
+      },
+      {
+        title: 'Analytical Method Development and Validation Service with Stability Studies',
+        subtitle: 'ICH-Compliant Analytical Excellence',
+        description: 'Cutting-edge chromatographic and mass spectrometry cores providing comprehensive method development, validation, and real-time/accelerated stability testing.',
+        highlights: [
+          'HPLC, UPLC, LC-MS/MS, and GC-MS method development & validation per ICH Q2(R1)',
+          'Stress testing, forced degradation studies, and related substances quantification',
+          'ICH Q1A-Q1E stability testing (Zone II, IVa, IVb) with walk-in photostability units'
+        ],
+        image: CAPABILITIES_ANALYTICAL_IMAGE
+      },
+      {
+        title: 'Identifying Product Potential, Developing Innovative Process Solutions, Product Approvals & ANDA Filing',
+        subtitle: 'Strategic Commercialization & Filings',
+        description: 'Systematic product potential analytics paired with innovative process engineering to drive expedited global approvals and right-first-time ANDA submissions.',
+        highlights: [
+          'Target Product Profile (TPP) assessment and commercial value optimization',
+          'Continuous process intensification and high-yield manufacturing technologies',
+          'Complete eCTD Module 1-5 compilation and FDA/MHRA ANDA submissions'
+        ],
+        image: CAPABILITIES_ANALYTICAL_IMAGE
+      },
+      {
+        title: 'Ability to Develop IP Oriented Formulations and Process Technologies in Cost Effective Ways',
+        subtitle: 'Non-Infringing Innovation',
+        description: 'Pioneering formulation chemistry and process technologies engineered to navigate complex patent landscapes while maintaining optimal unit cost economics.',
+        highlights: [
+          'Exhaustive Freedom-to-Operate (FTO) patent landscaping and non-infringement design',
+          'Alternative polymorphic forms, salts, and non-infringing release mechanisms',
+          'Cost-effective excipient matrices and lean process engineering to minimize CoGS'
+        ],
+        image: CAPABILITIES_DRUG_DELIVERY_IMAGE
+      },
+      {
+        title: 'Technically Experienced Regulatory Team',
+        subtitle: 'Global Regulatory Affairs & Compliance',
+        description: 'Dedicated regulatory affairs strategists and Qualified Persons (QPs) with decades of successful filings with the UK MHRA, US FDA, European EMA, and health authorities.',
+        highlights: [
+          'End-to-end dossier authoring, electronic filing, and life-cycle management',
+          'Expertise in addressing Complete Response Letters (CRLs) and Information Requests',
+          'Comprehensive compliance audits and regulatory strategy consultations'
+        ],
+        image: CAPABILITIES_ANALYTICAL_IMAGE
+      },
+      {
+        title: 'Formulation Development Backed by API Manufacturer to Ensure Long Term and Reliable Supply Chain',
+        subtitle: 'Vertically Integrated Supply Resilience',
+        description: 'Direct strategic backing by verified API manufacturing partners ensures uninterrupted raw material availability, consistent solid-state properties, and secured Drug Master Files (DMFs).',
+        highlights: [
+          'Direct access to Type II Drug Master Files (DMFs) and CEP documentation',
+          'Tailored particle size distribution (PSD) and polymorphic form control at source',
+          'Guaranteed supply chain resilience from development through decade-long commercialization'
+        ],
+        image: CAPABILITIES_GENERIC_CRO_IMAGE
+      },
+      {
+        title: 'Development of Novel Drug Delivery Systems, Para IV / NCE-1 & 505 B2',
+        subtitle: 'High-Value Specialty & Patent Challenge Pathways',
+        description: 'Specialized scientific capabilities in complex drug delivery architectures, Paragraph IV patent challenge filings, NCE-1 date filings, and 505(b)(2) hybrid NDA development.',
+        highlights: [
+          'Lipid nanoparticles (LNPs), micro-emulsions, and controlled-release matrix systems',
+          'Paragraph IV patent challenge preparation with technical non-infringement dossiers',
+          '505(b)(2) reformulations providing clinical superiority, new indications, or better bioavailability'
+        ],
+        image: CAPABILITIES_DRUG_DELIVERY_IMAGE
+      }
+    ],
     keyStats: [
-      { label: 'Facility Footprint', value: '45,000 m²' },
-      { label: 'Active R&D Suites', value: '38 Cleanrooms' },
-      { label: 'Process Throughput', value: '120+ Batches/Yr' },
-      { label: 'Quality Rating', value: '99.98% cGMP' }
+      { label: 'Lifecycle Scope', value: 'R&D → Commercial' },
+      { label: 'API Supply Backing', value: '100% Integrated' },
+      { label: 'Filing Pathways', value: 'ANDA & 505(b)(2)' },
+      { label: 'Regulatory Rating', value: '99.98% cGMP' }
     ],
     keyMethodologies: [
       {
-        title: 'Integrated Discovery-to-Scale Framework',
-        description: 'Harmonized transition protocols converting bench-scale bioreactor protocols directly into single-use 2,000L manufacturing scale without reformulation delays.',
-        tags: ['Scalability', 'Bioprocessing', 'Tech Transfer']
+        title: 'Generic Drug Development and Contract Research Services',
+        description: 'Comprehensive CRO offering pre-formulation, reverse engineering, prototype design, and formulation optimization under rigorous QbD standards.',
+        tags: ['Generic R&D', 'CRO Services', 'Formulation']
       },
       {
-        title: 'Robotic High-Throughput Screening',
-        description: 'Automated liquid handlers and high-content imaging platforms executing 100,000+ compound screens per week against complex cellular disease assays.',
-        tags: ['Automation', 'High-Throughput', 'Assay Development']
+        title: 'R&D to Scale Up to Contract Manufacturing to Exhibit Batches to Clinical Studies to Commercial Manufacturing',
+        description: 'End-to-end lifecycle continuum enabling frictionless tech transfer from lab bench to 2,000L commercial production and pivotal regulatory exhibit batches.',
+        tags: ['Scale-Up', 'Exhibit Batches', 'Commercial CDMO']
       },
       {
-        title: 'Multi-Omics Profiling Pipeline',
-        description: 'Next-generation deep sequencing coupled with real-time LC-MS/MS metabolomics to map target engagement and cellular dynamics.',
-        tags: ['Genomics', 'Proteomics', 'Metabolomics']
+        title: 'Analytical Method Development & Validation Service with Stability Studies',
+        description: 'State-of-the-art chromatographic and mass spectrometry platforms delivering ICH Q1A-Q1E stability testing, forced degradation, and method validation.',
+        tags: ['Analytical Chemistry', 'ICH Stability', 'Method Validation']
+      },
+      {
+        title: 'Identifying Product Potential, Process Solutions & ANDA Filing',
+        description: 'Commercial viability analytics paired with breakthrough process engineering to achieve high-yield commercial manufacturing and expeditious ANDA filings.',
+        tags: ['Product Potential', 'Process Innovation', 'ANDA Filing']
+      },
+      {
+        title: 'IP Oriented Formulations & Cost Effective Process Technologies',
+        description: 'Developing proprietary, non-infringing formulation pathways that navigate originator patents while delivering aggressive manufacturing cost savings.',
+        tags: ['IP Strategy', 'FTO Design', 'Cost Effective']
+      },
+      {
+        title: 'Technically Experienced Regulatory Team',
+        description: 'Veteran regulatory council with direct expertise in MHRA, US FDA, and EMA dossiers, eCTD authoring, and rapid health authority approvals.',
+        tags: ['Regulatory Affairs', 'MHRA / FDA', 'eCTD Submissions']
+      },
+      {
+        title: 'Formulation Development Backed by API Manufacturer',
+        description: 'Direct collaboration with API manufacturers guaranteeing reliable DMF access, matched impurity profiles, and long-term supply chain security.',
+        tags: ['API Backing', 'Supply Chain Security', 'DMF Availability']
+      },
+      {
+        title: 'Novel Drug Delivery Systems, Para IV / NCE-1 & 505 B2',
+        description: 'Advanced lipid nanoparticles, micro-spheres, modified-release dosage forms, and strategic Paragraph IV / NCE-1 / 505(b)(2) hybrid filings.',
+        tags: ['NDDS Delivery', 'Para IV / NCE-1', '505(b)(2) Strategy']
       }
     ],
     technicalSpecifications: [
-      { parameter: 'Cleanroom Classification', specification: 'ISO Class 5 to 8 (Grade A/B/C/D cGMP)', standard: 'EU cGMP Annex 1 / ISO 14644' },
-      { parameter: 'Single-Use Bioreactor Vol', specification: '50L, 200L, 500L, 2,000L HyPerforma', standard: 'ASME-BPE Aligned' },
-      { parameter: 'Analytical Mass Range', specification: '50 to 40,000 m/z high-resolution', standard: 'UKAS / GLP Validated' },
-      { parameter: 'Digital Data Traceability', specification: '21 CFR Part 11 compliant audit trail', standard: 'MHRA GxP Data Integrity' }
+      { parameter: 'Development Scope', specification: 'Formulation, Scale-Up, Exhibit Batches, BE Studies & Commercial', standard: 'US FDA / MHRA cGMP' },
+      { parameter: 'Analytical Validation', specification: 'Specificity, Linearity, Accuracy, Precision, LOD/LOQ, Robustness', standard: 'ICH Q2(R1) / USP <1225>' },
+      { parameter: 'Stability Testing Conditions', specification: '25°C/60% RH, 30°C/65% RH, 40°C/75% RH & Photostability', standard: 'ICH Q1A(R2) / Q1B' },
+      { parameter: 'Exhibit Batch Sizing', specification: 'Minimum 100,000 dosage units or 10% commercial batch size', standard: 'FDA ANDA Exhibit Guidance' },
+      { parameter: 'API Solid-State Control', specification: 'XRD polymorphism verification, PSD (D10, D50, D90) & hygroscopicity', standard: 'ICH Q6A Specifications' },
+      { parameter: 'Regulatory Dossier Format', specification: 'eCTD Modules 1 through 5 with full DMF integration', standard: 'ICH M4 / FDA Electronic Submissions' }
     ],
     instrumentationAndPlatforms: [
-      'Thermo Fisher HyPerforma 2000L SUBs',
-      'Waters Synapt G2-Si High Resolution Q-TOF',
-      'Hamilton Microlab STAR Liquid Handler',
-      'Beckman Coulter CytoFLEX Flow Cytometers',
-      'Walk-in Stability Chambers (-80°C to +40°C)'
+      'Waters ACQUITY UPLC with PDA and QDa Mass Detectors',
+      'Agilent 1290 Infinity II HPLC Systems with Autosamplers',
+      'Walk-in Environmental Stability Chambers (-20°C to +40°C / 75% RH)',
+      'Distek & Hanson Automated Dissolution Testing Apparatus (USP 1 & 2)',
+      'Glatt Fluid Bed Granulator & Pilot-Scale Coater (1kg to 50kg)',
+      'Korsch High-Speed Rotary Tablet Press with Instrumentation',
+      'Thermo Fisher HyPerforma Single-Use Bioreactor Suites (50L – 2,000L)',
+      'IMA Automated Sterile Liquid & Lyophilization Fill-Finish Line'
     ],
-    regulatoryCompliance: ['MHRA cGMP Licence', 'FDA 21 CFR Part 211', 'ISO 9001:2015', 'ISO 14644-1'],
-    clinicalSignificance: 'Provides the robust industrial foundation required to advance high-potency novel biologics and synthetic entities safely from target identification into human clinical trials.',
+    regulatoryCompliance: [
+      'US FDA 21 CFR Part 314 (ANDA) & 21 CFR Part 211',
+      'UK MHRA cGMP Manufacturing Licence (MIA 48201)',
+      'EU cGMP Directive 2003/94/EC & Annex 1 Sterile Manufacturing',
+      'ICH Guidelines Q1A-Q1E, Q2(R1), Q8 (QbD), Q9 (Risk), Q10 (Quality)',
+      'ISO 9001:2015 & ISO 13485:2016 Certified'
+    ],
+    clinicalSignificance: 'Empowers biopharmaceutical sponsors to rapidly bring cost-effective, high-quality generic and 505(b)(2) medicines to global patient populations, overcoming complex patent hurdles and supply chain fragilities.',
     caseStudyOrApplication: {
-      heading: 'Rapid Multi-Gram Biologic Tech Transfer',
-      synopsis: 'A UK biotech required rapid scale-up of an orphan oncology bispecific mAb from 5L shake-flasks to 500L pilot run within 14 weeks.',
+      heading: '505(b)(2) & Para IV Modified-Release Generic Scale-Up to ANDA Approval',
+      synopsis: 'A global pharmaceutical partner required development of a complex modified-release oral solid dosage form with a Paragraph IV patent challenge. Bedfordshire Biotech performed pre-formulation, non-infringing formulation development, analytical method validation, manufactured 3 pivotal exhibit batches, and compiled the complete eCTD dossier with API partner backing.',
       outcomes: [
-        'Achieved 4.2 g/L harvest titer within 11 weeks of technology transfer initiation',
-        'Maintained >98.5% monomer purity through Protein A and cation-exchange chromatography',
-        'Delivered 2.1 kg of sterile drug substance conforming to all release specifications'
+        'Designed non-infringing dual-polymer matrix formulation achieving bioequivalence (BE) within ±5% of originator PK profile',
+        'Manufactured 3 consecutive 150,000-unit regulatory exhibit batches with 99.8% assay uniformity and zero OOS results',
+        'Completed 6-month accelerated and 12-month real-time ICH stability studies confirming 24-month shelf-life stability',
+        'Successful first-cycle US FDA ANDA filing with Paragraph IV certification and zero Form 483 inspection observations'
       ]
     },
-    contactFocus: 'Core Infrastructure Access & Pilot Suite Scheduling'
+    contactFocus: 'Generic Drug Development, CDMO RFPs & ANDA / 505(b)(2) Consultation'
   },
   {
     id: 'gemological-services',
@@ -269,57 +480,328 @@ export const OUR_SCIENCE_PAGES: SubTopicPageData[] = [
     slug: 'our-science-chemicals',
     title: 'High-Purity Specialty Chemicals & Reagents',
     category: 'Our Science',
-    subCategory: 'Chemistry',
-    heroBadge: 'Analytical Grade Reagents',
-    executiveSummary: 'Synthesis, purification, and multi-kilogram supply of ultra-pure fine chemicals, derivatization reagents, chromatography solvents, and active pharmaceutical intermediates.',
-    leadParagraph: 'Bedfordshire Biotech manufactures ultra-pure specialty chemicals engineered for stringent bioprocessing and analytical demands. Every lot is characterized for low impurity profiles, trace metals, and low endotoxins.',
+    subCategory: 'Specialty Chemicals & Reagents',
+    heroBadge: 'Molecular Purity · Reagent Reproducibility · cGMP Manufacturing',
+    heroHeadline: 'Sub-Angstrom Chemical Purity. Absolute Analytical Reproducibility.',
+    heroSubheadline: 'Ultra-Pure Solvents, Molecular Biology Buffers, Fine Synthesis Intermediates, and Trace Metal Analysis Standards Engineered for Breakthrough Life Science Discovery and Commercial Scale Manufacturing.',
+    valuePropBullets: [
+      'Sub-ppb Trace Contaminant & Elemental Impurity Control (<0.001 ppm heavy metals verified via Triple-Quad ICP-MS)',
+      'Uncompromising Lot-to-Lot Consistency with Universal Digital Certificate of Analysis (CoA) Batch Transparency',
+      'Custom Grade Formulations & Inert Packaging Tailored to Stringent R&D Scales and Commercial Metric-Tonne Requisitions'
+    ],
+    executiveSummary: 'Bedfordshire Biotech manufactures and refines ultra-pure specialty chemicals, spectroscopy-grade solvents, molecular biology buffers, and custom synthetic intermediates. Engineered to eliminate analytical ghost peaks, prevent enzyme inhibition, and guarantee reproducible outcomes across discovery, bio-assays, and commercial pharmaceutical synthesis.',
+    leadParagraph: 'In modern life sciences and chemical synthesis, reproducibility is governed at the molecular boundary. Our ultra-purification and high-containment synthesis suites deliver reagents with purity thresholds reaching ≥99.999%, ultra-low endotoxins, sub-ppb metallic residues, and 100% batch-specific Certificate of Analysis traceability.',
+    heroImage: CHEMICALS_LATTICE_IMAGE,
+    galleryImages: [
+      {
+        url: CHEMICALS_LATTICE_IMAGE,
+        caption: '3D Molecular Crystalline Lattice & Solvent Fluid Dynamics Simulation (Sub-Angstrom Precision)',
+        tag: 'Molecular Lattice'
+      },
+      {
+        url: CHEMICALS_MICROFLUIDIC_IMAGE,
+        caption: 'High-Resolution Microfluidic Biochip with Fluorescent Bio-Assay Reagents & Nanoliter Droplet Encapsulation',
+        tag: 'Microfluidic Biochip'
+      },
+      {
+        url: CHEMICALS_LIQUID_HANDLER_IMAGE,
+        caption: 'Robotic Automated Liquid Handler Dispensing Ultra-Pure Buffers into 384-Well Microplates with Laser Volume Verification',
+        tag: 'Automated Handler'
+      }
+    ],
+    productLines: [
+      {
+        category: 'Ultra-Pure Solvents',
+        tagline: 'HPLC, UHPLC & LC-MS / GC-MS Hypergrade',
+        description: 'Engineered for high-sensitivity liquid and gas chromatography. Exhibits ultra-low baseline noise, exceptional UV transmittance down to 190 nm, sub-ppb metal ion adduction, and negligible non-volatile residue to protect sensitive MS ionization sources.',
+        purityThreshold: '≥ 99.99%',
+        coaAvailability: 'Instant Digital Lot Download (with UV gradient & MS ion noise scan)',
+        endotoxinTesting: '< 0.005 EU/mL (Endotoxin-Free Certified)',
+        packaging: 'Argon-sparged Type I Amber Borosilicate bottles (1L, 2.5L, 4L) and Returnable 200L Stainless Steel Kegs',
+        keyItems: [
+          'Acetonitrile (LC-MS Hypergrade, low metal adduction)',
+          'Methanol (UHPLC-MS Grade, gradient tested at 210nm / 254nm)',
+          'Water for Chromatography (Resistivity 18.2 MΩ·cm, TOC < 2 ppb)',
+          'Isopropanol & Formic Acid (Sequencing & Proteomics Grade)'
+        ],
+        technicalSpecs: [
+          { label: 'UV Transmittance @ 210nm', value: '≥ 98.0%' },
+          { label: 'Residue After Evaporation', value: '< 0.5 ppm (< 0.00005%)' },
+          { label: 'Fluorescence Impurity (as Quinine)', value: '< 0.3 ppb' },
+          { label: 'Alkali Metal Content (Na, K, Li)', value: '< 5 ppb each' }
+        ]
+      },
+      {
+        category: 'Molecular Biology Reagents',
+        tagline: 'Nuclease-Free, Endotoxin-Controlled Buffer Systems',
+        description: 'Formulated for genomics, PCR amplification, NGS library preparation, cell culture transfection, and downstream bioprocessing. Validated to be free of detectable DNase, RNase, and Protease activity with verified low endotoxin burdens.',
+        purityThreshold: '≥ 99.95%',
+        coaAvailability: 'Full Enzyme Inactivation & Endotoxin LAL Certificate Included',
+        endotoxinTesting: '< 0.001 EU/mL (Validated Kinetic Turbidimetric / Chromogenic)',
+        packaging: 'USP Class VI Fluoropolymer (PTFE/FEP) and Sterile Single-Use Bioprocess Bags (1L to 500L)',
+        keyItems: [
+          'Nuclease-Free Ultra-Pure Water (DEPC-Treated or Sterile Pyrogen-Free)',
+          'Tris-HCl, Tris-Base & HEPES (BioPerformance Certified, pH ±0.02)',
+          'EDTA & Phosphate-Buffered Saline (1X, 10X, 0.2µm Aseptic Filtered)',
+          'Ultra-Pure DTT, Guanidine Hydrochloride & Urea (Molecular Bio Grade)'
+        ],
+        technicalSpecs: [
+          { label: 'DNase / RNase Activity', value: 'None Detected (Fluorometric Sensitivity)' },
+          { label: 'Protease Activity', value: 'None Detected (Fluorescein-labeled casein assay)' },
+          { label: 'Heavy Metals (as Pb)', value: '< 0.5 ppm' },
+          { label: 'Bioburden Pre-Sterilization', value: '< 1 CFU / 100 mL' }
+        ]
+      },
+      {
+        category: 'Specialty Synthesis Intermediates',
+        tagline: 'Custom Fine Chemicals & Chiral Building Blocks',
+        description: 'High-yield chemical synthesis intermediates, organocatalysts, coupling reagents, and fluorinated building blocks for preclinical discovery, medicinal chemistry lead optimization, and commercial API scale-up.',
+        purityThreshold: '≥ 99.5% (Up to 99.9% Optical Purity / >99.5% ee)',
+        coaAvailability: 'Full 1H/13C NMR, Chiral HPLC, LC-HRMS, and KF Water Content',
+        endotoxinTesting: 'Optional for parenteral starting materials (< 0.05 EU/mg)',
+        packaging: 'Septum-capped inertized vials (1g to 500g) up to UN-approved hazardous chemical IBC drums',
+        keyItems: [
+          'Chiral Auxiliary Ligands & Diastereoselective Synthons',
+          'Fluorinated & Deuterated Synthetic Building Blocks',
+          'Peptide Coupling Reagents (HATU, HBTU, COMU, PyBOP)',
+          'Custom Phosphoramidites & Modified Nucleosides'
+        ],
+        technicalSpecs: [
+          { label: 'Enantiomeric Excess (ee)', value: '≥ 99.5% by Chiral SFC / HPLC' },
+          { label: 'Residual Organic Solvents (ICH Q3C)', value: 'Class 1 None; Class 2/3 < 50 ppm' },
+          { label: 'Residual Palladium / Heavy Metals', value: '< 0.05 ppm' },
+          { label: 'Solid-State Polymorph Control', value: '100% Single Crystalline Form verified by PXRD' }
+        ]
+      },
+      {
+        category: 'Trace Metal Analysis Standards',
+        tagline: 'High-Purity Inorganic Acids & ICP-MS Calibration Matrices',
+        description: 'Sub-boiling double-distilled acids, pure element single/multi-analyte standards, and ultra-clean diluents tailored for ICP-OES, ICP-MS, and High-Resolution Sector Field Mass Spectrometry in ultratrace elemental quantitation.',
+        purityThreshold: '≥ 99.999% (Ultra-Trace PPT Grade)',
+        coaAvailability: '68-Element Certified Impurity Profile via High-Resolution ICP-MS',
+        endotoxinTesting: 'Non-applicable / Acidic Matrix; Bioburden Zero',
+        packaging: 'High-Purity Pre-Conditioned FEP / PFA Fluoropolymer bottles rinsed in sub-boiling acid',
+        keyItems: [
+          'Ultra-Pure Nitric Acid 67-69% (TraceMetal Grade, < 10 ppt each element)',
+          'Ultra-Pure Hydrochloric Acid 34-37% (< 10 ppt trace metals)',
+          'Primary Elemental Calibration Standards (NIST SRM Traceable, 1,000 µg/mL)',
+          'Multi-Element Environmental & Pharmaceutical USP <232>/<233> Calibration Mixes'
+        ],
+        technicalSpecs: [
+          { label: 'Trace Metals (68 elements)', value: '< 10 ppt (parts-per-trillion) per element' },
+          { label: 'NIST Traceability', value: 'Directly Traceable to Standard Reference Materials' },
+          { label: 'Measurement Uncertainty (k=2)', value: '± 0.2% Relative Expanded Uncertainty' },
+          { label: 'Assay Titration Precision', value: '± 0.1% via Coulometric Acidimetry' }
+        ]
+      }
+    ],
+    qualityAssuranceHighlights: [
+      {
+        title: 'ISO 9001:2015 & ISO/IEC 17025:2017 Accreditation',
+        code: 'ISO 17025 / 9001',
+        description: 'Our analytical calibration laboratory operates under strict UKAS ISO/IEC 17025:2017 accreditation, guaranteeing certified reference material uncertainty calculations, validated test methods, and metrological traceability to SI units.',
+        protocols: [
+          'Independent calibration curve validation with multi-instrument orthogonal cross-checking',
+          'Proficiency testing rounds with global analytical reference societies',
+          'Strict environmental climate control: 20°C ± 0.5°C and <40% relative humidity cleanrooms'
+        ]
+      },
+      {
+        title: 'cGMP Compliance (21 CFR Part 210/211 & EU Annex 1)',
+        code: 'cGMP / MHRA Certified',
+        description: 'Chemical synthesis suites and cleanrooms operate according to pharmaceutical cGMP requirements, enabling raw material supply directly into commercial sterile injectable drug substances.',
+        protocols: [
+          'Fully validated closed-system fluid handling and sub-micron particulate filtration',
+          'HEPA ISO Class 5 laminar flow dispensing hoods with real-time airborne particle counting',
+          'Qualified Person (QP) release authorization and complete data integrity audit trails (21 CFR Part 11)'
+        ]
+      },
+      {
+        title: 'Lot-to-Lot Consistency & Statistical Process Control',
+        code: 'SPC & 6-Sigma Precision',
+        description: 'We track every purification and crystallization batch with automated Statistical Process Control (SPC). Critical quality attributes (CQAs) must achieve a Cp/Cpk index >1.67, ensuring zero drift between production campaigns.',
+        protocols: [
+          'Retention sample biobanking maintained for 5 years past lot expiration',
+          'Real-time automated alert triggers on chromatographic drift exceeding ±0.5%',
+          'Continuous raw material supplier auditing with multi-source backup security'
+        ]
+      },
+      {
+        title: '100% Certificate of Analysis (CoA) Transparency',
+        code: 'Universal Digital CoA',
+        description: 'Every individual product container carries a serialized QR code linking directly to its lot-specific Certificate of Analysis. No generic specification sheets—real measured analytical values for all critical parameters.',
+        protocols: [
+          'Complete raw spectral files (1H NMR, GC-FID, LC-MS, ICP-MS) accessible online',
+          'Detailed Karl Fischer moisture determinations down to parts-per-million',
+          'Batch manufacturing date, expiry date, retest window, and recommended storage conditions'
+        ]
+      }
+    ],
+    matrixItems: [
+      {
+        name: 'Acetonitrile (Hypergrade LC-MS)',
+        grade: 'Ultra-Pure Solvents',
+        casNumber: '75-05-8',
+        purity: '≥ 99.99%',
+        endotoxin: '< 0.005 EU/mL',
+        assayMethod: 'GC-FID / HPLC Gradient',
+        packagingOptions: '1L, 2.5L, 4L Borosilicate / 200L Keg',
+        coaLotSample: 'LOT-ACN-2026-9812'
+      },
+      {
+        name: 'Methanol (UHPLC-MS Hypergrade)',
+        grade: 'Ultra-Pure Solvents',
+        casNumber: '67-56-1',
+        purity: '≥ 99.99%',
+        endotoxin: '< 0.005 EU/mL',
+        assayMethod: 'GC-MS / UV Scan 210nm',
+        packagingOptions: '1L, 2.5L, 4L Amber Glass / 200L Drum',
+        coaLotSample: 'LOT-MEOH-2026-4401'
+      },
+      {
+        name: 'Water for Chromatography & MS',
+        grade: 'Ultra-Pure Solvents',
+        casNumber: '7732-18-5',
+        purity: '≥ 99.999%',
+        endotoxin: '< 0.001 EU/mL',
+        assayMethod: 'Resistivity 18.2 MΩ / TOC <2ppb',
+        packagingOptions: '1L, 4L FEP / 10L Single-Use Bag',
+        coaLotSample: 'LOT-H2O-2026-0091'
+      },
+      {
+        name: 'Tris-HCl (BioPerformance Certified)',
+        grade: 'Molecular Biology Reagents',
+        casNumber: '1185-53-1',
+        purity: '≥ 99.95%',
+        endotoxin: '< 0.005 EU/g',
+        assayMethod: 'Titrimetric / Enzymatic Assays',
+        packagingOptions: '500g, 1kg, 5kg, 25kg Poly Drum',
+        coaLotSample: 'LOT-TRIS-2026-5520'
+      },
+      {
+        name: 'Ultra-Pure DTT (Dithiothreitol)',
+        grade: 'Molecular Biology Reagents',
+        casNumber: '3483-12-3',
+        purity: '≥ 99.8%',
+        endotoxin: '< 0.01 EU/g',
+        assayMethod: 'HPLC / DTNB SH-Titration',
+        packagingOptions: '5g, 25g, 100g, 1kg Amber Vial',
+        coaLotSample: 'LOT-DTT-2026-1184'
+      },
+      {
+        name: 'HEPES Buffer (Cell Culture & Bio-Assay)',
+        grade: 'Molecular Biology Reagents',
+        casNumber: '7365-45-9',
+        purity: '≥ 99.9%',
+        endotoxin: '< 0.002 EU/g',
+        assayMethod: 'HPLC / Turbidimetric LAL',
+        packagingOptions: '1kg, 5kg, 25kg Cleanroom Bag',
+        coaLotSample: 'LOT-HEP-2026-3829'
+      },
+      {
+        name: 'Fluorinated Chiral Synthon C-4',
+        grade: 'Specialty Synthesis Intermediates',
+        casNumber: '84910-44-2',
+        purity: '≥ 99.7% (>99.5% ee)',
+        endotoxin: '< 0.05 EU/mg',
+        assayMethod: 'Chiral SFC / 1H-19F NMR',
+        packagingOptions: '10g, 100g, 1kg, 25kg Inert Cans',
+        coaLotSample: 'LOT-FCS-2026-7714'
+      },
+      {
+        name: 'HATU Peptide Coupling Reagent',
+        grade: 'Specialty Synthesis Intermediates',
+        casNumber: '148893-10-1',
+        purity: '≥ 99.5%',
+        endotoxin: '< 0.1 EU/mg',
+        assayMethod: 'HPLC / Potentiometric Titration',
+        packagingOptions: '100g, 1kg, 5kg, 20kg Argon Sealed',
+        coaLotSample: 'LOT-HATU-2026-8809'
+      },
+      {
+        name: 'Ultra-Pure Nitric Acid 69% (PPT Grade)',
+        grade: 'Trace Metal Analysis Standards',
+        casNumber: '7697-37-2',
+        purity: '≥ 99.9999%',
+        endotoxin: 'Not Applicable (Acid Matrix)',
+        assayMethod: 'Triple-Quad ICP-MS (68 Elements)',
+        packagingOptions: '500mL, 1L, 2.5L Pre-Leached FEP',
+        coaLotSample: 'LOT-HNO3-2026-0331'
+      },
+      {
+        name: 'Multi-Element ICP-MS Standard (33 Elem)',
+        grade: 'Trace Metal Analysis Standards',
+        casNumber: 'Proprietary Mix',
+        purity: 'NIST SRM Traceable',
+        endotoxin: 'Zero Metal Background',
+        assayMethod: 'HR-ICP-MS / Direct Comparison',
+        packagingOptions: '100mL, 500mL PFA Bottle',
+        coaLotSample: 'LOT-ICP-2026-6205'
+      }
+    ],
     keyStats: [
-      { label: 'Chemical Purity', value: '≥ 99.9%' },
-      { label: 'Heavy Metals', value: '< 0.1 ppm' },
-      { label: 'Catalogue Items', value: '450+ Entities' },
-      { label: 'COA Validation', value: '100% Verified' }
+      { label: 'Chemical Purity Threshold', value: '≥ 99.999%' },
+      { label: 'Trace Metals (Triple-Quad)', value: '< 10 ppt' },
+      { label: 'Endotoxin Release Barrier', value: '< 0.001 EU/mL' },
+      { label: 'Universal Digital CoA Rate', value: '100% Tracked' }
     ],
     keyMethodologies: [
       {
-        title: 'Fractional Vacuum Distillation',
-        description: 'Multi-stage spinning band and packed column distillation separating volatile organic intermediates at boiling differential down to 0.5°C.',
-        tags: ['Distillation', 'Solvents', 'Purification']
+        title: 'Fractional Sub-Boiling & Spinning Band Distillation',
+        description: 'Multi-stage quartz and PTFE sub-boiling distillation separating trace contaminants at boiling differentials down to 0.2°C without thermal degradation or metallic leaching.',
+        tags: ['Sub-Boiling', 'Ultra-Pure Solvents', 'Zero Leaching']
       },
       {
-        title: 'Chiral Auxiliary Resolution',
-        description: 'Enantioselective synthesis and diastereomeric salt crystallization yielding pure optical isomers with enantiomeric excess >99%.',
-        tags: ['Chiral Chemistry', 'Enantiomers', 'Synthesis']
+        title: 'Asymmetric Catalysis & Enantioselective Chiral Resolution',
+        description: 'Enantioselective organocatalysis, biocatalytic transamination, and diastereomeric salt crystallization yielding pure optical isomers with enantiomeric excess >99.5%.',
+        tags: ['Chiral Synthesis', 'Enantiomeric Excess', 'Fine Chemicals']
       },
       {
-        title: 'Trace Element Sub-Boiling Evaporation',
-        description: 'PTFE distillation chambers for producing ultra-trace metal grade acids and chromatography mobile phases.',
-        tags: ['Trace Metals', 'High-Purity', 'Analytical Grade']
+        title: 'Triple-Quad ICP-MS 68-Element Fingerprinting',
+        description: 'Ultratrace collision-cell mass spectrometry detecting elemental impurities down to sub-parts-per-trillion (ppt) thresholds to guarantee regulatory USP <232>/<233> compliance.',
+        tags: ['Trace Metals', 'ICP-MS/MS', 'USP <232>/<233>']
+      },
+      {
+        title: 'Automated Aseptic Microfiltration & Inert Gas Blanketing',
+        description: 'Closed-loop 0.05 µm PTFE sterile filtration under continuous positive-pressure argon/nitrogen blanketing, preventing oxidation, atmospheric moisture absorption, and airborne particulates.',
+        tags: ['Inert Blanketing', 'Particle Control', 'Aseptic Filling']
       }
     ],
     technicalSpecifications: [
-      { parameter: 'Assay Purity (GC/HPLC)', specification: '99.50% to 99.99%', standard: 'ACS / Reag. Ph. Eur. Grade' },
-      { parameter: 'Water Content (Karl Fischer)', specification: '< 0.005% (50 ppm)', standard: 'ASTM D1364 / Ph. Eur. 2.5.12' },
-      { parameter: 'Residue After Evaporation', specification: '< 0.0001% (1 ppm)', standard: 'ISO 6353 Reagents' },
-      { parameter: 'Packaging Inertion', specification: 'Argon/Nitrogen blanketed amber borosilicate', standard: 'UN Certified Dangerous Goods' }
+      { parameter: 'Assay Purity Threshold (GC / HPLC / SFC)', specification: '≥ 99.90% to ≥ 99.999% depending on grade', standard: 'ACS / Reag. Ph. Eur. / USP Reagent' },
+      { parameter: 'Water Content (Karl Fischer Coulometric)', specification: '< 0.002% (20 ppm) for anhydrous solvents', standard: 'ASTM D1364 / Ph. Eur. 2.5.12' },
+      { parameter: 'Endotoxin Testing (Kinetic Chromogenic LAL)', specification: '< 0.001 to < 0.005 EU/mL (Lot Certified)', standard: 'USP <85> / Ph. Eur. 2.6.14' },
+      { parameter: 'Residue After Evaporation (Solvents)', specification: '< 0.00005% (< 0.5 ppm)', standard: 'ISO 6353 / ASTM D1353' },
+      { parameter: 'Heavy Metals & Trace Elements (Triple Quad)', specification: '< 10 ppt (Inorganic) / < 0.05 ppm (Organic)', standard: 'USP <232>/<233> & ICH Q3D' },
+      { parameter: 'Primary Packaging Integrity', specification: 'Class I Borosilicate, PFA/FEP, or 316L SS Kegs (UN Certified)', standard: 'UN Packaging / ISO 13485 Clean' }
     ],
     instrumentationAndPlatforms: [
-      'Agilent 8890 GC with Dual FID/MSD Detectors',
-      'Metrohm 915 Karl Fischer Ti-Touch Coulometer',
-      'PerkinElmer NexION 2000 ICP-MS',
-      'Pilodist SP 1000 Automated Spinning Band Distillation'
+      'Agilent 8900 Triple-Quadrupole ICP-MS with Collision Cell',
+      'Waters ACQUITY Premier UPLC with PDA and high-resolution Q-Tof Mass Detector',
+      'Agilent 8890 GC-MS / FID System with Purge & Trap Headspace Autosampler',
+      'Metrohm 915 Karl Fischer Ti-Touch Coulometric Titrator (Sensitivity 0.1 µg H2O)',
+      'Pilodist SP 1000 Automated Spinning Band & Sub-Boiling PTFE Distillation Units',
+      'PerkinElmer Spectrum 3 FTIR & Enclosed Polarimeter for Optical Rotation ([α]D)'
     ],
-    regulatoryCompliance: ['ISO 9001:2015 Quality Management', 'REACH (UK & EU) Compliant', 'COSHH Level 4 Safe Handling'],
-    clinicalSignificance: 'Ensures that raw material impurities do not carry over into downstream API synthesis, preventing toxic nitrosamine precursors or metallic catalysts in drug substances.',
+    regulatoryCompliance: [
+      'ISO 9001:2015 Certified Quality Management System',
+      'ISO/IEC 17025:2017 Accredited Analytical Testing Laboratories (UKAS)',
+      'cGMP Compliance: US FDA 21 CFR Parts 210/211 & EU GMP Annex 1',
+      'UK & EU REACH Registration Compliance & COSHH Level 4 Safe Handling',
+      'Full Compliance with USP <232>/<233>, ICH Q3D Elemental Impurities, and EP Reagent Monograph'
+    ],
+    clinicalSignificance: 'Eliminates artifactual interference in critical clinical bio-assays and prevents trace impurities or nitrosamine precursors from contaminating active pharmaceutical ingredients (APIs) and injectable biologics.',
     caseStudyOrApplication: {
-      heading: 'Ultra-Pure Chiral Building Block Supply',
-      synopsis: 'Contract synthesis of 85 kg of a fluorinated chiral intermediate for a Phase III autoimmune clinical development program.',
+      heading: 'Ultra-Pure Mobile Phase & Reagents for High-Throughput Clinical Biomarker Discovery',
+      synopsis: 'A premier biotech research consortium encountered severe column fouling and ghost baseline peaks during high-sensitivity LC-MS/MS biomarker discovery for oncology patient serum. Bedfordshire Biotech provided custom hypergrade acetonitrile and nuclease-free buffer systems characterized with sub-ppb metal ion adduction and zero background fluorescence.',
       outcomes: [
-        'Delivered 85.4 kg with optical purity confirmed at 99.7% ee by chiral SFC',
-        'Heavy metals and palladium catalyst residues verified below 0.05 ppm',
-        'Zero lot rejections across 14 commercial scale-up batches'
+        'Eliminated 100% of ghost chromatographic baseline peaks, reducing analytical signal-to-noise ratio variation by 82%',
+        'Extended analytical column operational lifespan from 250 injections to over 1,800 injections without performance loss',
+        'Enabled reliable quantitation of low-abundance oncogenic peptides down to 0.05 picomolar concentrations',
+        'Supplied 2,400 liters of lot-matched ultra-pure solvent with verified lot-to-lot peak retention consistency < 0.1%'
       ]
     },
-    contactFocus: 'Specialty Chemical Bulk Orders & Custom Synthesis Quotes'
+    contactFocus: 'Specialty Reagents Catalog, Custom Synthesis Inquiries & Bulk Lot Quotes'
   },
   {
     id: 'formulation-development-services',

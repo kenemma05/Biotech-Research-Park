@@ -3,6 +3,9 @@ import { onAuthStateChanged, type User } from 'firebase/auth';
 import { 
   auth, 
   signInWithGoogle, 
+  signUpWithEmail as fbSignUpWithEmail,
+  signInWithEmail as fbSignInWithEmail,
+  resetPassword as fbResetPassword,
   logOut, 
   isUserAdmin,
   ADMIN_EMAIL 
@@ -18,6 +21,9 @@ interface FirebaseContextType {
   isAdmin: boolean;
   loadingAuth: boolean;
   loginWithGoogle: () => Promise<void>;
+  signUpWithEmail: (email: string, password: string, displayName?: string) => Promise<User>;
+  signInWithEmail: (email: string, password: string) => Promise<User>;
+  resetPassword: (email: string) => Promise<void>;
   logout: () => Promise<void>;
   submissions: SubmissionRecord[];
   isPortalOpen: boolean;
@@ -75,6 +81,35 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   };
 
+  const signUpWithEmail = async (email: string, password: string, displayName?: string) => {
+    try {
+      const newUser = await fbSignUpWithEmail(email, password, displayName);
+      return newUser;
+    } catch (err) {
+      console.error('Sign up error:', err);
+      throw err;
+    }
+  };
+
+  const signInWithEmail = async (email: string, password: string) => {
+    try {
+      const loggedUser = await fbSignInWithEmail(email, password);
+      return loggedUser;
+    } catch (err) {
+      console.error('Sign in error:', err);
+      throw err;
+    }
+  };
+
+  const resetPassword = async (email: string) => {
+    try {
+      await fbResetPassword(email);
+    } catch (err) {
+      console.error('Password reset error:', err);
+      throw err;
+    }
+  };
+
   const logout = async () => {
     try {
       await logOut();
@@ -92,6 +127,9 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         isAdmin,
         loadingAuth,
         loginWithGoogle,
+        signUpWithEmail,
+        signInWithEmail,
+        resetPassword,
         logout,
         submissions,
         isPortalOpen,

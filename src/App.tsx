@@ -18,6 +18,8 @@ import { ScienceProductsView } from './components/ScienceProductsView';
 import { UkScienceView } from './components/UkScienceView';
 import { StandaloneSubTopicPageView } from './components/StandaloneSubTopicPageView';
 import { BlogSection } from './components/BlogSection';
+import { LoginPage } from './components/LoginPage';
+import { RegisterPage } from './components/RegisterPage';
 import { ContactSection } from './components/ContactSection';
 import { ContactModal } from './components/ContactModal';
 import { FirebasePortalModal } from './components/FirebasePortalModal';
@@ -49,7 +51,8 @@ export default function App() {
         if (getSubTopicPage(path) || getUkSciencePage(path) || getResearchPage(path) || getProductPage(path)) return path;
         const validRoutes: PageView[] = [
           'home', 'about', 'science', 'products', 'research', 
-          'uk-science', 'bedfordshire-uk', 'manufacturing', 'blog', 'contacts'
+          'uk-science', 'bedfordshire-uk', 'manufacturing', 'blog', 'contacts',
+          'login', 'register'
         ];
         if (validRoutes.includes(path as PageView)) return path as PageView;
       }
@@ -189,10 +192,10 @@ export default function App() {
                         
                         <div className="mt-6 flex flex-wrap items-center gap-4">
                           <button
-                            onClick={() => handleNavigate('bedfordshire-uk')}
+                            onClick={() => handleNavigate('about')}
                             className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-blue-600/30 flex items-center gap-2 transition-colors cursor-pointer"
                           >
-                            <span>Explore Dedicated Hub Page</span>
+                            <span>Explore Campus Facility (About Us)</span>
                             <ArrowRight className="w-3.5 h-3.5" />
                           </button>
                           <button
@@ -210,7 +213,7 @@ export default function App() {
                 {/* Interactive Science Map (Clean Pure White Section) */}
                 <div className="bg-white">
                   <ScienceMap
-                    onGoToBedfordshireHub={() => handleNavigate('bedfordshire-uk')}
+                    onGoToBedfordshireHub={() => handleNavigate('about')}
                     onOpenInquiry={handleOpenContact}
                   />
                 </div>
@@ -236,7 +239,10 @@ export default function App() {
               <div className="bg-white min-h-screen">
                 <AboutView
                   onOpenContact={handleOpenContact}
-                  onExploreBedfordshire={() => handleNavigate('bedfordshire-uk')}
+                  onExploreBedfordshire={() => {
+                    const el = document.getElementById('bedfordshire-campus');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 />
               </div>
             )}
@@ -269,7 +275,7 @@ export default function App() {
                 <PipelineTracker onOpenInquiry={handleOpenContact} />
                 <div className="bg-[#F8FAFC] border-t border-slate-200">
                   <ScienceMap
-                    onGoToBedfordshireHub={() => handleNavigate('bedfordshire-uk')}
+                    onGoToBedfordshireHub={() => handleNavigate('about')}
                     onOpenInquiry={handleOpenContact}
                   />
                 </div>
@@ -280,7 +286,7 @@ export default function App() {
             {currentPage === 'uk-science' && (
               <div className="bg-white min-h-screen">
                 <UkScienceView
-                  onGoToBedfordshire={() => handleNavigate('bedfordshire-uk')}
+                  onGoToBedfordshire={() => handleNavigate('about')}
                   onOpenContact={handleOpenContact}
                 />
               </div>
@@ -310,6 +316,22 @@ export default function App() {
               <div className="pt-24 bg-white min-h-screen">
                 <BlogSection onOpenInquiry={handleOpenContact} />
               </div>
+            )}
+
+            {/* VIEW: LOGIN */}
+            {currentPage === 'login' && (
+              <LoginPage
+                onNavigate={handleNavigate}
+                onOpenContact={handleOpenContact}
+              />
+            )}
+
+            {/* VIEW: REGISTER */}
+            {currentPage === 'register' && (
+              <RegisterPage
+                onNavigate={handleNavigate}
+                onOpenContact={handleOpenContact}
+              />
             )}
 
             {/* VIEW: CONTACTS */}

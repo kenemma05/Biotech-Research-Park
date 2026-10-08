@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
-import { PIPELINE_ASSETS } from '../data/biotechData';
+import { CHEMICAL_PRODUCT_CATEGORIES } from '../data/chemicalCatalogueData';
+import { ProductTable } from './ProductTable';
 import { 
   Package, 
   FlaskConical, 
-  Thermometer, 
   ShieldCheck, 
-  Download, 
   ArrowRight, 
-  CheckCircle, 
-  Filter,
-  FileCheck2,
-  Sparkles
+  Sparkles,
+  Layers,
+  Sparkle
 } from 'lucide-react';
 
 interface ProductsViewProps {
@@ -24,9 +22,8 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
-  const categories = ['All', 'Therapeutic Biologics', 'Recombinant Enzymes', 'mRNA Formulations', 'Clinical Reagents'];
-
-  const products = [
+  // Pre-existing flagship biopharmaceutical products
+  const flagshipProducts = [
     {
       id: 'prod-01',
       name: 'BB-209 VisiMab (Bispecific mAb)',
@@ -36,8 +33,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
       purity: '≥ 99.8% Monomeric Purity (SE-UPLC)',
       storage: '2°C to 8°C Protected from Light',
       target: 'BAFF / APRIL Cytokines',
-      licensingStatus: 'Global Phase III Co-Development & Territorial Licensing Open',
-      coaAvailable: true
+      licensingStatus: 'Global Phase III Co-Development & Territorial Licensing Open'
     },
     {
       id: 'prod-02',
@@ -48,8 +44,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
       purity: '≥ 99.5% by RP-HPLC & Endotoxin < 0.05 EU/mg',
       storage: '-20°C (Long Term: -80°C)',
       target: 'FGFR1c / β-Klotho Co-Receptor',
-      licensingStatus: 'Phase IIb Complete · Ready for Registration Trials',
-      coaAvailable: true
+      licensingStatus: 'Phase IIb Complete · Ready for Registration Trials'
     },
     {
       id: 'prod-03',
@@ -60,8 +55,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
       purity: '> 92% Intact Encapsulation Rate',
       storage: '-80°C Ultra-Low Freezers',
       target: 'Lysosomal α-Galactosidase Expression',
-      licensingStatus: 'Orphan Drug Designation · Phase I Completed',
-      coaAvailable: true
+      licensingStatus: 'Orphan Drug Designation · Phase I Completed'
     },
     {
       id: 'prod-04',
@@ -72,146 +66,207 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
       purity: '> 99.0% by SDS-PAGE & Mass Spectrometry',
       storage: '-20°C Sterile Dispensed',
       target: 'High-Specificity Epigenetic Cleavage',
-      licensingStatus: 'Research & cGMP Clinical Grade Available',
-      coaAvailable: true
-    },
-    {
-      id: 'prod-05',
-      name: 'Sovereign UK High-Yield CHO-K1 Host Strain Library',
-      category: 'Clinical Reagents',
-      format: 'Cryopreserved Master Cell Bank (MCB)',
-      concentration: '1 x 10^7 cells/vial in automated vapor-phase LN2',
-      purity: 'Sterile, Mycoplasma-Free & Adventitious Virus Tested',
-      storage: '-196°C Liquid Nitrogen Vapor Phase',
-      target: 'Host Cell Protein (HCP) Low-Immunogenicity',
-      licensingStatus: 'Non-Exclusive Commercial Cell Line License',
-      coaAvailable: true
+      licensingStatus: 'Research & cGMP Clinical Grade Available'
     }
   ];
-
-  const filteredProducts = selectedCategory === 'All'
-    ? products
-    : products.filter(p => p.category === selectedCategory);
 
   return (
     <div className="pt-28 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       
-      {/* Header */}
-      <div className="mb-14">
-        <div className="flex items-center gap-2 text-xs font-mono uppercase text-[#00F2FE] mb-3">
-          <span>Commercial & Clinical Supply</span>
-          <span>·</span>
-          <span>MHRA Certified Batch Release</span>
+      {/* 1. Header & Lead Introduction */}
+      <div className="mb-12">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-mono font-semibold uppercase tracking-wider mb-4">
+          <FlaskConical className="w-3.5 h-3.5 text-blue-600" />
+          <span>Chemical Compounds & API Formulations Catalogue</span>
         </div>
-        <h1 className="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-tight">
-          Biopharmaceutical Products &{' '}
-          <span className="bg-gradient-to-r from-[#00F2FE] to-[#10B981] bg-clip-text text-transparent">
-            Clinical Supply
+        
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-[#0A192F] tracking-tight leading-tight">
+          Chemical Compounds Catalogue &{' '}
+          <span className="text-blue-600">
+            Active Pharmaceutical Formulations
           </span>
         </h1>
-        <p className="mt-4 text-base sm:text-xl text-slate-300 max-w-3xl leading-relaxed">
-          High-purity therapeutic biologics, recombinant biocatalytic enzymes, lipid-nanoparticle mRNA formulations, and cGMP cell line platforms manufactured in Bedfordshire, UK.
+        
+        <p className="mt-5 text-base sm:text-lg text-slate-700 max-w-4xl leading-relaxed">
+          We offer an extensive range of over <strong>2,200 chemical compounds</strong> including reference materials, process impurities, degradants and metabolites of APIs, natural products, diagnostic imaging reagents, and chemical building blocks.
         </p>
-      </div>
 
-      {/* Category Filter */}
-      <div className="flex flex-wrap items-center gap-2 mb-10 bg-[#0D1424] p-3 rounded-2xl border border-slate-800">
-        <span className="text-xs font-mono text-slate-400 px-3 flex items-center gap-1.5">
-          <Filter className="w-3.5 h-3.5 text-[#00F2FE]" />
-          <span>Product Category:</span>
-        </span>
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setSelectedCategory(cat)}
-            className={`px-4 py-1.5 rounded-xl text-xs font-medium transition-all ${
-              selectedCategory === cat
-                ? 'bg-gradient-to-r from-[#00F2FE] to-[#0284C7] text-slate-950 font-bold shadow-md shadow-[#00F2FE]/20'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-
-      {/* Products Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
-        {filteredProducts.map((prod) => (
-          <div
-            key={prod.id}
-            className="p-6 sm:p-8 rounded-3xl bg-[#0D1424] border border-slate-800 hover:border-[#00F2FE]/50 transition-all flex flex-col justify-between hover:shadow-2xl hover:shadow-[#00F2FE]/5"
-          >
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-mono uppercase text-[#00F2FE]">
-                  {prod.category}
-                </span>
-                <span className="flex items-center gap-1 text-[11px] font-mono text-emerald-400">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>GMP Tested</span>
-                </span>
-              </div>
-
-              <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
-                {prod.name}
-              </h2>
-              <p className="text-xs text-cyan-200 font-mono mb-4">
-                Target / Activity: {prod.target}
-              </p>
-
-              <div className="space-y-2.5 text-xs font-mono bg-slate-950/70 p-4 rounded-xl border border-slate-800/80 mb-6">
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Dosage Form:</span>
-                  <span className="text-white text-right">{prod.format}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Concentration:</span>
-                  <span className="text-white">{prod.concentration}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Purity Standard:</span>
-                  <span className="text-[#10B981] font-semibold">{prod.purity}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Validated Cold Chain:</span>
-                  <span className="text-cyan-300">{prod.storage}</span>
-                </div>
-              </div>
-
-              <div className="p-3 rounded-lg bg-cyan-950/20 border border-cyan-500/20 text-xs text-slate-300">
-                <span className="text-[#00F2FE] font-mono font-bold block mb-0.5">Commercial Status:</span>
-                {prod.licensingStatus}
-              </div>
-            </div>
-
-            <div className="mt-6 pt-5 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
-              <span className="text-[11px] font-mono text-slate-400">
-                Certificate of Analysis (CoA) on File
-              </span>
-              <button
-                onClick={() => onOpenInquiry(`Commercial Supply / Licensing Request: ${prod.name}`)}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#00F2FE] to-[#10B981] text-slate-950 font-bold text-xs uppercase flex items-center gap-2"
-              >
-                <span>Request Pricing / Dossier</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
+        {/* Quick Highlights / Stats Bar */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+            <div className="text-2xl sm:text-3xl font-extrabold text-[#0A192F]">2,200+</div>
+            <div className="text-xs text-slate-600 font-mono mt-0.5">Chemical Compounds</div>
           </div>
-        ))}
+          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+            <div className="text-2xl sm:text-3xl font-extrabold text-blue-600">13</div>
+            <div className="text-xs text-slate-600 font-mono mt-0.5">Product Categories</div>
+          </div>
+          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+            <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600">104</div>
+            <div className="text-xs text-slate-600 font-mono mt-0.5">Commercial Formulations</div>
+          </div>
+          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+            <div className="text-2xl sm:text-3xl font-extrabold text-[#0A192F]">cGMP</div>
+            <div className="text-xs text-slate-600 font-mono mt-0.5">MHRA Certified Release</div>
+          </div>
+        </div>
       </div>
 
-      {/* Contract Manufacturing Cross-Link */}
-      <div className="rounded-3xl bg-slate-900/60 border border-slate-800 p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <div>
-          <h3 className="text-lg sm:text-xl font-bold text-white">Need Custom Batch Synthesis or Contract Production?</h3>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-xl">
-            Our Bedfordshire biomanufacturing suites offer single-use bioreactor scaling from 50L to 2,000L and sterile robotic vial fill-finish.
+      {/* 2. Product Categories Showcase */}
+      <div className="mb-14 bg-gradient-to-br from-slate-50 to-blue-50/40 p-6 sm:p-8 rounded-3xl border border-slate-200">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-bold text-[#0A192F] flex items-center gap-2">
+              <Layers className="w-5 h-5 text-blue-600" />
+              <span>Product Categories</span>
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600 mt-1">
+              Select or browse our 13 specialized chemical domains and compound classes:
+            </p>
+          </div>
+          <span className="text-xs font-mono px-3 py-1 rounded-full bg-blue-100 text-blue-800 font-semibold self-start sm:self-auto">
+            13 Core Domains
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5">
+          {CHEMICAL_PRODUCT_CATEGORIES.map((category) => {
+            const isSelected = selectedCategory === category;
+            return (
+              <button
+                key={category}
+                onClick={() => {
+                  if (isSelected) {
+                    setSelectedCategory('All');
+                  } else {
+                    setSelectedCategory(category);
+                    onOpenInquiry(`Inquiry for Product Category: ${category}`);
+                  }
+                }}
+                className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                  isSelected 
+                    ? 'bg-blue-600 border-blue-600 text-white shadow-md' 
+                    : 'bg-white border-slate-200 hover:border-blue-400 hover:bg-blue-50/50 text-[#0A192F]'
+                }`}
+              >
+                <div className="flex items-center justify-between gap-1 mb-1">
+                  <span className={`text-xs font-bold leading-tight ${isSelected ? 'text-white' : 'text-[#0A192F]'}`}>
+                    {category}
+                  </span>
+                  <Sparkles className={`w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-blue-200' : 'text-blue-500'}`} />
+                </div>
+                <span className={`text-[10px] font-mono ${isSelected ? 'text-blue-100' : 'text-slate-500'}`}>
+                  CoA & Specs Available
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 3. Sortable and Filterable ProductTable Component (104 chemical compounds) */}
+      <div id="compounds-table" className="mb-20">
+        <ProductTable onOpenInquiry={onOpenInquiry} />
+      </div>
+
+      {/* 4. Biopharmaceutical Products & Commercial Biologics Grid */}
+      <div className="mb-16">
+        <div className="mb-8">
+          <div className="flex items-center gap-2 text-xs font-mono uppercase text-blue-600 font-bold mb-2">
+            <ShieldCheck className="w-4 h-4" />
+            <span>Therapeutic Biologics & Clinical Grade Assets</span>
+          </div>
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-[#0A192F] tracking-tight">
+            Proprietary Biopharmaceutical Portfolios
+          </h2>
+          <p className="mt-2 text-sm sm:text-base text-slate-600 max-w-3xl">
+            High-potency bispecific antibodies, recombinant enzymes, lipid nanoparticles, and nucleases ready for territorial licensing or clinical partnership.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {flagshipProducts.map((prod) => (
+            <div
+              key={prod.id}
+              className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 hover:border-blue-400 hover:shadow-xl transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-mono uppercase font-bold text-blue-600">
+                    {prod.category}
+                  </span>
+                  <span className="flex items-center gap-1 text-[11px] font-mono text-emerald-600 font-semibold bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>cGMP Certified</span>
+                  </span>
+                </div>
+
+                <h3 className="text-xl sm:text-2xl font-bold text-[#0A192F] mb-2">
+                  {prod.name}
+                </h3>
+                <p className="text-xs text-blue-700 font-mono mb-4">
+                  Target / Mechanism: {prod.target}
+                </p>
+
+                <div className="space-y-2 text-xs font-mono bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6">
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Dosage Form:</span>
+                    <span className="text-[#0A192F] font-semibold text-right">{prod.format}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Concentration:</span>
+                    <span className="text-[#0A192F] font-semibold">{prod.concentration}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Purity Standard:</span>
+                    <span className="text-emerald-600 font-semibold">{prod.purity}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Validated Cold Chain:</span>
+                    <span className="text-blue-700 font-semibold">{prod.storage}</span>
+                  </div>
+                </div>
+
+                <div className="p-3 rounded-lg bg-blue-50/70 border border-blue-200 text-xs text-slate-700">
+                  <span className="text-blue-700 font-mono font-bold block mb-0.5">Commercial Status:</span>
+                  {prod.licensingStatus}
+                </div>
+              </div>
+
+              <div className="mt-6 pt-5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+                <span className="text-[11px] font-mono text-slate-500">
+                  Full Dossier & CoA Available
+                </span>
+                <button
+                  onClick={() => onOpenInquiry(`Commercial Supply / Licensing Request: ${prod.name}`)}
+                  className="px-5 py-2.5 rounded-xl bg-[#0A192F] hover:bg-blue-600 text-white font-bold text-xs uppercase flex items-center gap-2 transition-colors cursor-pointer"
+                >
+                  <span>Request Pricing / Dossier</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 5. Contract Manufacturing Cross-Link */}
+      <div className="rounded-3xl bg-gradient-to-r from-[#0A192F] to-blue-950 border border-slate-800 p-8 sm:p-12 text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl">
+        <div className="max-w-2xl">
+          <div className="flex items-center gap-2 text-xs font-mono uppercase text-blue-400 font-bold mb-2">
+            <Package className="w-4 h-4" />
+            <span>Custom Formulation & Scale-Up</span>
+          </div>
+          <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
+            Need Custom Batch Synthesis, Milling, or Contract Formulation?
+          </h3>
+          <p className="text-sm sm:text-base text-slate-300 mt-2 leading-relaxed">
+            Our Bedfordshire biomanufacturing suites offer custom chemical synthesis, powder blending, robotic sterile fill-finish, and MHRA cGMP release testing.
           </p>
         </div>
         <button
           onClick={onExploreCDMO}
-          className="px-6 py-3 rounded-xl bg-[#00F2FE] hover:bg-cyan-300 text-slate-950 font-bold text-xs uppercase shrink-0 transition-colors"
+          className="px-8 py-4 rounded-xl bg-blue-500 hover:bg-blue-400 text-white font-extrabold text-xs uppercase tracking-wider shrink-0 shadow-lg shadow-blue-500/30 transition-all cursor-pointer"
         >
           Explore Third-Party CDMO
         </button>

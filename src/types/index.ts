@@ -9,6 +9,8 @@ export type PageView =
   | 'manufacturing'
   | 'blog'
   | 'contacts'
+  | 'login'
+  | 'register'
   | (string & {});
 
 export type PipelinePhase = 

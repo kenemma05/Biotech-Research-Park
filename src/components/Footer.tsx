@@ -126,6 +126,16 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => 
                 </button>
               </li>
               <li>
+                <button onClick={() => onNavigate('register')} className="hover:text-blue-400 transition-colors">
+                  Register Partner Account
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('login')} className="hover:text-blue-400 transition-colors">
+                  Client & Investigator Login
+                </button>
+              </li>
+              <li>
                 <button onClick={() => onOpenContact('General Enterprise Inquiry')} className="text-blue-400 font-semibold hover:text-white transition-colors">
                   Contacts
                 </button>

@@ -31,7 +31,11 @@ import {
   Compass,
   Pipette,
   Eye,
-  Microscope as LabIcon
+  Microscope as LabIcon,
+  UserPlus,
+  LogIn,
+  LogOut,
+  User
 } from 'lucide-react';
 import { useFirebase } from '../context/FirebaseContext';
 import { SCIENCE_CAPABILITIES, ScienceCapabilityItem } from '../data/biotechData';
@@ -51,7 +55,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigate,
   onOpenContact
 }) => {
-  const { user, submissions, openPortal } = useFirebase();
+  const { user, submissions, openPortal, logout } = useFirebase();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
@@ -326,11 +330,117 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-[#0A192F]/95 backdrop-blur-xl border-b border-slate-700/60 shadow-xl shadow-[#0A192F]/50 py-3.5' 
-          : 'bg-[#0A192F]/80 backdrop-blur-md border-b border-white/10 py-4.5'
+          ? 'bg-[#0A192F]/95 backdrop-blur-xl border-b border-slate-700/60 shadow-xl shadow-[#0A192F]/50 pt-1.5 pb-2.5' 
+          : 'bg-[#0A192F]/85 backdrop-blur-md border-b border-white/10 pt-2 pb-3.5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        {/* Top Menu Bar: Secondary Menu location positioned at top-right corner, directly above the main navigation menu */}
+        <div className="hidden xl:flex items-center justify-end pb-1.5 mb-1.5 border-b border-white/10 text-xs text-slate-300">
+          <div className="flex items-center gap-4">
+            
+            {/* BLOG webpage link */}
+            <a
+              href="/blog.html"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('blog');
+              }}
+              className={`transition-colors flex items-center gap-1.5 py-0.5 text-xs font-semibold tracking-wider uppercase cursor-pointer ${
+                currentPage === 'blog' ? 'text-blue-400 font-bold' : 'text-slate-300 hover:text-white'
+              }`}
+            >
+              <FileText className="w-3.5 h-3.5 text-blue-400" />
+              <span>Blog</span>
+              {currentPage === 'blog' && (
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+              )}
+            </a>
+
+            <div className="h-3 w-[1px] bg-slate-700/80" />
+
+            {/* REGISTER webpage link */}
+            <a
+              href="/register.html"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('register');
+              }}
+              className={`transition-colors flex items-center gap-1.5 py-0.5 text-xs font-semibold tracking-wider uppercase cursor-pointer ${
+                currentPage === 'register' ? 'text-blue-400 font-bold' : 'text-slate-300 hover:text-white'
+              }`}
+            >
+              <UserPlus className="w-3.5 h-3.5 text-blue-400" />
+              <span>Register</span>
+              {currentPage === 'register' && (
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+              )}
+            </a>
+
+            <div className="h-3 w-[1px] bg-slate-700/80" />
+
+            {/* LOGIN webpage link */}
+            <a
+              href="/login.html"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('login');
+              }}
+              className={`transition-colors flex items-center gap-1.5 py-0.5 text-xs font-semibold tracking-wider uppercase cursor-pointer ${
+                currentPage === 'login' ? 'text-blue-400 font-bold' : 'text-slate-300 hover:text-white'
+              }`}
+            >
+              <LogIn className="w-3.5 h-3.5 text-blue-400" />
+              <span>Login</span>
+              {currentPage === 'login' && (
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+              )}
+            </a>
+
+            {/* Client Portal in Top Bar when user is authenticated */}
+            {user && (
+              <>
+                <div className="h-3 w-[1px] bg-slate-700/80" />
+                <button
+                  onClick={openPortal}
+                  className="text-slate-300 hover:text-white flex items-center gap-1.5 font-medium transition-colors cursor-pointer"
+                >
+                  <Database className="w-3.5 h-3.5 text-blue-400" />
+                  <span>Client Portal</span>
+                  {submissions.length > 0 && (
+                    <span className="px-1.5 py-0.2 rounded-full bg-blue-600 text-[10px] font-bold text-white">
+                      {submissions.length}
+                    </span>
+                  )}
+                </button>
+
+                <div className="h-3 w-[1px] bg-slate-700/80" />
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] text-slate-400 truncate max-w-[130px] font-mono">
+                    {user.displayName || user.email}
+                  </span>
+                  <button
+                    onClick={() => logout()}
+                    title="Sign Out"
+                    className="text-slate-400 hover:text-rose-400 transition-colors cursor-pointer flex items-center gap-1 text-[11px]"
+                  >
+                    <LogOut className="w-3 h-3" />
+                  </button>
+                </div>
+              </>
+            )}
+
+            <div className="h-3 w-[1px] bg-slate-700/80" />
+
+            <button
+              onClick={() => onOpenContact('Technical & Partnership Support')}
+              className="text-slate-400 hover:text-white transition-colors cursor-pointer text-xs"
+            >
+              Support & Inquiries
+            </button>
+          </div>
+        </div>
+
         <div className="flex items-center justify-between">
           
           {/* Logo / Brand Identity */}
@@ -357,9 +467,13 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Desktop Navigation Menu */}
           <nav className="hidden xl:flex items-center gap-7 text-sm font-medium">
-            {/* 1. Home */}
-            <button
-              onClick={() => handleNavClick('home')}
+            {/* 1. Home Webpage */}
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('home');
+              }}
               className={`transition-colors relative py-1 text-xs tracking-wide uppercase cursor-pointer ${
                 currentPage === 'home' ? 'text-blue-400 font-bold' : 'text-slate-200 hover:text-white'
               }`}
@@ -368,11 +482,15 @@ export const Navbar: React.FC<NavbarProps> = ({
               {currentPage === 'home' && (
                 <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 rounded-full" />
               )}
-            </button>
+            </a>
 
-            {/* 2. About Us */}
-            <button
-              onClick={() => handleNavClick('about')}
+            {/* 2. About Us Webpage */}
+            <a
+              href="/about.html"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('about');
+              }}
               className={`transition-colors relative py-1 text-xs tracking-wide uppercase cursor-pointer ${
                 currentPage === 'about' ? 'text-blue-400 font-bold' : 'text-slate-200 hover:text-white'
               }`}
@@ -381,174 +499,179 @@ export const Navbar: React.FC<NavbarProps> = ({
               {currentPage === 'about' && (
                 <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 rounded-full" />
               )}
-            </button>
+            </a>
 
-            {/* 3. Our Science (Mega Menu Trigger) */}
+            {/* 3. Our Science Webpage & Submenu */}
             <div 
-              className="relative"
+              className="relative flex items-center gap-1"
               ref={scienceNavRef}
               onMouseEnter={handleScienceMouseEnter}
               onMouseLeave={handleScienceMouseLeave}
             >
+              <a
+                href="/science.html"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick('science');
+                }}
+                className={`transition-colors relative py-1 text-xs tracking-wide uppercase cursor-pointer ${
+                  isOurScienceActive ? 'text-blue-400 font-bold' : 'text-slate-200 hover:text-white'
+                }`}
+              >
+                <span>Our Science</span>
+                {isOurScienceActive && (
+                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 rounded-full" />
+                )}
+              </a>
               <button
-                onClick={() => {
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
                   setProductsDropdownOpen(false);
                   setResearchDropdownOpen(false);
                   setUkScienceMegaMenuOpen(false);
                   setScienceMegaMenuOpen(prev => !prev);
                 }}
-                className={`flex items-center gap-1.5 transition-colors relative py-1 text-xs tracking-wide uppercase cursor-pointer ${
-                  isOurScienceActive || scienceMegaMenuOpen ? 'text-blue-400 font-bold' : 'text-slate-200 hover:text-white'
-                }`}
+                className="p-1 -ml-0.5 text-slate-300 hover:text-blue-400 transition-colors cursor-pointer"
+                aria-label="Toggle Our Science Submenu"
                 aria-expanded={scienceMegaMenuOpen}
               >
-                <span>Our Science</span>
                 <ChevronDown 
                   className={`w-3.5 h-3.5 transition-transform duration-200 ${
                     scienceMegaMenuOpen ? 'rotate-180 text-blue-400' : ''
                   }`} 
                 />
-                {isOurScienceActive && (
-                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 rounded-full" />
-                )}
               </button>
             </div>
 
-            {/* 4. Products (Structured Dropdown Menu Trigger) */}
+            {/* 4. Products Webpage & Submenu */}
             <div 
-              className="relative"
+              className="relative flex items-center gap-1"
               ref={productsNavRef}
               onMouseEnter={handleProductsMouseEnter}
               onMouseLeave={handleProductsMouseLeave}
             >
+              <a
+                href="/products.html"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick('products');
+                }}
+                className={`transition-colors relative py-1 text-xs tracking-wide uppercase cursor-pointer ${
+                  isProductsActive ? 'text-blue-400 font-bold' : 'text-slate-200 hover:text-white'
+                }`}
+              >
+                <span>Products</span>
+                {isProductsActive && (
+                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 rounded-full" />
+                )}
+              </a>
               <button
-                onClick={() => {
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
                   setScienceMegaMenuOpen(false);
                   setResearchDropdownOpen(false);
                   setUkScienceMegaMenuOpen(false);
                   setProductsDropdownOpen(prev => !prev);
                 }}
-                className={`flex items-center gap-1.5 transition-colors relative py-1 text-xs tracking-wide uppercase cursor-pointer ${
-                  isProductsActive || productsDropdownOpen ? 'text-blue-400 font-bold' : 'text-slate-200 hover:text-white'
-                }`}
+                className="p-1 -ml-0.5 text-slate-300 hover:text-blue-400 transition-colors cursor-pointer"
+                aria-label="Toggle Products Submenu"
                 aria-expanded={productsDropdownOpen}
               >
-                <span>Products</span>
                 <ChevronDown 
                   className={`w-3.5 h-3.5 transition-transform duration-200 ${
                     productsDropdownOpen ? 'rotate-180 text-blue-400' : ''
                   }`} 
                 />
-                {isProductsActive && (
-                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 rounded-full" />
-                )}
               </button>
             </div>
 
-            {/* 5. Research (Structured Dropdown Menu Trigger) */}
+            {/* 5. Research Webpage & Submenu */}
             <div 
-              className="relative"
+              className="relative flex items-center gap-1"
               ref={researchNavRef}
               onMouseEnter={handleResearchMouseEnter}
               onMouseLeave={handleResearchMouseLeave}
             >
+              <a
+                href="/research.html"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick('research');
+                }}
+                className={`transition-colors relative py-1 text-xs tracking-wide uppercase cursor-pointer ${
+                  isResearchActive ? 'text-blue-400 font-bold' : 'text-slate-200 hover:text-white'
+                }`}
+              >
+                <span>Research</span>
+                {isResearchActive && (
+                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 rounded-full" />
+                )}
+              </a>
               <button
-                onClick={() => {
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
                   setScienceMegaMenuOpen(false);
                   setProductsDropdownOpen(false);
                   setUkScienceMegaMenuOpen(false);
                   setResearchDropdownOpen(prev => !prev);
                 }}
-                className={`flex items-center gap-1.5 transition-colors relative py-1 text-xs tracking-wide uppercase cursor-pointer ${
-                  isResearchActive || researchDropdownOpen ? 'text-blue-400 font-bold' : 'text-slate-200 hover:text-white'
-                }`}
+                className="p-1 -ml-0.5 text-slate-300 hover:text-blue-400 transition-colors cursor-pointer"
+                aria-label="Toggle Research Submenu"
                 aria-expanded={researchDropdownOpen}
               >
-                <span>Research</span>
                 <ChevronDown 
                   className={`w-3.5 h-3.5 transition-transform duration-200 ${
                     researchDropdownOpen ? 'rotate-180 text-blue-400' : ''
                   }`} 
                 />
-                {isResearchActive && (
-                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 rounded-full" />
-                )}
               </button>
             </div>
 
-            {/* 6. UK Science (Mega Menu Dropdown Trigger) */}
+            {/* 6. UK Science Webpage & Submenu */}
             <div 
-              className="relative"
+              className="relative flex items-center gap-1"
               ref={ukScienceNavRef}
               onMouseEnter={handleUkScienceMouseEnter}
               onMouseLeave={handleUkScienceMouseLeave}
             >
+              <a
+                href="/uk-science.html"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick('uk-science');
+                }}
+                className={`transition-colors relative py-1 text-xs tracking-wide uppercase cursor-pointer ${
+                  isUkScienceActive ? 'text-blue-400 font-bold' : 'text-slate-200 hover:text-white'
+                }`}
+              >
+                <span>UK Science</span>
+                {isUkScienceActive && (
+                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 rounded-full" />
+                )}
+              </a>
               <button
-                onClick={() => {
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
                   setScienceMegaMenuOpen(false);
                   setProductsDropdownOpen(false);
                   setResearchDropdownOpen(false);
                   setUkScienceMegaMenuOpen(prev => !prev);
                 }}
-                className={`flex items-center gap-1.5 transition-colors relative py-1 text-xs tracking-wide uppercase cursor-pointer ${
-                  isUkScienceActive || ukScienceMegaMenuOpen ? 'text-blue-400 font-bold' : 'text-slate-200 hover:text-white'
-                }`}
+                className="p-1 -ml-0.5 text-slate-300 hover:text-blue-400 transition-colors cursor-pointer"
+                aria-label="Toggle UK Science Submenu"
                 aria-expanded={ukScienceMegaMenuOpen}
               >
-                <span>UK Science</span>
                 <ChevronDown 
                   className={`w-3.5 h-3.5 transition-transform duration-200 ${
                     ukScienceMegaMenuOpen ? 'rotate-180 text-blue-400' : ''
                   }`} 
                 />
-                {isUkScienceActive && (
-                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 rounded-full" />
-                )}
               </button>
             </div>
-
-            {/* 7. Bedfordshire Biotech UK (Dedicated Hub Page) */}
-            <button
-              onClick={() => handleNavClick('bedfordshire-uk')}
-              className={`transition-colors relative py-1 text-xs tracking-wide uppercase flex items-center gap-1.5 cursor-pointer ${
-                currentPage === 'bedfordshire-uk' ? 'text-blue-400 font-bold' : 'text-slate-200 hover:text-white'
-              }`}
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Bedfordshire UK Hub</span>
-              {currentPage === 'bedfordshire-uk' && (
-                <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 rounded-full" />
-              )}
-            </button>
-
-            {/* 8. Third-Party Manufacturing (CDMO) */}
-            <button
-              onClick={() => handleNavClick('manufacturing')}
-              className={`transition-colors relative py-1 text-xs tracking-wide uppercase flex items-center gap-1 cursor-pointer ${
-                currentPage === 'manufacturing' ? 'text-blue-400 font-bold' : 'text-slate-200 hover:text-white'
-              }`}
-            >
-              <span>Manufacturing</span>
-              <span className="text-[9px] font-mono uppercase bg-blue-500/20 text-blue-300 px-1 py-0.2 rounded border border-blue-500/30">
-                cGMP
-              </span>
-              {currentPage === 'manufacturing' && (
-                <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 rounded-full" />
-              )}
-            </button>
-
-            {/* 9. Blog */}
-            <button
-              onClick={() => handleNavClick('blog')}
-              className={`transition-colors relative py-1 text-xs tracking-wide uppercase cursor-pointer ${
-                currentPage === 'blog' ? 'text-blue-400 font-bold' : 'text-slate-200 hover:text-white'
-              }`}
-            >
-              Blog
-              {currentPage === 'blog' && (
-                <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 rounded-full" />
-              )}
-            </button>
           </nav>
 
           {/* Right Action Buttons */}
@@ -607,21 +730,29 @@ export const Navbar: React.FC<NavbarProps> = ({
                   Our Science · Core Capabilities & Testing Disciplines (20 Divisions)
                 </span>
               </div>
-              <button
-                onClick={() => handleNavClick('science')}
+              <a
+                href="/science.html"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick('science');
+                }}
                 className="text-xs font-mono text-blue-400 hover:text-blue-300 flex items-center gap-1.5 transition-colors group cursor-pointer"
               >
-                <span>Full Directory Overview</span>
+                <span>Full Directory Overview Webpage</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-              </button>
+              </a>
             </div>
 
             {/* 4-Column Responsive Grid Layout of All 20 Sub-Items */}
             <div className="grid grid-cols-4 gap-2.5 max-h-[68vh] overflow-y-auto pr-1">
               {OUR_SCIENCE_PAGES.map((page) => (
-                <button
+                <a
                   key={page.slug}
-                  onClick={() => handleOurScienceItemClick(page.slug)}
+                  href={`/${page.slug}.html`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleOurScienceItemClick(page.slug);
+                  }}
                   className="group/item flex items-start gap-2.5 p-2.5 rounded-xl bg-[#0A192F]/80 hover:bg-blue-950/70 border border-slate-800/80 hover:border-blue-500/60 hover:shadow-lg hover:shadow-blue-950/50 transition-all duration-150 text-left cursor-pointer"
                 >
                   <div className="w-7 h-7 rounded-lg bg-blue-600/15 border border-blue-500/30 flex items-center justify-center text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white group-hover/item:border-blue-400 transition-all flex-shrink-0 mt-0.5 shadow-sm">
@@ -632,12 +763,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <span className="text-xs font-semibold text-white group-hover/item:text-blue-300 transition-colors leading-tight line-clamp-1">
                         {page.title}
                       </span>
+                      {page.id === 'capabilities' && (
+                        <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold shrink-0">
+                          CRO · CDMO
+                        </span>
+                      )}
                     </div>
                     <p className="text-[11px] text-slate-300 group-hover/item:text-slate-200 transition-colors line-clamp-1 leading-tight font-normal">
                       {page.executiveSummary}
                     </p>
                   </div>
-                </button>
+                </a>
               ))}
             </div>
 
@@ -647,7 +783,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className="px-2 py-0.5 rounded bg-blue-950/70 text-blue-300 border border-blue-800/60 font-semibold">
                   Dedicated Web Pages
                 </span>
-                <span>Each link navigates to an independent full-screen view</span>
+                <span>Each link navigates to an independent full-screen webpage</span>
               </div>
               <button
                 onClick={() => {
@@ -681,21 +817,29 @@ export const Navbar: React.FC<NavbarProps> = ({
                   Commercial Pharmaceuticals & Formulations · 8 Portfolios
                 </span>
               </div>
-              <button
-                onClick={() => handleNavClick('products')}
+              <a
+                href="/products.html"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick('products');
+                }}
                 className="text-xs font-mono text-blue-400 hover:text-blue-300 flex items-center gap-1.5 transition-colors group cursor-pointer"
               >
-                <span>Full Products Directory</span>
+                <span>Full Products Directory Webpage</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-              </button>
+              </a>
             </div>
 
             {/* 2-Column Responsive Grid Layout of 8 Dedicated Pages */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 max-h-[65vh] overflow-y-auto pr-1">
               {PRODUCTS_PAGES.map((page) => (
-                <button
+                <a
                   key={page.slug}
-                  onClick={() => handleProductsItemClick(page.slug)}
+                  href={`/${page.slug}.html`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleProductsItemClick(page.slug);
+                  }}
                   className="group/item flex items-start gap-3 p-3 rounded-xl bg-[#0A192F]/80 hover:bg-blue-950/70 border border-slate-800/80 hover:border-blue-500/60 hover:shadow-lg hover:shadow-blue-950/50 transition-all duration-150 text-left cursor-pointer"
                 >
                   <div className="w-8 h-8 rounded-lg bg-blue-600/15 border border-blue-500/30 flex items-center justify-center text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white group-hover/item:border-blue-400 transition-all flex-shrink-0 mt-0.5 shadow-sm">
@@ -711,7 +855,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       {page.executiveSummary}
                     </p>
                   </div>
-                </button>
+                </a>
               ))}
             </div>
 
@@ -755,21 +899,29 @@ export const Navbar: React.FC<NavbarProps> = ({
                   Research & Analytical Laboratories · 9 Specialized Divisions
                 </span>
               </div>
-              <button
-                onClick={() => handleNavClick('research')}
+              <a
+                href="/research.html"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick('research');
+                }}
                 className="text-xs font-mono text-blue-400 hover:text-blue-300 flex items-center gap-1.5 transition-colors group cursor-pointer"
               >
-                <span>Clinical Pipeline Hub</span>
+                <span>Clinical Pipeline Hub Webpage</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-              </button>
+              </a>
             </div>
 
             {/* 2-Column Responsive Grid Layout of 9 Dedicated Pages */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 max-h-[65vh] overflow-y-auto pr-1">
               {RESEARCH_PAGES.map((page) => (
-                <button
+                <a
                   key={page.slug}
-                  onClick={() => handleResearchItemClick(page.slug)}
+                  href={`/${page.slug}.html`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleResearchItemClick(page.slug);
+                  }}
                   className="group/item flex items-start gap-3 p-3 rounded-xl bg-[#0A192F]/80 hover:bg-blue-950/70 border border-slate-800/80 hover:border-blue-500/60 hover:shadow-lg hover:shadow-blue-950/50 transition-all duration-150 text-left cursor-pointer"
                 >
                   <div className="w-8 h-8 rounded-lg bg-blue-600/15 border border-blue-500/30 flex items-center justify-center text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white group-hover/item:border-blue-400 transition-all flex-shrink-0 mt-0.5 shadow-sm">
@@ -785,7 +937,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       {page.executiveSummary}
                     </p>
                   </div>
-                </button>
+                </a>
               ))}
             </div>
 
@@ -829,21 +981,29 @@ export const Navbar: React.FC<NavbarProps> = ({
                   UK Science & National Life Sciences Infrastructure · 36 Dedicated Portals
                 </span>
               </div>
-              <button
-                onClick={() => handleNavClick('uk-science')}
+              <a
+                href="/uk-science.html"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick('uk-science');
+                }}
                 className="text-xs font-mono text-blue-400 hover:text-blue-300 flex items-center gap-1.5 transition-colors group cursor-pointer"
               >
-                <span>National Overview</span>
+                <span>National Overview Webpage</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-              </button>
+              </a>
             </div>
 
             {/* 4-Column Responsive Grid Layout of 36 Dedicated Web Pages */}
             <div className="grid grid-cols-4 gap-2 max-h-[70vh] overflow-y-auto pr-1">
               {UK_SCIENCE_PAGES.map((page) => (
-                <button
+                <a
                   key={page.slug}
-                  onClick={() => handleUkScienceItemClick(page.slug)}
+                  href={`/${page.slug}.html`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleUkScienceItemClick(page.slug);
+                  }}
                   className="group/item flex items-start gap-2.5 p-2 rounded-lg bg-[#0A192F]/80 hover:bg-blue-950/70 border border-slate-800/80 hover:border-blue-500/60 hover:shadow-lg hover:shadow-blue-950/50 transition-all duration-150 text-left cursor-pointer"
                 >
                   <div className="w-6 h-6 rounded-md bg-blue-600/15 border border-blue-500/30 flex items-center justify-center text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white group-hover/item:border-blue-400 transition-all flex-shrink-0 mt-0.5 shadow-sm">
@@ -859,7 +1019,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       {page.executiveSummary}
                     </p>
                   </div>
-                </button>
+                </a>
               ))}
             </div>
 
@@ -891,80 +1051,113 @@ export const Navbar: React.FC<NavbarProps> = ({
       {mobileMenuOpen && (
         <div className="xl:hidden bg-[#0A192F] border-b border-slate-800 px-4 pt-3 pb-6 space-y-3 mt-3 animate-in slide-in-from-top-2 duration-200 shadow-2xl max-h-[85vh] overflow-y-auto">
           <div className="flex flex-col space-y-2 text-sm">
-            <button
-              onClick={() => handleNavClick('home')}
-              className={`text-left px-3.5 py-2.5 rounded-lg transition-colors cursor-pointer ${
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('home');
+              }}
+              className={`text-left px-3.5 py-2.5 rounded-lg transition-colors cursor-pointer block ${
                 currentPage === 'home' ? 'bg-blue-600/20 text-blue-400 font-semibold' : 'text-slate-200 hover:bg-slate-800/60'
               }`}
             >
               Home
-            </button>
+            </a>
 
-            <button
-              onClick={() => handleNavClick('about')}
-              className={`text-left px-3.5 py-2.5 rounded-lg transition-colors cursor-pointer ${
+            <a
+              href="/about.html"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('about');
+              }}
+              className={`text-left px-3.5 py-2.5 rounded-lg transition-colors cursor-pointer block ${
                 currentPage === 'about' ? 'bg-blue-600/20 text-blue-400 font-semibold' : 'text-slate-200 hover:bg-slate-800/60'
               }`}
             >
               About Us
-            </button>
+            </a>
 
             {/* 1. Our Science Mobile Accordion (20 Sub-Pages) */}
             <div className="rounded-xl border border-slate-800 bg-slate-900/30 overflow-hidden">
-              <button
-                onClick={() => setMobileScienceAccordionOpen(!mobileScienceAccordionOpen)}
-                className={`w-full text-left px-3.5 py-3 transition-colors flex items-center justify-between cursor-pointer ${
+              <div
+                className={`w-full px-3.5 py-3 transition-colors flex items-center justify-between ${
                   isOurScienceActive || mobileScienceAccordionOpen 
                     ? 'bg-blue-600/20 text-blue-400 font-semibold' 
                     : 'text-slate-200 hover:bg-slate-800/60'
                 }`}
-                aria-expanded={mobileScienceAccordionOpen}
               >
-                <div className="flex items-center gap-2">
+                <a
+                  href="/science.html"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavClick('science');
+                  }}
+                  className="flex items-center gap-2 cursor-pointer flex-1"
+                >
                   <span className="text-sm font-medium">Our Science</span>
                   <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30 font-semibold">
                     20 Divisions
                   </span>
-                </div>
-                <ChevronDown 
-                  className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
-                    mobileScienceAccordionOpen ? 'rotate-180 text-blue-400' : ''
-                  }`} 
-                />
-              </button>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setMobileScienceAccordionOpen(!mobileScienceAccordionOpen)}
+                  className="p-1 text-slate-400 hover:text-white cursor-pointer"
+                  aria-label="Toggle Our Science Submenu Accordion"
+                  aria-expanded={mobileScienceAccordionOpen}
+                >
+                  <ChevronDown 
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      mobileScienceAccordionOpen ? 'rotate-180 text-blue-400' : ''
+                    }`} 
+                  />
+                </button>
+              </div>
 
               {mobileScienceAccordionOpen && (
                 <div className="p-2 space-y-1 bg-[#0A192F] border-t border-slate-800/80 animate-in fade-in-0 duration-150">
-                  <button
-                    onClick={() => {
+                  <a
+                    href="/science.html"
+                    onClick={(e) => {
+                      e.preventDefault();
                       handleNavClick('science');
-                      setMobileMenuOpen(false);
                     }}
-                    className="w-full text-left p-2.5 rounded-lg text-xs font-semibold text-blue-400 hover:bg-blue-900/30 flex items-center justify-between border border-blue-500/30 bg-blue-950/40 mb-1.5 cursor-pointer"
+                    className="w-full text-left p-2.5 rounded-lg text-xs font-semibold text-blue-400 hover:bg-blue-900/30 flex items-center justify-between border border-blue-500/30 bg-blue-950/40 mb-1.5 cursor-pointer block"
                   >
-                    <span>Full Directory Overview</span>
+                    <span>Full Directory Overview Webpage</span>
                     <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
+                  </a>
 
                   <div className="max-h-[280px] overflow-y-auto space-y-1 pr-1 custom-scrollbar">
                     {OUR_SCIENCE_PAGES.map((page) => (
-                      <button
+                      <a
                         key={page.slug}
-                        onClick={() => handleOurScienceItemClick(page.slug)}
-                        className="w-full text-left p-2 rounded-lg hover:bg-slate-800/80 transition-colors flex items-center gap-3 group border border-slate-800/40 hover:border-blue-900/60 cursor-pointer"
+                        href={`/${page.slug}.html`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleOurScienceItemClick(page.slug);
+                        }}
+                        className="w-full text-left p-2 rounded-lg hover:bg-slate-800/80 transition-colors flex items-center gap-3 group border border-slate-800/40 hover:border-blue-900/60 cursor-pointer block"
                       >
                         <div className="w-7 h-7 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all flex-shrink-0">
                           {getSubTopicIcon(page.id)}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-white group-hover:text-blue-300 truncate">
-                            {page.title}
+                          <div className="flex items-center justify-between gap-1">
+                            <span className="text-xs font-semibold text-white group-hover:text-blue-300 truncate">
+                              {page.title}
+                            </span>
+                            {page.id === 'capabilities' && (
+                              <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold shrink-0">
+                                CRO · CDMO
+                              </span>
+                            )}
                           </div>
                           <div className="text-[10px] text-slate-300 truncate">
                             {page.executiveSummary}
                           </div>
                         </div>
-                      </button>
+                      </a>
                     ))}
                   </div>
                 </div>
@@ -973,47 +1166,65 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* 2. Products Mobile Accordion (8 Sub-Pages) */}
             <div className="rounded-xl border border-slate-800 bg-slate-900/30 overflow-hidden">
-              <button
-                onClick={() => setMobileProductsAccordionOpen(!mobileProductsAccordionOpen)}
-                className={`w-full text-left px-3.5 py-3 transition-colors flex items-center justify-between cursor-pointer ${
+              <div
+                className={`w-full px-3.5 py-3 transition-colors flex items-center justify-between ${
                   isProductsActive || mobileProductsAccordionOpen 
                     ? 'bg-blue-600/20 text-blue-400 font-semibold' 
                     : 'text-slate-200 hover:bg-slate-800/60'
                 }`}
-                aria-expanded={mobileProductsAccordionOpen}
               >
-                <div className="flex items-center gap-2">
+                <a
+                  href="/products.html"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavClick('products');
+                  }}
+                  className="flex items-center gap-2 cursor-pointer flex-1"
+                >
                   <span className="text-sm font-medium">Products</span>
                   <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30 font-semibold">
                     8 Portfolios
                   </span>
-                </div>
-                <ChevronDown 
-                  className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
-                    mobileProductsAccordionOpen ? 'rotate-180 text-blue-400' : ''
-                  }`} 
-                />
-              </button>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setMobileProductsAccordionOpen(!mobileProductsAccordionOpen)}
+                  className="p-1 text-slate-400 hover:text-white cursor-pointer"
+                  aria-label="Toggle Products Submenu Accordion"
+                  aria-expanded={mobileProductsAccordionOpen}
+                >
+                  <ChevronDown 
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      mobileProductsAccordionOpen ? 'rotate-180 text-blue-400' : ''
+                    }`} 
+                  />
+                </button>
+              </div>
 
               {mobileProductsAccordionOpen && (
                 <div className="p-2 space-y-1 bg-[#0A192F] border-t border-slate-800/80 animate-in fade-in-0 duration-150">
-                  <button
-                    onClick={() => {
+                  <a
+                    href="/products.html"
+                    onClick={(e) => {
+                      e.preventDefault();
                       handleNavClick('products');
-                      setMobileMenuOpen(false);
                     }}
-                    className="w-full text-left p-2.5 rounded-lg text-xs font-semibold text-blue-400 hover:bg-blue-900/30 flex items-center justify-between border border-blue-500/30 bg-blue-950/40 mb-1.5 cursor-pointer"
+                    className="w-full text-left p-2.5 rounded-lg text-xs font-semibold text-blue-400 hover:bg-blue-900/30 flex items-center justify-between border border-blue-500/30 bg-blue-950/40 mb-1.5 cursor-pointer block"
                   >
-                    <span>All Products Directory</span>
+                    <span>Full Products Directory Webpage</span>
                     <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
+                  </a>
 
                   <div className="max-h-[280px] overflow-y-auto space-y-1 pr-1 custom-scrollbar">
                     {PRODUCTS_PAGES.map((page) => (
-                      <button
+                      <a
                         key={page.slug}
-                        onClick={() => handleProductsItemClick(page.slug)}
-                        className="w-full text-left p-2 rounded-lg hover:bg-slate-800/80 transition-colors flex items-center gap-3 group border border-slate-800/40 hover:border-blue-900/60 cursor-pointer"
+                        href={`/${page.slug}.html`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleProductsItemClick(page.slug);
+                        }}
+                        className="w-full text-left p-2 rounded-lg hover:bg-slate-800/80 transition-colors flex items-center gap-3 group border border-slate-800/40 hover:border-blue-900/60 cursor-pointer block"
                       >
                         <div className="w-7 h-7 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all flex-shrink-0">
                           {getProductIcon(page.id)}
@@ -1026,7 +1237,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                             {page.executiveSummary}
                           </div>
                         </div>
-                      </button>
+                      </a>
                     ))}
                   </div>
                 </div>
@@ -1035,47 +1246,65 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* 3. Research Mobile Accordion (9 Sub-Pages) */}
             <div className="rounded-xl border border-slate-800 bg-slate-900/30 overflow-hidden">
-              <button
-                onClick={() => setMobileResearchAccordionOpen(!mobileResearchAccordionOpen)}
-                className={`w-full text-left px-3.5 py-3 transition-colors flex items-center justify-between cursor-pointer ${
+              <div
+                className={`w-full px-3.5 py-3 transition-colors flex items-center justify-between ${
                   isResearchActive || mobileResearchAccordionOpen 
                     ? 'bg-blue-600/20 text-blue-400 font-semibold' 
                     : 'text-slate-200 hover:bg-slate-800/60'
                 }`}
-                aria-expanded={mobileResearchAccordionOpen}
               >
-                <div className="flex items-center gap-2">
+                <a
+                  href="/research.html"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavClick('research');
+                  }}
+                  className="flex items-center gap-2 cursor-pointer flex-1"
+                >
                   <span className="text-sm font-medium">Research</span>
                   <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30 font-semibold">
-                    9 Pages
+                    9 Divisions
                   </span>
-                </div>
-                <ChevronDown 
-                  className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
-                    mobileResearchAccordionOpen ? 'rotate-180 text-blue-400' : ''
-                  }`} 
-                />
-              </button>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setMobileResearchAccordionOpen(!mobileResearchAccordionOpen)}
+                  className="p-1 text-slate-400 hover:text-white cursor-pointer"
+                  aria-label="Toggle Research Submenu Accordion"
+                  aria-expanded={mobileResearchAccordionOpen}
+                >
+                  <ChevronDown 
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      mobileResearchAccordionOpen ? 'rotate-180 text-blue-400' : ''
+                    }`} 
+                  />
+                </button>
+              </div>
 
               {mobileResearchAccordionOpen && (
                 <div className="p-2 space-y-1 bg-[#0A192F] border-t border-slate-800/80 animate-in fade-in-0 duration-150">
-                  <button
-                    onClick={() => {
+                  <a
+                    href="/research.html"
+                    onClick={(e) => {
+                      e.preventDefault();
                       handleNavClick('research');
-                      setMobileMenuOpen(false);
                     }}
-                    className="w-full text-left p-2.5 rounded-lg text-xs font-semibold text-blue-400 hover:bg-blue-900/30 flex items-center justify-between border border-blue-500/30 bg-blue-950/40 mb-1.5 cursor-pointer"
+                    className="w-full text-left p-2.5 rounded-lg text-xs font-semibold text-blue-400 hover:bg-blue-900/30 flex items-center justify-between border border-blue-500/30 bg-blue-950/40 mb-1.5 cursor-pointer block"
                   >
-                    <span>Clinical Pipeline Hub</span>
+                    <span>Clinical Pipeline Hub Webpage</span>
                     <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
+                  </a>
 
                   <div className="max-h-[280px] overflow-y-auto space-y-1 pr-1 custom-scrollbar">
                     {RESEARCH_PAGES.map((page) => (
-                      <button
+                      <a
                         key={page.slug}
-                        onClick={() => handleResearchItemClick(page.slug)}
-                        className="w-full text-left p-2 rounded-lg hover:bg-slate-800/80 transition-colors flex items-center gap-3 group border border-slate-800/40 hover:border-blue-900/60 cursor-pointer"
+                        href={`/${page.slug}.html`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleResearchItemClick(page.slug);
+                        }}
+                        className="w-full text-left p-2 rounded-lg hover:bg-slate-800/80 transition-colors flex items-center gap-3 group border border-slate-800/40 hover:border-blue-900/60 cursor-pointer block"
                       >
                         <div className="w-7 h-7 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all flex-shrink-0">
                           <FlaskConical className="w-3.5 h-3.5" />
@@ -1088,7 +1317,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                             {page.executiveSummary}
                           </div>
                         </div>
-                      </button>
+                      </a>
                     ))}
                   </div>
                 </div>
@@ -1097,47 +1326,65 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* 4. UK Science Mobile Accordion (36 Sub-Pages) */}
             <div className="rounded-xl border border-slate-800 bg-slate-900/30 overflow-hidden">
-              <button
-                onClick={() => setMobileUkScienceAccordionOpen(!mobileUkScienceAccordionOpen)}
-                className={`w-full text-left px-3.5 py-3 transition-colors flex items-center justify-between cursor-pointer ${
+              <div
+                className={`w-full px-3.5 py-3 transition-colors flex items-center justify-between ${
                   isUkScienceActive || mobileUkScienceAccordionOpen 
                     ? 'bg-blue-600/20 text-blue-400 font-semibold' 
                     : 'text-slate-200 hover:bg-slate-800/60'
                 }`}
-                aria-expanded={mobileUkScienceAccordionOpen}
               >
-                <div className="flex items-center gap-2">
+                <a
+                  href="/uk-science.html"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavClick('uk-science');
+                  }}
+                  className="flex items-center gap-2 cursor-pointer flex-1"
+                >
                   <span className="text-sm font-medium">UK Science</span>
                   <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30 font-semibold">
                     36 Pages
                   </span>
-                </div>
-                <ChevronDown 
-                  className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
-                    mobileUkScienceAccordionOpen ? 'rotate-180 text-blue-400' : ''
-                  }`} 
-                />
-              </button>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setMobileUkScienceAccordionOpen(!mobileUkScienceAccordionOpen)}
+                  className="p-1 text-slate-400 hover:text-white cursor-pointer"
+                  aria-label="Toggle UK Science Submenu Accordion"
+                  aria-expanded={mobileUkScienceAccordionOpen}
+                >
+                  <ChevronDown 
+                    className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                      mobileUkScienceAccordionOpen ? 'rotate-180 text-blue-400' : ''
+                    }`} 
+                  />
+                </button>
+              </div>
 
               {mobileUkScienceAccordionOpen && (
                 <div className="p-2 space-y-1 bg-[#0A192F] border-t border-slate-800/80 animate-in fade-in-0 duration-150">
-                  <button
-                    onClick={() => {
+                  <a
+                    href="/uk-science.html"
+                    onClick={(e) => {
+                      e.preventDefault();
                       handleNavClick('uk-science');
-                      setMobileMenuOpen(false);
                     }}
-                    className="w-full text-left p-2.5 rounded-lg text-xs font-semibold text-blue-400 hover:bg-blue-900/30 flex items-center justify-between border border-blue-500/30 bg-blue-950/40 mb-1.5 cursor-pointer"
+                    className="w-full text-left p-2.5 rounded-lg text-xs font-semibold text-blue-400 hover:bg-blue-900/30 flex items-center justify-between border border-blue-500/30 bg-blue-950/40 mb-1.5 cursor-pointer block"
                   >
-                    <span>UK Science National Overview</span>
+                    <span>UK Science National Overview Webpage</span>
                     <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
+                  </a>
 
                   <div className="max-h-[280px] overflow-y-auto space-y-1 pr-1 custom-scrollbar">
                     {UK_SCIENCE_PAGES.map((page) => (
-                      <button
+                      <a
                         key={page.slug}
-                        onClick={() => handleUkScienceItemClick(page.slug)}
-                        className="w-full text-left p-2 rounded-lg hover:bg-slate-800/80 transition-colors flex items-center gap-3 group border border-slate-800/40 hover:border-blue-900/60 cursor-pointer"
+                        href={`/${page.slug}.html`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleUkScienceItemClick(page.slug);
+                        }}
+                        className="w-full text-left p-2 rounded-lg hover:bg-slate-800/80 transition-colors flex items-center gap-3 group border border-slate-800/40 hover:border-blue-900/60 cursor-pointer block"
                       >
                         <div className="w-7 h-7 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all flex-shrink-0">
                           <Microscope className="w-3.5 h-3.5" />
@@ -1150,45 +1397,95 @@ export const Navbar: React.FC<NavbarProps> = ({
                             {page.executiveSummary}
                           </div>
                         </div>
-                      </button>
+                      </a>
                     ))}
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Bedfordshire UK Hub Mobile Button */}
-            <button
-              onClick={() => handleNavClick('bedfordshire-uk')}
-              className={`text-left px-3.5 py-2.5 rounded-lg transition-colors flex items-center gap-2 cursor-pointer ${
-                currentPage === 'bedfordshire-uk' ? 'bg-blue-600/20 text-blue-400 font-semibold' : 'text-slate-200 hover:bg-slate-800/60'
-              }`}
-            >
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Bedfordshire UK Hub</span>
-            </button>
-
-            {/* Manufacturing Mobile Button */}
-            <button
-              onClick={() => handleNavClick('manufacturing')}
-              className={`text-left px-3.5 py-2.5 rounded-lg transition-colors flex items-center gap-2 cursor-pointer ${
-                currentPage === 'manufacturing' ? 'bg-blue-600/20 text-blue-400 font-semibold' : 'text-slate-200 hover:bg-slate-800/60'
-              }`}
-            >
-              <span>Manufacturing (CDMO)</span>
-              <span className="text-[9px] font-mono uppercase bg-blue-500/20 text-blue-300 px-1 py-0.2 rounded border border-blue-500/30">
-                cGMP
+            {/* Secondary Menu Section on Mobile */}
+            <div className="pt-2 border-t border-slate-800/90 mt-1">
+              <span className="text-[10px] font-mono uppercase text-slate-400 px-3 tracking-wider font-semibold">
+                Secondary Menu
               </span>
-            </button>
+              <div className="mt-1 space-y-1">
+                <a
+                  href="/blog.html"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavClick('blog');
+                  }}
+                  className={`w-full text-left px-3.5 py-2.5 rounded-lg transition-colors flex items-center gap-2.5 cursor-pointer block ${
+                    currentPage === 'blog' ? 'bg-blue-600/20 text-blue-400 font-semibold' : 'text-slate-200 hover:bg-slate-800/60'
+                  }`}
+                >
+                  <FileText className="w-4 h-4 text-blue-400" />
+                  <span>Blog</span>
+                </a>
 
-            <button
-              onClick={() => handleNavClick('blog')}
-              className={`text-left px-3.5 py-2.5 rounded-lg transition-colors cursor-pointer ${
-                currentPage === 'blog' ? 'bg-blue-600/20 text-blue-400 font-semibold' : 'text-slate-200 hover:bg-slate-800/60'
-              }`}
-            >
-              Our Blog
-            </button>
+                <a
+                  href="/register.html"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavClick('register');
+                  }}
+                  className={`w-full text-left px-3.5 py-2.5 rounded-lg transition-colors flex items-center gap-2.5 cursor-pointer block ${
+                    currentPage === 'register' ? 'bg-blue-600/20 text-blue-400 font-semibold' : 'text-slate-200 hover:bg-slate-800/60'
+                  }`}
+                >
+                  <UserPlus className="w-4 h-4 text-blue-400" />
+                  <span>Register</span>
+                </a>
+
+                <a
+                  href="/login.html"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavClick('login');
+                  }}
+                  className={`w-full text-left px-3.5 py-2.5 rounded-lg transition-colors flex items-center gap-2.5 cursor-pointer block ${
+                    currentPage === 'login' ? 'bg-blue-600/20 text-blue-400 font-semibold' : 'text-slate-200 hover:bg-slate-800/60'
+                  }`}
+                >
+                  <LogIn className="w-4 h-4 text-blue-400" />
+                  <span>Login</span>
+                </a>
+
+                {user && (
+                  <>
+                    <button
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        openPortal();
+                      }}
+                      className="w-full text-left px-3.5 py-2.5 rounded-lg transition-colors flex items-center justify-between text-slate-200 hover:bg-slate-800/60 cursor-pointer"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <Database className="w-4 h-4 text-blue-400" />
+                        <span>Client Portal</span>
+                      </div>
+                      {submissions.length > 0 && (
+                        <span className="px-1.5 py-0.5 rounded-full bg-blue-600 text-[10px] font-bold text-white">
+                          {submissions.length}
+                        </span>
+                      )}
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        logout();
+                      }}
+                      className="w-full text-left px-3.5 py-2 rounded-lg transition-colors flex items-center gap-2.5 text-rose-400 hover:bg-rose-950/20 text-xs cursor-pointer"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      <span>Sign Out ({user.displayName || user.email})</span>
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
           
           <div className="pt-2 border-t border-slate-700/60">

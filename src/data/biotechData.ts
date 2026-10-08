@@ -5,6 +5,12 @@ export const BENTO_DNA_IMAGE = '/src/assets/images/bento_dna_genomics_1791421378
 export const BENTO_MANUFACTURING_IMAGE = '/src/assets/images/bento_cdmo_manufacturing_1791421387667.jpg';
 export const BENTO_BIOCHEM_IMAGE = '/src/assets/images/bento_biochemistry_lab_1791421397621.jpg';
 export const BEDFORDSHIRE_FACILITY_IMAGE = '/src/assets/images/bedfordshire_facility_exterior_1791421405922.jpg';
+export const CAPABILITIES_GENERIC_CRO_IMAGE = '/src/assets/images/capabilities_generic_cro_pipeline_1791478148297.jpg';
+export const CAPABILITIES_ANALYTICAL_IMAGE = '/src/assets/images/capabilities_analytical_stability_testing_1791478166251.jpg';
+export const CAPABILITIES_DRUG_DELIVERY_IMAGE = '/src/assets/images/capabilities_novel_drug_delivery_1791478183702.jpg';
+export const CHEMICALS_LATTICE_IMAGE = '/src/assets/images/specialty_chemicals_molecular_lattice_1791479312275.jpg';
+export const CHEMICALS_MICROFLUIDIC_IMAGE = '/src/assets/images/specialty_chemicals_microfluidic_chip_1791479328482.jpg';
+export const CHEMICALS_LIQUID_HANDLER_IMAGE = '/src/assets/images/specialty_chemicals_liquid_handler_1791479344475.jpg';
 
 export const PIPELINE_ASSETS: PipelineAsset[] = [
   {

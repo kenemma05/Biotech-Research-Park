@@ -5,10 +5,15 @@ import {
   signInWithPopup, 
   signOut,
   onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+  sendPasswordResetEmail,
   type User 
 } from 'firebase/auth';
 import { 
   getFirestore, 
+  initializeFirestore,
   doc, 
   getDocFromServer,
   collection,
@@ -26,10 +31,18 @@ import firebaseConfig from '../../firebase-applet-config.json';
 
 const app = initializeApp(firebaseConfig);
 
-/* Passing firestoreDatabaseId when custom, otherwise default database */
-export const db = (firebaseConfig.firestoreDatabaseId && firebaseConfig.firestoreDatabaseId !== '(default)' && firebaseConfig.firestoreDatabaseId !== '')
-  ? getFirestore(app, firebaseConfig.firestoreDatabaseId)
-  : getFirestore(app);
+const customDbId = (firebaseConfig.firestoreDatabaseId && firebaseConfig.firestoreDatabaseId !== '(default)' && firebaseConfig.firestoreDatabaseId !== '')
+  ? firebaseConfig.firestoreDatabaseId
+  : undefined;
+
+/* Initialize Firestore with experimentalForceLongPolling to prevent 10s backend stream timeout in proxy/iframe environments */
+export const db = initializeFirestore(
+  app,
+  {
+    experimentalForceLongPolling: true,
+  },
+  customDbId
+);
 export const auth = getAuth(app);
 
 export enum OperationType {
@@ -83,9 +96,8 @@ export async function testConnection() {
   try {
     await getDocFromServer(doc(db, 'test', 'connection'));
   } catch (error) {
-    // Graceful offline mode - avoid unhandled promise rejection or noisy errors
     if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.warn("Firestore running with offline cache persistence.");
+      console.error("Please check your Firebase configuration.");
     }
   }
 }
@@ -105,6 +117,38 @@ export async function signInWithGoogle() {
   }
 }
 
+export async function signUpWithEmail(email: string, password: string, displayName?: string) {
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
+    if (displayName && cred.user) {
+      await updateProfile(cred.user, { displayName });
+    }
+    return cred.user;
+  } catch (err) {
+    console.error('Sign up failed:', err);
+    throw err;
+  }
+}
+
+export async function signInWithEmail(email: string, password: string) {
+  try {
+    const cred = await signInWithEmailAndPassword(auth, email, password);
+    return cred.user;
+  } catch (err) {
+    console.error('Email sign in failed:', err);
+    throw err;
+  }
+}
+
+export async function resetPassword(email: string) {
+  try {
+    await sendPasswordResetEmail(auth, email);
+  } catch (err) {
+    console.error('Password reset failed:', err);
+    throw err;
+  }
+}
+
 export async function logOut() {
   try {
     await signOut(auth);
@@ -114,7 +158,8 @@ export async function logOut() {
   }
 }
 
-export const ADMIN_EMAIL = 'kenemma05@gmail.com';
+export const ADMIN_EMAILS = ['kenemma05@gmail.com', 'emmakenn005@gmail.com'];
+export const ADMIN_EMAIL = ADMIN_EMAILS[0];
 export function isUserAdmin(user: User | null): boolean {
-  return !!user && user.email === ADMIN_EMAIL && user.emailVerified;
+  return !!user && !!user.email && ADMIN_EMAILS.includes(user.email) && !!user.emailVerified;
 }
