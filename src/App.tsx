@@ -15,6 +15,7 @@ import { BedfordshireHubView } from './components/BedfordshireHubView';
 import { ManufacturingPage } from './components/ManufacturingPage';
 import { AboutView } from './components/AboutView';
 import { ScienceProductsView } from './components/ScienceProductsView';
+import { ProductsView } from './components/ProductsView';
 import { UkScienceView } from './components/UkScienceView';
 import { StandaloneSubTopicPageView } from './components/StandaloneSubTopicPageView';
 import { BlogSection } from './components/BlogSection';
@@ -25,6 +26,8 @@ import { ContactModal } from './components/ContactModal';
 import { FirebasePortalModal } from './components/FirebasePortalModal';
 import { FirebaseProvider } from './context/FirebaseContext';
 import { Footer } from './components/Footer';
+import { CleanroomTourVideoPlayer } from './components/CleanroomTourVideoPlayer';
+import { FacilityCapacityMetricsChart } from './components/FacilityCapacityMetricsChart';
 import { 
   Building2, 
   MapPin, 
@@ -167,45 +170,79 @@ export default function App() {
                 </div>
 
                 {/* Bedfordshire Regional Innovation Badge Spotlight (Off-White #F8FAFC Divider) */}
-                <div className="bg-[#F8FAFC] border-y border-slate-200 py-6">
-                  <section className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                    <div className="rounded-3xl bg-white border border-slate-200 p-8 sm:p-12 relative overflow-hidden shadow-xl text-[#0A192F]">
-                      <div className="absolute right-0 top-0 w-96 h-full opacity-10 pointer-events-none hidden md:block">
-                        <img 
-                          src={BEDFORDSHIRE_FACILITY_IMAGE} 
-                          alt="Bedfordshire Facility" 
-                          className="w-full h-full object-cover"
-                        />
+                <div className="bg-[#F8FAFC] border-y border-slate-200 py-8 sm:py-12">
+                  <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                    <div className="rounded-3xl bg-white border border-slate-200 p-6 sm:p-10 lg:p-12 relative overflow-hidden shadow-xl text-[#0A192F]">
+                      {/* Subtle ambient blueprint grid background */}
+                      <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:24px_24px] opacity-40 pointer-events-none" />
+
+                      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                        {/* Left Column: Facility Description & Institutional Authority */}
+                        <div className="lg:col-span-6 flex flex-col justify-center">
+                          <div className="flex flex-wrap items-center gap-2.5 mb-3">
+                            <div className="inline-flex items-center gap-1.5 text-xs font-mono uppercase text-blue-700 bg-blue-50 border border-blue-200/90 px-3 py-1 rounded-full font-semibold">
+                              <MapPin className="w-3.5 h-3.5 text-blue-600" />
+                              <span>Regional Life Sciences Cluster</span>
+                            </div>
+                            <div className="inline-flex items-center gap-1.5 text-xs font-mono uppercase text-emerald-800 bg-emerald-50 border border-emerald-300 px-3 py-1 rounded-full font-bold shadow-xs">
+                              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                              <span>ISO 13485 Certified</span>
+                            </div>
+                          </div>
+                          
+                          <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0A192F] tracking-tight leading-snug">
+                            Bedfordshire Biotech UK: The Manufacturing Anchor of the Golden Triangle
+                          </h3>
+                          
+                          <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed">
+                            Connecting Oxford's discovery hubs and Cambridge's genomic incubators with 45,000 m² of physical cGMP cleanrooms, robotic fill-finish, and London Luton cold-chain air links.
+                          </p>
+
+                          {/* Institutional Accreditation Trust Strip */}
+                          <div className="mt-5 p-3.5 sm:p-4 rounded-2xl bg-slate-50/90 border border-slate-200 flex flex-wrap items-center justify-between gap-3">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 rounded-xl bg-emerald-100 border border-emerald-200 flex items-center justify-center text-emerald-700 shrink-0">
+                                <ShieldCheck className="w-5 h-5" />
+                              </div>
+                              <div>
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <span className="text-xs sm:text-sm font-bold font-mono text-[#0A192F]">ISO 13485:2016 Certified Facility</span>
+                                  <span className="text-[10px] uppercase font-mono font-bold tracking-wider px-2 py-0.5 rounded bg-emerald-600 text-white">UK Audited</span>
+                                </div>
+                                <p className="text-xs text-slate-500 mt-0.5">
+                                  Medical Devices & Advanced Biopharma Quality Management Systems (QMS) compliant for clinical batch release.
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="mt-6 flex flex-wrap items-center gap-4">
+                            <button
+                              onClick={() => handleNavigate('about')}
+                              className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-blue-600/30 flex items-center gap-2 transition-colors cursor-pointer"
+                            >
+                              <span>Explore Campus Facility (About Us)</span>
+                              <ArrowRight className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() => handleOpenContact('Book Greater London Site Audit')}
+                              className="px-6 py-3 rounded-xl bg-[#0A192F] hover:bg-slate-800 text-white font-semibold text-xs uppercase tracking-wider transition-colors cursor-pointer"
+                            >
+                              Book In-Person Audit
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Right Column: Cleanroom 3D Tour Video Preview Player */}
+                        <div className="lg:col-span-6">
+                          <CleanroomTourVideoPlayer 
+                            onScheduleAudit={() => handleOpenContact('Book Cleanroom Tour / Site Audit')}
+                          />
+                        </div>
                       </div>
 
-                      <div className="relative z-10 max-w-2xl">
-                        <div className="flex items-center gap-2 text-xs font-mono uppercase text-blue-600 font-bold mb-2">
-                          <MapPin className="w-3.5 h-3.5" />
-                          <span>Regional Life Sciences Cluster</span>
-                        </div>
-                        <h3 className="text-2xl sm:text-4xl font-extrabold text-[#0A192F] tracking-tight leading-snug">
-                          Bedfordshire Biotech UK: The Manufacturing Anchor of the Golden Triangle
-                        </h3>
-                        <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed">
-                          Connecting Oxford's discovery hubs and Cambridge's genomic incubators with 45,000 m² of physical cGMP cleanrooms, robotic fill-finish, and London Luton cold-chain air links.
-                        </p>
-                        
-                        <div className="mt-6 flex flex-wrap items-center gap-4">
-                          <button
-                            onClick={() => handleNavigate('about')}
-                            className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-blue-600/30 flex items-center gap-2 transition-colors cursor-pointer"
-                          >
-                            <span>Explore Campus Facility (About Us)</span>
-                            <ArrowRight className="w-3.5 h-3.5" />
-                          </button>
-                          <button
-                            onClick={() => handleOpenContact('Book Greater London Site Audit')}
-                            className="px-6 py-3 rounded-xl bg-[#0A192F] hover:bg-slate-800 text-white font-semibold text-xs uppercase tracking-wider transition-colors cursor-pointer"
-                          >
-                            Book In-Person Audit
-                          </button>
-                        </div>
-                      </div>
+                      {/* Technical Facility Capacity Metrics Chart (Recharts) */}
+                      <FacilityCapacityMetricsChart />
                     </div>
                   </section>
                 </div>
@@ -262,9 +299,10 @@ export default function App() {
             {/* VIEW: PRODUCTS */}
             {currentPage === 'products' && (
               <div className="bg-white min-h-screen">
-                <ScienceProductsView
+                <ProductsView
                   onOpenInquiry={handleOpenContact}
                   onExploreCDMO={() => handleNavigate('manufacturing')}
+                  onNavigate={handleNavigate}
                 />
               </div>
             )}

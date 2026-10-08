@@ -40,6 +40,9 @@ import {
   Boxes
 } from 'lucide-react';
 import { CORPORATE_DETAILS } from '../data/biotechData';
+import { ProductMarketingDetailPanel, getProductSubpageMarketing } from './ProductSubpageContent';
+import { ProductTable } from './ProductTable';
+import { PRODUCTS_PAGES } from '../data/productsData';
 
 interface StandaloneSubTopicPageViewProps {
   pageData: SubTopicPageData;
@@ -638,6 +641,23 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
           )}
 
           {/* ========================================================================= */}
+          {/* PRODUCT MARKETING ADVANTAGE & AI MOTION PROMPTS (FOR PRODUCT PAGES) */}
+          {/* ========================================================================= */}
+          {getProductSubpageMarketing(pageData.id) && (
+            <motion.div
+              variants={sectionRevealVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-60px' }}
+            >
+              <ProductMarketingDetailPanel
+                subpageIdOrSlug={pageData.id}
+                onOpenInquiry={onOpenContact}
+              />
+            </motion.div>
+          )}
+
+          {/* ========================================================================= */}
           {/* SECTION 2: CORE CAPABILITIES & PRODUCT GRADES (COMPARISON / FEATURE GRID) */}
           {/* ========================================================================= */}
           {pageData.productLines && pageData.productLines.length > 0 && (
@@ -657,7 +677,9 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
                   Core Capabilities & Product Grades Comparison
                 </h2>
                 <p className="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
-                  From sub-ppb LC-MS hypergrade mobile phases to nuclease-free molecular biology buffers and custom chiral building blocks, every product family is engineered to eliminate analytical artifacts and guarantee uncompromising lot-to-lot reproducibility.
+                  {pageData.category === 'Products' || pageData.slug.startsWith('products-')
+                    ? `Engineered under strict MHRA, FDA, and ISO quality guidelines, our ${pageData.title} portfolios guarantee uncompromising lot-to-lot bio-equivalence, purity, and clinical compliance.`
+                    : 'From sub-ppb LC-MS hypergrade mobile phases to nuclease-free molecular biology buffers and custom chiral building blocks, every product family is engineered to eliminate analytical artifacts and guarantee uncompromising lot-to-lot reproducibility.'}
                 </p>
               </div>
 
@@ -791,13 +813,15 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
                 <div>
                   <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-blue-600 font-bold mb-1">
                     <SlidersHorizontal className="w-4 h-4 text-cyan-600" />
-                    <span>Interactive Reagent & Solvent Catalog</span>
+                    <span>{pageData.category === 'Products' || pageData.slug.startsWith('products-') ? 'Interactive Product & Formulation Matrix' : 'Interactive Reagent & Solvent Catalog'}</span>
                   </div>
                   <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] tracking-tight">
-                    Interactive Grade & Purity Selection Matrix
+                    {pageData.category === 'Products' || pageData.slug.startsWith('products-') ? 'Commercial Formulations, Specifications & CoA Matrix' : 'Interactive Grade & Purity Selection Matrix'}
                   </h2>
                   <p className="text-sm text-slate-600 mt-1 max-w-2xl">
-                    Filter by chemical grade, purity threshold, or CAS number. Inspect live lot Certificates of Analysis (CoA) and request immediate technical samples.
+                    {pageData.category === 'Products' || pageData.slug.startsWith('products-')
+                      ? 'Filter by product grade, therapeutic classification, or formulation parameters. Inspect lot-specific digital Certificates of Analysis (CoA) and submit immediate commercial allocations.'
+                      : 'Filter by chemical grade, purity threshold, or CAS number. Inspect live lot Certificates of Analysis (CoA) and request immediate technical samples.'}
                   </p>
                 </div>
 
@@ -808,7 +832,7 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
                     type="text"
                     value={matrixSearchQuery}
                     onChange={(e) => setMatrixSearchQuery(e.target.value)}
-                    placeholder="Search Reagent or CAS#..."
+                    placeholder="Search Reagent, Drug, or CAS#..."
                     className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm"
                   />
                   {matrixSearchQuery && (
@@ -824,7 +848,7 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
 
               {/* Grade Filter Pills */}
               <div className="flex flex-wrap items-center gap-2 bg-[#F8FAFC] p-2 rounded-2xl border border-slate-200">
-                {['All', 'Ultra-Pure Solvents', 'Molecular Biology Reagents', 'Specialty Synthesis Intermediates', 'Trace Metal Analysis Standards'].map((grade) => {
+                {['All', ...Array.from(new Set(pageData.matrixItems.map(item => item.grade)))].map((grade) => {
                   const isActive = matrixFilterGrade === grade;
                   return (
                     <button
@@ -847,7 +871,9 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
                 <table className="w-full text-left text-xs sm:text-sm">
                   <thead className="bg-[#0A192F] text-white text-xs font-mono uppercase">
                     <tr>
-                      <th scope="col" className="px-5 py-3.5">Reagent / Chemical Entity</th>
+                      <th scope="col" className="px-5 py-3.5">
+                        {pageData.category === 'Products' || pageData.slug.startsWith('products-') ? 'Product / Active Formulation' : 'Reagent / Chemical Entity'}
+                      </th>
                       <th scope="col" className="px-5 py-3.5">Product Grade</th>
                       <th scope="col" className="px-5 py-3.5">CAS #</th>
                       <th scope="col" className="px-5 py-3.5">Purity Threshold</th>
@@ -1261,6 +1287,103 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
             </div>
           </motion.div>
 
+          {/* ========================================================================= */}
+          {/* SPECIALIZED EMBEDDED 104-ITEM VETERINARY CATALOGUE FOR ANIMAL HEALTH       */}
+          {/* ========================================================================= */}
+          {pageData.id === 'our-veterinary-products' && (
+            <motion.div
+              variants={sectionRevealVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-60px' }}
+              className="space-y-6 pt-4 border-t border-slate-200"
+            >
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-blue-600 font-bold mb-1">
+                    <FileText className="w-4 h-4" />
+                    <span>UK VMD Licensed Registry · 104 Formulations</span>
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] tracking-tight">
+                    Complete 104-Item Veterinary Medicine Catalogue
+                  </h2>
+                  <p className="text-sm text-slate-600 mt-1 max-w-2xl">
+                    Search and filter by brand name, active composition, dosage form, or packaging size. Click any item to request immediate commercial wholesale pricing or technical registration dossiers:
+                  </p>
+                </div>
+              </div>
+
+              {/* Embedded ProductTable */}
+              <ProductTable onOpenInquiry={onOpenContact} />
+            </motion.div>
+          )}
+
+          {/* ========================================================================= */}
+          {/* RELATED PRODUCT DIVISIONS STRIP (FOR PRODUCT SUBPAGES)                    */}
+          {/* ========================================================================= */}
+          {(pageData.category === 'Products' || pageData.slug.startsWith('products-')) && (
+            <motion.div
+              variants={sectionRevealVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-50px' }}
+              className="pt-10 border-t border-slate-200"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+                <div>
+                  <div className="flex items-center gap-2 text-xs font-mono uppercase text-blue-600 font-bold mb-1">
+                    <Layers className="w-4 h-4" />
+                    <span>All 8 Commercial Product Portfolios</span>
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-extrabold text-[#0A192F]">
+                    Explore Other Commercial Product Landing Pages
+                  </h3>
+                </div>
+                <button
+                  onClick={() => onNavigate('products')}
+                  className="text-xs font-mono text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1.5 cursor-pointer self-start sm:self-auto hover:underline"
+                >
+                  <span>Main Products Directory Overview</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                {PRODUCTS_PAGES.map((p) => {
+                  const isCurrent = p.id === pageData.id || p.slug === pageData.slug;
+                  return (
+                    <button
+                      key={p.slug}
+                      onClick={() => onNavigate(p.slug)}
+                      className={`p-3.5 rounded-2xl text-left border transition-all cursor-pointer flex flex-col justify-between ${
+                        isCurrent
+                          ? 'bg-[#0A192F] text-white border-blue-600 shadow-md ring-2 ring-blue-500/40'
+                          : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200 hover:border-blue-300 hover:shadow-md'
+                      }`}
+                    >
+                      <div>
+                        <span className={`text-[10px] font-mono uppercase font-bold block mb-1 truncate ${
+                          isCurrent ? 'text-cyan-400' : 'text-blue-600'
+                        }`}>
+                          {p.heroBadge}
+                        </span>
+                        <h4 className="text-xs font-bold line-clamp-2 leading-snug">
+                          {p.title}
+                        </h4>
+                      </div>
+                      <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] font-mono">
+                        <span className={isCurrent ? 'text-slate-400' : 'text-slate-500'}>
+                          {isCurrent ? 'Current Page' : 'View Page'}
+                        </span>
+                        <ArrowRight className={`w-3 h-3 ${isCurrent ? 'text-cyan-400' : 'text-blue-600'}`} />
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+
         </div>
       </section>
 
@@ -1275,17 +1398,25 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
         <div className="max-w-7xl mx-auto rounded-3xl bg-white border border-slate-200 p-8 sm:p-12 shadow-xl flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="max-w-2xl space-y-3">
             <div className="text-xs font-mono uppercase text-blue-600 font-bold">
-              {pageData.id === 'chemicals' ? 'Custom Chemical Synthesis & Bulk Reagent Supply' : 'Contract Manufacturing & Commercial Operations'}
+              {pageData.category === 'Products' || pageData.slug.startsWith('products-')
+                ? 'Commercial Product Supply & Regulatory Dossier Allocation'
+                : pageData.id === 'chemicals' 
+                  ? 'Custom Chemical Synthesis & Bulk Reagent Supply' 
+                  : 'Contract Manufacturing & Commercial Operations'}
             </div>
             <h3 className="text-2xl sm:text-4xl font-extrabold text-[#0A192F] tracking-tight">
-              {pageData.id === 'chemicals'
-                ? 'Initiate Custom Synthesis, Bulk Order Quotes, or Technical Sample Requisitions'
-                : 'Initiate Commercial Tech Transfer or Laboratory Study'}
+              {pageData.category === 'Products' || pageData.slug.startsWith('products-')
+                ? `Initiate Commercial Order, Tender Allocation or Licensing for ${pageData.title}`
+                : pageData.id === 'chemicals'
+                  ? 'Initiate Custom Synthesis, Bulk Order Quotes, or Technical Sample Requisitions'
+                  : 'Initiate Commercial Tech Transfer or Laboratory Study'}
             </h3>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-              {pageData.id === 'chemicals'
-                ? 'Connect directly with our senior process chemists and analytical QC directors. Whether you require tailored packaging configurations, pilot-scale custom synthesis, or multi-metric tonne bulk supply with dedicated lot reservations, our Greater London facility is ready to support your timeline.'
-                : 'Our technical project managers and Qualified Persons (QPs) are available for detailed feasibility audits, study protocol authoring, and slot scheduling across our Greater London facility.'}
+              {pageData.category === 'Products' || pageData.slug.startsWith('products-')
+                ? 'Connect directly with our commercial directors, QP batch release officers, and supply chain managers. We provide validated batch documentation, Certificates of Analysis (CoA), Drug Master Files (DMF), and flexible delivery allocations from our Greater London facility.'
+                : pageData.id === 'chemicals'
+                  ? 'Connect directly with our senior process chemists and analytical QC directors. Whether you require tailored packaging configurations, pilot-scale custom synthesis, or multi-metric tonne bulk supply with dedicated lot reservations, our Greater London facility is ready to support your timeline.'
+                  : 'Our technical project managers and Qualified Persons (QPs) are available for detailed feasibility audits, study protocol authoring, and slot scheduling across our Greater London facility.'}
             </p>
           </div>
 
@@ -1293,17 +1424,19 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => onOpenContact(`${pageData.title} - ${pageData.id === 'chemicals' ? 'Custom Synthesis & Bulk Supply Inquiries' : 'Technical Consultation'}`)}
+              onClick={() => onOpenContact(`${pageData.title} - ${pageData.category === 'Products' ? 'Commercial Procurement & Pricing Quotation' : pageData.id === 'chemicals' ? 'Custom Synthesis & Bulk Supply Inquiries' : 'Technical Consultation'}`)}
               className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
-              <span>{pageData.id === 'chemicals' ? 'Request Custom Synthesis / Bulk Quote' : 'Contact Scientific Lead'}</span>
+              <span>{pageData.category === 'Products' ? 'Request Commercial Pricing & Allocation' : pageData.id === 'chemicals' ? 'Request Custom Synthesis / Bulk Quote' : 'Contact Scientific Lead'}</span>
               <ArrowRight className="w-4 h-4" />
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => {
-                if (pageData.id === 'chemicals') {
+                if (pageData.category === 'Products') {
+                  onOpenContact(`${pageData.title} - Technical Batch Dossier & CoA Inspection`);
+                } else if (pageData.id === 'chemicals') {
                   onOpenContact(`${pageData.title} - Technical Sample & Specification Request`);
                 } else {
                   onNavigate('manufacturing');
@@ -1311,7 +1444,7 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
               }}
               className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#0A192F] hover:bg-slate-800 text-white font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
-              <span>{pageData.id === 'chemicals' ? 'Request Technical Sample' : 'CDMO Capabilities'}</span>
+              <span>{pageData.category === 'Products' ? 'Request Technical Dossier' : pageData.id === 'chemicals' ? 'Request Technical Sample' : 'CDMO Capabilities'}</span>
               <ArrowUpRight className="w-4 h-4" />
             </motion.button>
           </div>

@@ -173,7 +173,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const handleScienceMouseLeave = () => {
     scienceTimeoutRef.current = setTimeout(() => {
       setScienceMegaMenuOpen(false);
-    }, 220);
+    }, 380);
   };
 
   // Hover handlers for Products dropdown
@@ -191,7 +191,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const handleProductsMouseLeave = () => {
     productsTimeoutRef.current = setTimeout(() => {
       setProductsDropdownOpen(false);
-    }, 220);
+    }, 380);
   };
 
   // Hover handlers for Research dropdown
@@ -209,7 +209,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const handleResearchMouseLeave = () => {
     researchTimeoutRef.current = setTimeout(() => {
       setResearchDropdownOpen(false);
-    }, 220);
+    }, 380);
   };
 
   // Hover handlers for UK Science
@@ -227,7 +227,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const handleUkScienceMouseLeave = () => {
     ukScienceTimeoutRef.current = setTimeout(() => {
       setUkScienceMegaMenuOpen(false);
-    }, 220);
+    }, 380);
   };
 
   const handleNavClick = (page: PageView) => {
@@ -336,7 +336,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Top Menu Bar: Secondary Menu location positioned at top-right corner, directly above the main navigation menu */}
-        <div className="hidden xl:flex items-center justify-end pb-1.5 mb-1.5 border-b border-white/10 text-xs text-slate-300">
+        <div className="hidden lg:flex items-center justify-end pb-1.5 mb-1.5 border-b border-white/10 text-xs text-slate-300">
           <div className="flex items-center gap-4">
             
             {/* BLOG webpage link */}
@@ -466,7 +466,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           {/* Desktop Navigation Menu */}
-          <nav className="hidden xl:flex items-center gap-7 text-sm font-medium">
+          <nav className="hidden lg:flex items-center gap-4 xl:gap-7 text-sm font-medium">
             {/* 1. Home Webpage */}
             <a
               href="/"
@@ -546,26 +546,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* 4. Products Webpage & Submenu */}
             <div 
-              className="relative flex items-center gap-1"
+              className="relative flex items-center"
               ref={productsNavRef}
               onMouseEnter={handleProductsMouseEnter}
               onMouseLeave={handleProductsMouseLeave}
             >
-              <a
-                href="/products.html"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick('products');
-                }}
-                className={`transition-colors relative py-1 text-xs tracking-wide uppercase cursor-pointer ${
-                  isProductsActive ? 'text-blue-400 font-bold' : 'text-slate-200 hover:text-white'
-                }`}
-              >
-                <span>Products</span>
-                {isProductsActive && (
-                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 rounded-full" />
-                )}
-              </a>
               <button
                 type="button"
                 onClick={(e) => {
@@ -575,15 +560,21 @@ export const Navbar: React.FC<NavbarProps> = ({
                   setUkScienceMegaMenuOpen(false);
                   setProductsDropdownOpen(prev => !prev);
                 }}
-                className="p-1 -ml-0.5 text-slate-300 hover:text-blue-400 transition-colors cursor-pointer"
+                className={`flex items-center gap-1 transition-colors relative py-1 text-xs tracking-wide uppercase cursor-pointer ${
+                  isProductsActive ? 'text-blue-400 font-bold' : 'text-slate-200 hover:text-white'
+                }`}
                 aria-label="Toggle Products Submenu"
                 aria-expanded={productsDropdownOpen}
               >
+                <span>Products</span>
                 <ChevronDown 
                   className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                    productsDropdownOpen ? 'rotate-180 text-blue-400' : ''
+                    productsDropdownOpen ? 'rotate-180 text-blue-400' : 'text-slate-300 hover:text-blue-400'
                   }`} 
                 />
+                {isProductsActive && (
+                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 rounded-full" />
+                )}
               </button>
             </div>
 
@@ -701,7 +692,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Mobile menu hamburger toggle */}
-          <div className="flex items-center gap-2 xl:hidden">
+          <div className="flex items-center gap-2 lg:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none cursor-pointer"
@@ -720,7 +711,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             ref={scienceMegaMenuPanelRef}
             onMouseEnter={handleScienceMouseEnter}
             onMouseLeave={handleScienceMouseLeave}
-            className="hidden xl:block absolute left-1/2 -translate-x-1/2 top-full mt-2.5 w-[1140px] max-w-[96vw] rounded-2xl bg-[#0F172A] border border-blue-900/80 shadow-2xl shadow-black/95 p-6 backdrop-blur-2xl z-50 animate-in fade-in-0 zoom-in-[0.98] duration-200 before:absolute before:-top-3 before:left-0 before:right-0 before:h-4 before:content-['']"
+            className="hidden lg:block absolute left-1/2 -translate-x-1/2 top-full mt-1.5 w-[1140px] max-w-[96vw] rounded-2xl bg-[#0F172A] border border-blue-900/80 shadow-2xl shadow-black/95 p-6 backdrop-blur-2xl z-50 animate-in fade-in-0 zoom-in-[0.98] duration-200 before:absolute before:-top-4 before:left-0 before:right-0 before:h-6 before:content-['']"
           >
             {/* Top Bar Header */}
             <div className="flex items-center justify-between pb-3.5 border-b border-blue-900/60 mb-4">
@@ -807,14 +798,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             ref={productsDropdownPanelRef}
             onMouseEnter={handleProductsMouseEnter}
             onMouseLeave={handleProductsMouseLeave}
-            className="hidden xl:block absolute left-1/2 -translate-x-1/2 top-full mt-2.5 w-[760px] max-w-[94vw] rounded-2xl bg-[#0F172A] border border-blue-900/80 shadow-2xl shadow-black/95 p-6 backdrop-blur-2xl z-50 animate-in fade-in-0 zoom-in-[0.98] duration-200 before:absolute before:-top-3 before:left-0 before:right-0 before:h-4 before:content-['']"
+            className="hidden lg:block absolute left-1/2 -translate-x-1/2 top-full mt-1.5 w-[780px] max-w-[95vw] rounded-2xl bg-[#0F172A] border border-blue-900/80 shadow-2xl shadow-black/95 p-6 backdrop-blur-2xl z-50 animate-in fade-in-0 zoom-in-[0.98] duration-200 before:absolute before:-top-4 before:left-0 before:right-0 before:h-6 before:content-['']"
           >
             {/* Top Bar Header */}
             <div className="flex items-center justify-between pb-3.5 border-b border-blue-900/60 mb-4">
               <div className="flex items-center gap-3">
                 <div className="w-2.5 h-2.5 rounded-full bg-blue-400 shadow-md shadow-blue-400/50 animate-pulse" />
                 <span className="text-xs font-mono uppercase tracking-wider text-blue-300 font-bold">
-                  Commercial Pharmaceuticals & Formulations · 8 Portfolios
+                  Commercial Pharmaceuticals & Formulations · 8 Dedicated Landing Pages
                 </span>
               </div>
               <a
@@ -832,31 +823,43 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* 2-Column Responsive Grid Layout of 8 Dedicated Pages */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 max-h-[65vh] overflow-y-auto pr-1">
-              {PRODUCTS_PAGES.map((page) => (
-                <a
-                  key={page.slug}
-                  href={`/${page.slug}.html`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleProductsItemClick(page.slug);
-                  }}
-                  className="group/item flex items-start gap-3 p-3 rounded-xl bg-[#0A192F]/80 hover:bg-blue-950/70 border border-slate-800/80 hover:border-blue-500/60 hover:shadow-lg hover:shadow-blue-950/50 transition-all duration-150 text-left cursor-pointer"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-blue-600/15 border border-blue-500/30 flex items-center justify-center text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white group-hover/item:border-blue-400 transition-all flex-shrink-0 mt-0.5 shadow-sm">
-                    {getProductIcon(page.id)}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-1 mb-0.5">
-                      <span className="text-xs font-semibold text-white group-hover/item:text-blue-300 transition-colors leading-tight line-clamp-1">
-                        {page.title}
-                      </span>
+              {PRODUCTS_PAGES.map((page) => {
+                const isCurrent = currentPage === page.slug || currentPage === page.id;
+                return (
+                  <a
+                    key={page.slug}
+                    href={`/${page.slug}.html`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleProductsItemClick(page.slug);
+                    }}
+                    className={`group/item flex items-start gap-3 p-3 rounded-xl border transition-all duration-150 text-left cursor-pointer ${
+                      isCurrent
+                        ? 'bg-blue-900/40 border-blue-400 shadow-md ring-1 ring-blue-500/50'
+                        : 'bg-[#0A192F]/80 hover:bg-blue-950/70 border-slate-800/80 hover:border-blue-500/60 hover:shadow-lg hover:shadow-blue-950/50'
+                    }`}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-blue-600/15 border border-blue-500/30 flex items-center justify-center text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white group-hover/item:border-blue-400 transition-all flex-shrink-0 mt-0.5 shadow-sm">
+                      {getProductIcon(page.id)}
                     </div>
-                    <p className="text-[11px] text-slate-300 group-hover/item:text-slate-200 transition-colors line-clamp-1 leading-tight font-normal">
-                      {page.executiveSummary}
-                    </p>
-                  </div>
-                </a>
-              ))}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-1 mb-0.5">
+                        <span className="text-xs font-semibold text-white group-hover/item:text-blue-300 transition-colors leading-tight line-clamp-1">
+                          {page.title}
+                        </span>
+                        {isCurrent && (
+                          <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold shrink-0">
+                            Active
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-slate-300 group-hover/item:text-slate-200 transition-colors line-clamp-1 leading-tight font-normal">
+                        {page.executiveSummary}
+                      </p>
+                    </div>
+                  </a>
+                );
+              })}
             </div>
 
             {/* Bottom Footer Bar */}
@@ -865,7 +868,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className="px-2 py-0.5 rounded bg-blue-950/70 text-blue-300 border border-blue-800/60 font-semibold">
                   Dedicated Web Pages
                 </span>
-                <span>Each link navigates to a dedicated full-screen page</span>
+                <span>Click any item to view its independent landing page</span>
               </div>
               <button
                 onClick={() => {
@@ -889,7 +892,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             ref={researchDropdownPanelRef}
             onMouseEnter={handleResearchMouseEnter}
             onMouseLeave={handleResearchMouseLeave}
-            className="hidden xl:block absolute left-1/2 -translate-x-1/2 top-full mt-2.5 w-[760px] max-w-[94vw] rounded-2xl bg-[#0F172A] border border-blue-900/80 shadow-2xl shadow-black/95 p-6 backdrop-blur-2xl z-50 animate-in fade-in-0 zoom-in-[0.98] duration-200 before:absolute before:-top-3 before:left-0 before:right-0 before:h-4 before:content-['']"
+            className="hidden lg:block absolute left-1/2 -translate-x-1/2 top-full mt-1.5 w-[760px] max-w-[94vw] rounded-2xl bg-[#0F172A] border border-blue-900/80 shadow-2xl shadow-black/95 p-6 backdrop-blur-2xl z-50 animate-in fade-in-0 zoom-in-[0.98] duration-200 before:absolute before:-top-4 before:left-0 before:right-0 before:h-6 before:content-['']"
           >
             {/* Top Bar Header */}
             <div className="flex items-center justify-between pb-3.5 border-b border-blue-900/60 mb-4">
@@ -971,7 +974,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             ref={ukScienceMegaMenuPanelRef}
             onMouseEnter={handleUkScienceMouseEnter}
             onMouseLeave={handleUkScienceMouseLeave}
-            className="hidden xl:block absolute left-1/2 -translate-x-1/2 top-full mt-2.5 w-[1180px] max-w-[97vw] rounded-2xl bg-[#0F172A] border border-blue-900/80 shadow-2xl shadow-black/95 p-6 backdrop-blur-2xl z-50 animate-in fade-in-0 zoom-in-[0.98] duration-200 before:absolute before:-top-3 before:left-0 before:right-0 before:h-4 before:content-['']"
+            className="hidden lg:block absolute left-1/2 -translate-x-1/2 top-full mt-1.5 w-[1180px] max-w-[97vw] rounded-2xl bg-[#0F172A] border border-blue-900/80 shadow-2xl shadow-black/95 p-6 backdrop-blur-2xl z-50 animate-in fade-in-0 zoom-in-[0.98] duration-200 before:absolute before:-top-4 before:left-0 before:right-0 before:h-6 before:content-['']"
           >
             {/* Top Bar Header */}
             <div className="flex items-center justify-between pb-3.5 border-b border-blue-900/60 mb-4">
@@ -1164,42 +1167,29 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </div>
 
-            {/* 2. Products Mobile Accordion (8 Sub-Pages) */}
+            {/* 2. Products Mobile Accordion (8 Dedicated Landing Pages) */}
             <div className="rounded-xl border border-slate-800 bg-slate-900/30 overflow-hidden">
-              <div
-                className={`w-full px-3.5 py-3 transition-colors flex items-center justify-between ${
+              <button
+                type="button"
+                onClick={() => setMobileProductsAccordionOpen(!mobileProductsAccordionOpen)}
+                className={`w-full px-3.5 py-3 transition-colors flex items-center justify-between cursor-pointer ${
                   isProductsActive || mobileProductsAccordionOpen 
                     ? 'bg-blue-600/20 text-blue-400 font-semibold' 
                     : 'text-slate-200 hover:bg-slate-800/60'
                 }`}
               >
-                <a
-                  href="/products.html"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleNavClick('products');
-                  }}
-                  className="flex items-center gap-2 cursor-pointer flex-1"
-                >
-                  <span className="text-sm font-medium">Products</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold">Products</span>
                   <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30 font-semibold">
                     8 Portfolios
                   </span>
-                </a>
-                <button
-                  type="button"
-                  onClick={() => setMobileProductsAccordionOpen(!mobileProductsAccordionOpen)}
-                  className="p-1 text-slate-400 hover:text-white cursor-pointer"
-                  aria-label="Toggle Products Submenu Accordion"
-                  aria-expanded={mobileProductsAccordionOpen}
-                >
-                  <ChevronDown 
-                    className={`w-4 h-4 transition-transform duration-200 ${
-                      mobileProductsAccordionOpen ? 'rotate-180 text-blue-400' : ''
-                    }`} 
-                  />
-                </button>
-              </div>
+                </div>
+                <ChevronDown 
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    mobileProductsAccordionOpen ? 'rotate-180 text-blue-400' : 'text-slate-400'
+                  }`} 
+                />
+              </button>
 
               {mobileProductsAccordionOpen && (
                 <div className="p-2 space-y-1 bg-[#0A192F] border-t border-slate-800/80 animate-in fade-in-0 duration-150">
@@ -1215,30 +1205,44 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <ArrowRight className="w-3.5 h-3.5" />
                   </a>
 
-                  <div className="max-h-[280px] overflow-y-auto space-y-1 pr-1 custom-scrollbar">
-                    {PRODUCTS_PAGES.map((page) => (
-                      <a
-                        key={page.slug}
-                        href={`/${page.slug}.html`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleProductsItemClick(page.slug);
-                        }}
-                        className="w-full text-left p-2 rounded-lg hover:bg-slate-800/80 transition-colors flex items-center gap-3 group border border-slate-800/40 hover:border-blue-900/60 cursor-pointer block"
-                      >
-                        <div className="w-7 h-7 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all flex-shrink-0">
-                          {getProductIcon(page.id)}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-white group-hover:text-blue-300 truncate">
-                            {page.title}
+                  <div className="max-h-[320px] overflow-y-auto space-y-1.5 pr-1 custom-scrollbar">
+                    {PRODUCTS_PAGES.map((page) => {
+                      const isCurrent = currentPage === page.slug || currentPage === page.id;
+                      return (
+                        <a
+                          key={page.slug}
+                          href={`/${page.slug}.html`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleProductsItemClick(page.slug);
+                          }}
+                          className={`w-full text-left p-2.5 rounded-lg transition-colors flex items-center gap-3 border cursor-pointer block ${
+                            isCurrent
+                              ? 'bg-blue-900/40 border-blue-500/60 text-white shadow-xs'
+                              : 'hover:bg-slate-800/80 border-slate-800/40 hover:border-blue-900/60 text-slate-200'
+                          }`}
+                        >
+                          <div className="w-7 h-7 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all flex-shrink-0">
+                            {getProductIcon(page.id)}
                           </div>
-                          <div className="text-[10px] text-slate-300 truncate">
-                            {page.executiveSummary}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-1">
+                              <span className="text-xs font-semibold text-white group-hover:text-blue-300 truncate">
+                                {page.title}
+                              </span>
+                              {isCurrent && (
+                                <span className="text-[9px] font-mono px-1 py-0.2 rounded bg-cyan-500/20 text-cyan-300 font-bold shrink-0">
+                                  Active
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-[10px] text-slate-400 truncate mt-0.5">
+                              {page.executiveSummary}
+                            </div>
                           </div>
-                        </div>
-                      </a>
-                    ))}
+                        </a>
+                      );
+                    })}
                   </div>
                 </div>
               )}

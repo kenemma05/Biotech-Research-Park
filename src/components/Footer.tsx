@@ -183,6 +183,55 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => 
 
         </div>
 
+        {/* Commercial Product Portfolios Directory (8 Divisions) */}
+        <div className="my-10 pt-8 border-t border-slate-700/80">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <div className="text-xs font-mono uppercase tracking-wider text-blue-400 font-bold flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-cyan-400" />
+              <span>Commercial Product Portfolios · 8 Dedicated Landing Pages</span>
+            </div>
+            <button
+              onClick={() => onNavigate('products')}
+              className="text-xs font-mono text-slate-300 hover:text-white flex items-center gap-1 transition-colors self-start sm:self-auto cursor-pointer"
+            >
+              <span>View Full Products Catalogue</span>
+              <ArrowRight className="w-3.5 h-3.5 text-blue-400" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {[
+              { slug: 'products-cgmp-api-manufacturing', title: 'cGMP Active Pharmaceutical Ingredient (API) Manufacturing', tag: 'API Synthesis' },
+              { slug: 'products-prescription-medicines', title: 'Prescription Medicines & Ethical Pharmaceuticals', tag: 'Rx Ethical' },
+              { slug: 'products-translational-medicine', title: 'Translational Medicine Products & Diagnostic Biomarkers', tag: 'IVDR Biomarkers' },
+              { slug: 'products-consumer-health-products', title: 'Consumer Health & Over-The-Counter (OTC) Products', tag: 'Consumer OTC' },
+              { slug: 'products-various-products', title: 'Various Specialized Healthcare & Biopharmaceutical Products', tag: 'Orphan & Specials' },
+              { slug: 'products-eye-care', title: 'Ophthalmic & Advanced Eye Care Solutions', tag: 'Aseptic BFS' },
+              { slug: 'products-our-veterinary-products', title: 'Veterinary Pharmaceuticals & Animal Health Formulations', tag: 'VMD Veterinary' },
+              { slug: 'products-other-products', title: 'Other Products & Custom Biological Reagents', tag: 'Custom Reagents' }
+            ].map((prod) => (
+              <button
+                key={prod.slug}
+                onClick={() => onNavigate(prod.slug)}
+                className="p-3 rounded-xl bg-slate-800/60 hover:bg-slate-700/80 border border-slate-700/70 hover:border-blue-500/60 text-left transition-all cursor-pointer group flex flex-col justify-between"
+              >
+                <div>
+                  <span className="text-[10px] font-mono uppercase text-blue-400 font-semibold block mb-1">
+                    {prod.tag}
+                  </span>
+                  <span className="text-xs font-bold text-slate-200 group-hover:text-white transition-colors leading-tight line-clamp-2 block">
+                    {prod.title}
+                  </span>
+                </div>
+                <div className="mt-2 text-[10px] font-mono text-slate-400 group-hover:text-cyan-300 flex items-center gap-1">
+                  <span>Open Subpage</span>
+                  <ArrowRight className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Technical Dispatch & Real-Time Firebase Backend Access Banner */}
         <div className="mb-12 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#0F203C] to-[#0A192F] border border-blue-900/60 shadow-xl flex flex-col lg:flex-row items-center justify-between gap-6">
           <div className="max-w-xl space-y-1.5 text-center lg:text-left">
