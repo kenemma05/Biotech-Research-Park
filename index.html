@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <script>
+      (function() {
+        try {
+          var originalFetch = window.fetch;
+          var customFetch = originalFetch;
+          var fetchDescriptor = {
+            get: function() {
+              return customFetch || originalFetch;
+            },
+            set: function(fn) {
+              customFetch = fn;
+            },
+            configurable: true,
+            enumerable: true
+          };
+          Object.defineProperty(window, 'fetch', fetchDescriptor);
+          if (typeof Window !== 'undefined' && Window.prototype) {
+            try {
+              Object.defineProperty(Window.prototype, 'fetch', fetchDescriptor);
+            } catch (_) {}
+          }
+        } catch (_) {}
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BIOTECH RESEARCH PARK (Operating as Bedfordshire Biotech) | Greater London Life Sciences</title>
+    <meta name="description" content="BIOTECH RESEARCH PARK (Operating as Bedfordshire Biotech). Ultra-modern enterprise life sciences platform for biopharmaceuticals, genetics, biochemistry, and cGMP biomanufacturing in Greater London, UK." />
+    <meta property="og:title" content="BIOTECH RESEARCH PARK (Operating as Bedfordshire Biotech) | Greater London Life Sciences" />
+    <meta property="og:description" content="BIOTECH RESEARCH PARK (Operating as Bedfordshire Biotech). Ultra-modern enterprise life sciences platform for biopharmaceuticals, genetics, biochemistry, and cGMP biomanufacturing in Greater London, UK." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-white text-[#0A192F] font-sans antialiased selection:bg-blue-600/20 selection:text-blue-950">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

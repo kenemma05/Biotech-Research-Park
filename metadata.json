@@ -1,0 +1,6 @@
+{
+  "name": "Bedfordshire Biotech Limited",
+  "description": "Ultra-modern enterprise life sciences platform for biopharmaceuticals, genetics, biochemistry, and third-party contract pharmaceutical manufacturing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

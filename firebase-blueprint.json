@@ -1,0 +1,239 @@
+{
+  "entities": {
+    "ContactInquiry": {
+      "title": "Contact Inquiry",
+      "description": "General enterprise inquiry submitted via the Contact Section.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Optional Firebase Auth UID of the user who submitted the inquiry",
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of the contact person",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "description": "Corporate or personal email address",
+          "format": "email",
+          "minLength": 3,
+          "maxLength": 100
+        },
+        "phone": {
+          "type": "string",
+          "description": "Contact telephone or mobile number",
+          "maxLength": 50
+        },
+        "company": {
+          "type": "string",
+          "description": "Organization or institutional affiliation",
+          "maxLength": 100
+        },
+        "inquiryType": {
+          "type": "string",
+          "description": "Category or topic of inquiry",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "message": {
+          "type": "string",
+          "description": "Detailed inquiry brief or scope message",
+          "minLength": 1,
+          "maxLength": 3000
+        },
+        "status": {
+          "type": "string",
+          "description": "Current processing status of the inquiry",
+          "enum": ["pending", "under_review", "scheduled", "approved", "archived"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the inquiry was dispatched"
+        }
+      },
+      "required": ["name", "email", "inquiryType", "message", "status", "createdAt"]
+    },
+    "PartnerInquiry": {
+      "title": "Partner Inquiry",
+      "description": "Inquiry submitted through the Contact Modal for clinical licensing, facility audits, or executive desk.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Optional Firebase Auth UID of the user who submitted the inquiry",
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of the inquirer",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the inquirer",
+          "format": "email",
+          "minLength": 3,
+          "maxLength": 100
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number of the inquirer",
+          "maxLength": 50
+        },
+        "company": {
+          "type": "string",
+          "description": "Organization name",
+          "maxLength": 100
+        },
+        "subject": {
+          "type": "string",
+          "description": "Target initiative or subject line",
+          "minLength": 1,
+          "maxLength": 150
+        },
+        "message": {
+          "type": "string",
+          "description": "Detailed consultation inquiry or requirement",
+          "minLength": 1,
+          "maxLength": 3000
+        },
+        "status": {
+          "type": "string",
+          "description": "Inquiry tracking state",
+          "enum": ["pending", "under_review", "scheduled", "approved", "archived"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of submission"
+        }
+      },
+      "required": ["name", "email", "subject", "message", "status", "createdAt"]
+    },
+    "ManufacturingRfp": {
+      "title": "Manufacturing RFP",
+      "description": "Third-party CDMO biomanufacturing batch reservation or RFP submission.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Optional Firebase Auth UID of the user who submitted the RFP",
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "description": "Lead scientist or sponsor representative full name",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "description": "Official correspondence email",
+          "format": "email",
+          "minLength": 3,
+          "maxLength": 100
+        },
+        "company": {
+          "type": "string",
+          "description": "Biotech or pharmaceutical sponsor entity",
+          "maxLength": 100
+        },
+        "modality": {
+          "type": "string",
+          "description": "Therapeutic modality e.g. mAb, Bispecific, mRNA",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "phase": {
+          "type": "string",
+          "description": "Clinical or preclinical program development phase",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "targetVolume": {
+          "type": "string",
+          "description": "Bioreactor scale e.g. 50L to 2,000L",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "fillFinishFormat": {
+          "type": "string",
+          "description": "Aseptic fill finish presentation format",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "projectTimeline": {
+          "type": "string",
+          "description": "Target run batch production commencement date",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "notes": {
+          "type": "string",
+          "description": "Specific process development or downstream notes",
+          "maxLength": 3000
+        },
+        "status": {
+          "type": "string",
+          "description": "RFP evaluation state",
+          "enum": ["pending", "under_review", "scheduled", "approved", "archived"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of batch slot request"
+        }
+      },
+      "required": ["name", "email", "modality", "phase", "targetVolume", "fillFinishFormat", "projectTimeline", "status", "createdAt"]
+    },
+    "NewsletterSubscriber": {
+      "title": "Newsletter Subscriber",
+      "description": "Subscriber to the Bedfordshire Biotech Life Sciences & CDMO bulletin.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Subscriber email address",
+          "format": "email",
+          "minLength": 3,
+          "maxLength": 100
+        },
+        "source": {
+          "type": "string",
+          "description": "Subscription source channel",
+          "maxLength": 100
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of subscription"
+        }
+      },
+      "required": ["email", "source", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/contact_inquiries/{inquiryId}": {
+      "schema": "ContactInquiry",
+      "description": "Collection of incoming contact inquiries submitted via ContactSection."
+    },
+    "/partner_inquiries/{inquiryId}": {
+      "schema": "PartnerInquiry",
+      "description": "Collection of clinical licensing and executive inquiries submitted via ContactModal."
+    },
+    "/manufacturing_rfps/{rfpId}": {
+      "schema": "ManufacturingRfp",
+      "description": "Collection of CDMO biomanufacturing RFPs and batch reservation requests submitted via ManufacturingPage."
+    },
+    "/newsletter_subscribers/{subscriberId}": {
+      "schema": "NewsletterSubscriber",
+      "description": "Collection of life sciences technical newsletter subscribers."
+    }
+  }
+}

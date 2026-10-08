@@ -1,0 +1,131 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Deny-All catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Common Primitives
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Bootstrapped Admin Verification
+    function isAdmin() {
+      return isSignedIn() && 
+        request.auth.token.email == 'kenemma05@gmail.com' && 
+        request.auth.token.email_verified == true;
+    }
+
+    // Entity 1: ContactInquiry Validation
+    function isValidContactInquiry(data) {
+      return data.keys().hasAll(['name', 'email', 'inquiryType', 'message', 'status', 'createdAt']) &&
+        data.keys().hasOnly(['userId', 'name', 'email', 'phone', 'company', 'inquiryType', 'message', 'status', 'createdAt']) &&
+        data.name is string && data.name.size() >= 1 && data.name.size() <= 100 &&
+        data.email is string && data.email.size() >= 3 && data.email.size() <= 100 &&
+        (!('phone' in data) || (data.phone is string && data.phone.size() <= 50)) &&
+        (!('company' in data) || (data.company is string && data.company.size() <= 100)) &&
+        data.inquiryType is string && data.inquiryType.size() >= 1 && data.inquiryType.size() <= 100 &&
+        data.message is string && data.message.size() >= 1 && data.message.size() <= 3000 &&
+        data.status == 'pending' &&
+        data.createdAt is timestamp && data.createdAt == request.time &&
+        (!('userId' in data) || (isSignedIn() && data.userId == request.auth.uid));
+    }
+
+    // Entity 2: PartnerInquiry Validation
+    function isValidPartnerInquiry(data) {
+      return data.keys().hasAll(['name', 'email', 'subject', 'message', 'status', 'createdAt']) &&
+        data.keys().hasOnly(['userId', 'name', 'email', 'phone', 'company', 'subject', 'message', 'status', 'createdAt']) &&
+        data.name is string && data.name.size() >= 1 && data.name.size() <= 100 &&
+        data.email is string && data.email.size() >= 3 && data.email.size() <= 100 &&
+        (!('phone' in data) || (data.phone is string && data.phone.size() <= 50)) &&
+        (!('company' in data) || (data.company is string && data.company.size() <= 100)) &&
+        data.subject is string && data.subject.size() >= 1 && data.subject.size() <= 150 &&
+        data.message is string && data.message.size() >= 1 && data.message.size() <= 3000 &&
+        data.status == 'pending' &&
+        data.createdAt is timestamp && data.createdAt == request.time &&
+        (!('userId' in data) || (isSignedIn() && data.userId == request.auth.uid));
+    }
+
+    // Entity 3: ManufacturingRfp Validation
+    function isValidManufacturingRfp(data) {
+      return data.keys().hasAll(['name', 'email', 'modality', 'phase', 'targetVolume', 'fillFinishFormat', 'projectTimeline', 'status', 'createdAt']) &&
+        data.keys().hasOnly(['userId', 'name', 'email', 'company', 'modality', 'phase', 'targetVolume', 'fillFinishFormat', 'projectTimeline', 'notes', 'status', 'createdAt']) &&
+        data.name is string && data.name.size() >= 1 && data.name.size() <= 100 &&
+        data.email is string && data.email.size() >= 3 && data.email.size() <= 100 &&
+        (!('company' in data) || (data.company is string && data.company.size() <= 100)) &&
+        data.modality is string && data.modality.size() >= 1 && data.modality.size() <= 100 &&
+        data.phase is string && data.phase.size() >= 1 && data.phase.size() <= 100 &&
+        data.targetVolume is string && data.targetVolume.size() >= 1 && data.targetVolume.size() <= 50 &&
+        data.fillFinishFormat is string && data.fillFinishFormat.size() >= 1 && data.fillFinishFormat.size() <= 100 &&
+        data.projectTimeline is string && data.projectTimeline.size() >= 1 && data.projectTimeline.size() <= 50 &&
+        (!('notes' in data) || (data.notes is string && data.notes.size() <= 3000)) &&
+        data.status == 'pending' &&
+        data.createdAt is timestamp && data.createdAt == request.time &&
+        (!('userId' in data) || (isSignedIn() && data.userId == request.auth.uid));
+    }
+
+    // Entity 4: NewsletterSubscriber Validation
+    function isValidNewsletterSubscriber(data) {
+      return data.keys().hasAll(['email', 'source', 'createdAt']) &&
+        data.keys().hasOnly(['email', 'source', 'createdAt']) &&
+        data.email is string && data.email.size() >= 3 && data.email.size() <= 100 &&
+        data.source is string && data.source.size() >= 1 && data.source.size() <= 100 &&
+        data.createdAt is timestamp && data.createdAt == request.time;
+    }
+
+    // Collection 1: Contact Inquiries
+    match /contact_inquiries/{inquiryId} {
+      allow create: if isValidId(inquiryId) && isValidContactInquiry(incoming());
+      allow get: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow list: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow update: if isAdmin() && 
+        incoming().diff(existing()).affectedKeys().hasOnly(['status', 'adminNotes', 'updatedAt']) &&
+        incoming().updatedAt == request.time;
+      allow delete: if isAdmin();
+    }
+
+    // Collection 2: Partner Inquiries
+    match /partner_inquiries/{inquiryId} {
+      allow create: if isValidId(inquiryId) && isValidPartnerInquiry(incoming());
+      allow get: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow list: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow update: if isAdmin() && 
+        incoming().diff(existing()).affectedKeys().hasOnly(['status', 'adminNotes', 'updatedAt']) &&
+        incoming().updatedAt == request.time;
+      allow delete: if isAdmin();
+    }
+
+    // Collection 3: Manufacturing RFPs
+    match /manufacturing_rfps/{rfpId} {
+      allow create: if isValidId(rfpId) && isValidManufacturingRfp(incoming());
+      allow get: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow list: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow update: if isAdmin() && 
+        incoming().diff(existing()).affectedKeys().hasOnly(['status', 'adminNotes', 'updatedAt']) &&
+        incoming().updatedAt == request.time;
+      allow delete: if isAdmin();
+    }
+
+    // Collection 4: Newsletter Subscribers
+    match /newsletter_subscribers/{subscriberId} {
+      allow create: if isValidId(subscriberId) && isValidNewsletterSubscriber(incoming());
+      allow get, list: if isAdmin();
+      allow delete: if isAdmin();
+    }
+  }
+}
