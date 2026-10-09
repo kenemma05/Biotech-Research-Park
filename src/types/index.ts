@@ -8,6 +8,7 @@ export type PageView =
   | 'bedfordshire-uk'
   | 'manufacturing'
   | 'blog'
+  | 'publications'
   | 'contacts'
   | 'login'
   | 'register'
@@ -77,4 +78,14 @@ export interface BlogPost {
   excerpt: string;
   contentSnippet: string;
   tags: string[];
+  image: string;
+  imageCaption?: string;
+  galleryImages?: {
+    url: string;
+    caption: string;
+  }[];
+  keyMetrics?: {
+    label: string;
+    value: string;
+  }[];
 }

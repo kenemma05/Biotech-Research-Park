@@ -25,6 +25,7 @@ import { ContactSection } from './components/ContactSection';
 import { ContactModal } from './components/ContactModal';
 import { FirebasePortalModal } from './components/FirebasePortalModal';
 import { FirebaseProvider } from './context/FirebaseContext';
+import { ToastProvider } from './components/GlobalToast';
 import { Footer } from './components/Footer';
 import { CleanroomTourVideoPlayer } from './components/CleanroomTourVideoPlayer';
 import { FacilityCapacityMetricsChart } from './components/FacilityCapacityMetricsChart';
@@ -54,7 +55,7 @@ export default function App() {
         if (getSubTopicPage(path) || getUkSciencePage(path) || getResearchPage(path) || getProductPage(path)) return path;
         const validRoutes: PageView[] = [
           'home', 'about', 'science', 'products', 'research', 
-          'uk-science', 'bedfordshire-uk', 'manufacturing', 'blog', 'contacts',
+          'uk-science', 'bedfordshire-uk', 'manufacturing', 'blog', 'publications', 'contacts',
           'login', 'register'
         ];
         if (validRoutes.includes(path as PageView)) return path as PageView;
@@ -108,8 +109,9 @@ export default function App() {
   const activeSubTopic = getSubTopicPage(currentPage) || getUkSciencePage(currentPage) || getResearchPage(currentPage) || getProductPage(currentPage);
 
   return (
-    <FirebaseProvider>
-      <div className="min-h-screen bg-white text-[#0A192F] selection:bg-blue-600/20 selection:text-blue-950 flex flex-col justify-between">
+    <ToastProvider>
+      <FirebaseProvider>
+        <div className="min-h-screen bg-white text-[#0A192F] selection:bg-blue-600/20 selection:text-blue-950 flex flex-col justify-between">
         
         {/* 1. Global Sticky Glassmorphic Navigation Bar (Deep Navy #0A192F with Crisp White Text) */}
         <Navbar
@@ -452,8 +454,8 @@ export default function App() {
               </div>
             )}
 
-            {/* VIEW: OUR BLOG */}
-            {currentPage === 'blog' && (
+            {/* VIEW: PUBLICATIONS */}
+            {(currentPage === 'publications' || currentPage === 'blog') && (
               <div className="pt-24 bg-white min-h-screen">
                 <BlogSection
                   onOpenInquiry={handleOpenContact}
@@ -507,5 +509,6 @@ export default function App() {
 
     </div>
   </FirebaseProvider>
+  </ToastProvider>
   );
 }

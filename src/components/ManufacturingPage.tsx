@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { submitManufacturingRfp } from '../services/firebaseService';
 import { useFirebase } from '../context/FirebaseContext';
+import { useToast } from './GlobalToast';
 
 interface ManufacturingPageProps {
   onOpenInquiry: (subject: string) => void;
@@ -15,6 +16,7 @@ interface ManufacturingPageProps {
 
 export const ManufacturingPage: React.FC<ManufacturingPageProps> = ({ onOpenInquiry }) => {
   const { user, openPortal } = useFirebase();
+  const { showToast } = useToast();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -61,6 +63,11 @@ export const ManufacturingPage: React.FC<ManufacturingPageProps> = ({ onOpenInqu
       });
       setSubmittedDocId(docId);
       setFormSubmitted(true);
+      showToast({
+        title: 'Manufacturing RFP Submitted',
+        message: `${formData.targetVolume} ${formData.modality} batch specification saved (Ref: ${docId || 'Confirmed'}).`,
+        variant: 'success'
+      });
     } catch (err: any) {
       console.error('RFP submission failed:', err);
       setErrorMsg('Failed to dispatch manufacturing RFP to Firebase backend. Please try again.');

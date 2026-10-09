@@ -4,6 +4,7 @@ import { CORPORATE_DETAILS } from '../data/biotechData';
 import { Dna, MapPin, Phone, Mail, Globe, ExternalLink, ShieldCheck, Database, Loader2, CheckCircle2, ArrowRight } from 'lucide-react';
 import { subscribeNewsletter } from '../services/firebaseService';
 import { useFirebase } from '../context/FirebaseContext';
+import { useToast } from './GlobalToast';
 
 interface FooterProps {
   onNavigate: (page: PageView) => void;
@@ -12,6 +13,7 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => {
   const { openPortal, user, submissions } = useFirebase();
+  const { showToast } = useToast();
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [subscribing, setSubscribing] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
@@ -25,6 +27,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => 
     try {
       await subscribeNewsletter(newsletterEmail, 'website_footer');
       setSubscribed(true);
+      showToast({
+        title: 'Subscribed to R&D Briefing',
+        message: `${newsletterEmail} has been added to our scientific and regulatory dispatch list.`,
+        variant: 'success'
+      });
       setNewsletterEmail('');
     } catch (err) {
       console.error('Newsletter subscription failed:', err);
@@ -121,8 +128,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => 
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('blog')} className="hover:text-blue-400 transition-colors">
-                  Our Blog
+                <button onClick={() => onNavigate('publications')} className="hover:text-blue-400 transition-colors">
+                  Publications
                 </button>
               </li>
               <li>

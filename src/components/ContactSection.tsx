@@ -15,6 +15,7 @@ import {
 import { CORPORATE_DETAILS } from '../data/biotechData';
 import { submitContactInquiry } from '../services/firebaseService';
 import { useFirebase } from '../context/FirebaseContext';
+import { useToast } from './GlobalToast';
 
 interface ContactSectionProps {
   initialSubject?: string;
@@ -22,6 +23,7 @@ interface ContactSectionProps {
 
 export const ContactSection: React.FC<ContactSectionProps> = ({ initialSubject = '' }) => {
   const { user, openPortal } = useFirebase();
+  const { showToast } = useToast();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -62,6 +64,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialSubject =
       });
       setSubmittedDocId(docId);
       setSubmitted(true);
+      showToast({
+        title: 'Consultation Request Dispatched',
+        message: `Thank you, ${formData.name}. Our technical team will respond to ${formData.email} within 24 hours.`,
+        variant: 'success'
+      });
     } catch (err: any) {
       console.error('Submission failed:', err);
       setErrorMsg('Failed to dispatch inquiry to Firebase. Please try again.');

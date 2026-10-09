@@ -88,6 +88,53 @@ service cloud.firestore {
         data.createdAt is timestamp && data.createdAt == request.time;
     }
 
+    // Entity 5: UserProfile Validation
+    function isValidUserProfile(data, uid) {
+      return data.keys().hasAll([
+          'userId', 'fullName', 'email', 'username', 'organization',
+          'jobTitle', 'partnerType', 'phoneNumber', 'addressLine1',
+          'city', 'country', 'emailVerified', 'accountStatus', 'createdAt'
+        ]) &&
+        data.keys().hasOnly([
+          'userId', 'fullName', 'email', 'username', 'organization',
+          'jobTitle', 'partnerType', 'phoneNumber', 'addressLine1',
+          'addressLine2', 'city', 'stateProvinceRegion', 'zipPostalCode',
+          'country', 'emailVerified', 'accountStatus', 'createdAt', 'updatedAt'
+        ]) &&
+        data.userId is string && data.userId == uid && data.userId.size() >= 1 && data.userId.size() <= 128 &&
+        data.fullName is string && data.fullName.size() >= 2 && data.fullName.size() <= 100 &&
+        data.email is string && data.email.size() >= 3 && data.email.size() <= 100 &&
+        data.username is string && data.username.size() >= 3 && data.username.size() <= 50 &&
+        data.organization is string && data.organization.size() >= 2 && data.organization.size() <= 150 &&
+        data.jobTitle is string && data.jobTitle.size() >= 2 && data.jobTitle.size() <= 100 &&
+        data.partnerType is string && data.partnerType in [
+          'Bio-Innovator / Strategic Partner',
+          'Clinical Collaborator / Investigator',
+          'Life Sciences Partner',
+          'Researcher',
+          'Business Development (BD) Partner',
+          'Academic Partner / Principal Investigator (PI)',
+          'Life Sciences Collaborator / Partner',
+          'Academic/Industry Liaison (or Academic Innovator)',
+          'Principal Investigator',
+          'Clinical / Medical Collaborator',
+          'Strategic Partner',
+          'Co-Developer',
+          'Industry Partner / Consortium Member',
+          'Technology Transfer Partner'
+        ] &&
+        data.phoneNumber is string && data.phoneNumber.size() >= 5 && data.phoneNumber.size() <= 40 &&
+        data.addressLine1 is string && data.addressLine1.size() >= 2 && data.addressLine1.size() <= 200 &&
+        (!('addressLine2' in data) || (data.addressLine2 is string && data.addressLine2.size() <= 200)) &&
+        data.city is string && data.city.size() >= 1 && data.city.size() <= 100 &&
+        (!('stateProvinceRegion' in data) || (data.stateProvinceRegion is string && data.stateProvinceRegion.size() <= 100)) &&
+        (!('zipPostalCode' in data) || (data.zipPostalCode is string && data.zipPostalCode.size() <= 30)) &&
+        data.country is string && data.country.size() >= 2 && data.country.size() <= 100 &&
+        data.emailVerified is bool &&
+        data.accountStatus in ['active', 'pending_verification', 'suspended'] &&
+        data.createdAt is timestamp;
+    }
+
     // Collection 1: Contact Inquiries
     match /contact_inquiries/{inquiryId} {
       allow create: if isValidId(inquiryId) && isValidContactInquiry(incoming());
@@ -125,6 +172,28 @@ service cloud.firestore {
     match /newsletter_subscribers/{subscriberId} {
       allow create: if isValidId(subscriberId) && isValidNewsletterSubscriber(incoming());
       allow get, list: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Collection 5: Partner & Investigator User Profiles
+    match /user_profiles/{userId} {
+      allow create: if isSignedIn() && request.auth.uid == userId && isValidId(userId) &&
+        isValidUserProfile(incoming(), userId) &&
+        incoming().createdAt == request.time;
+      allow get: if isAdmin() || (isSignedIn() && request.auth.uid == userId);
+      allow list: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow update: if isSignedIn() && isValidId(userId) && isValidUserProfile(incoming(), userId) &&
+        incoming().userId == existing().userId &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().updatedAt == request.time && (
+          isAdmin() ||
+          (request.auth.uid == userId && incoming().diff(existing()).affectedKeys().hasOnly([
+            'fullName', 'username', 'organization', 'jobTitle', 'partnerType',
+            'phoneNumber', 'addressLine1', 'addressLine2', 'city',
+            'stateProvinceRegion', 'zipPostalCode', 'country',
+            'emailVerified', 'accountStatus', 'updatedAt'
+          ]))
+        );
       allow delete: if isAdmin();
     }
   }

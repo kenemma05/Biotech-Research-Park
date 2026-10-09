@@ -344,20 +344,20 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="hidden lg:flex items-center justify-end pb-1.5 mb-1.5 border-b border-white/10 text-xs text-slate-300">
           <div className="flex items-center gap-4">
             
-            {/* BLOG webpage link */}
+            {/* PUBLICATIONS webpage link */}
             <a
-              href="/blog.html"
+              href="/publications.html"
               onClick={(e) => {
                 e.preventDefault();
-                handleNavClick('blog');
+                handleNavClick('publications');
               }}
               className={`transition-colors flex items-center gap-1.5 py-0.5 text-xs font-semibold tracking-wider uppercase cursor-pointer ${
-                currentPage === 'blog' ? 'text-blue-400 font-bold' : 'text-slate-300 hover:text-white'
+                currentPage === 'publications' || currentPage === 'blog' ? 'text-blue-400 font-bold' : 'text-slate-300 hover:text-white'
               }`}
             >
               <FileText className="w-3.5 h-3.5 text-blue-400" />
-              <span>Blog</span>
-              {currentPage === 'blog' && (
+              <span>Publications</span>
+              {(currentPage === 'publications' || currentPage === 'blog') && (
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
               )}
             </a>
@@ -1456,17 +1456,17 @@ export const Navbar: React.FC<NavbarProps> = ({
               </span>
               <div className="mt-1 space-y-1">
                 <a
-                  href="/blog.html"
+                  href="/publications.html"
                   onClick={(e) => {
                     e.preventDefault();
-                    handleNavClick('blog');
+                    handleNavClick('publications');
                   }}
                   className={`w-full text-left px-3.5 py-2.5 rounded-lg transition-colors flex items-center gap-2.5 cursor-pointer block ${
-                    currentPage === 'blog' ? 'bg-blue-600/20 text-blue-400 font-semibold' : 'text-slate-200 hover:bg-slate-800/60'
+                    currentPage === 'publications' || currentPage === 'blog' ? 'bg-blue-600/20 text-blue-400 font-semibold' : 'text-slate-200 hover:bg-slate-800/60'
                   }`}
                 >
                   <FileText className="w-4 h-4 text-blue-400" />
-                  <span>Blog</span>
+                  <span>Publications</span>
                 </a>
 
                 <a

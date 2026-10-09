@@ -216,6 +216,144 @@
         }
       },
       "required": ["email", "source", "createdAt"]
+    },
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Structured scientific, academic, clinical, pharmaceutical, and strategic partner user profile.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Authentication UID matching the document ID",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "fullName": {
+          "type": "string",
+          "description": "Full legal or professional name of the partner",
+          "minLength": 2,
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "description": "Registered institutional, corporate, or academic email address",
+          "format": "email",
+          "minLength": 3,
+          "maxLength": 100
+        },
+        "username": {
+          "type": "string",
+          "description": "Unique account username or institutional identifier",
+          "minLength": 3,
+          "maxLength": 50
+        },
+        "organization": {
+          "type": "string",
+          "description": "Organization, institution, or company name",
+          "minLength": 2,
+          "maxLength": 150
+        },
+        "jobTitle": {
+          "type": "string",
+          "description": "Job title or professional position",
+          "minLength": 2,
+          "maxLength": 100
+        },
+        "partnerType": {
+          "type": "string",
+          "description": "Selected primary partner category",
+          "enum": [
+            "Bio-Innovator / Strategic Partner",
+            "Clinical Collaborator / Investigator",
+            "Life Sciences Partner",
+            "Researcher",
+            "Business Development (BD) Partner",
+            "Academic Partner / Principal Investigator (PI)",
+            "Life Sciences Collaborator / Partner",
+            "Academic/Industry Liaison (or Academic Innovator)",
+            "Principal Investigator",
+            "Clinical / Medical Collaborator",
+            "Strategic Partner",
+            "Co-Developer",
+            "Industry Partner / Consortium Member",
+            "Technology Transfer Partner"
+          ]
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "Phone number including international dialing code",
+          "minLength": 5,
+          "maxLength": 40
+        },
+        "addressLine1": {
+          "type": "string",
+          "description": "Primary street address or building number",
+          "minLength": 2,
+          "maxLength": 200
+        },
+        "addressLine2": {
+          "type": "string",
+          "description": "Optional apartment, suite, unit, floor, or department",
+          "maxLength": 200
+        },
+        "city": {
+          "type": "string",
+          "description": "City or municipality",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "stateProvinceRegion": {
+          "type": "string",
+          "description": "State, province, county, or administrative region",
+          "maxLength": 100
+        },
+        "zipPostalCode": {
+          "type": "string",
+          "description": "ZIP code or postal code",
+          "maxLength": 30
+        },
+        "country": {
+          "type": "string",
+          "description": "Full internationally recognized country name",
+          "minLength": 2,
+          "maxLength": 100
+        },
+        "emailVerified": {
+          "type": "boolean",
+          "description": "Email verification status"
+        },
+        "accountStatus": {
+          "type": "string",
+          "description": "Current partner account lifecycle status",
+          "enum": ["active", "pending_verification", "suspended"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of account creation"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of last profile update"
+        }
+      },
+      "required": [
+        "userId",
+        "fullName",
+        "email",
+        "username",
+        "organization",
+        "jobTitle",
+        "partnerType",
+        "phoneNumber",
+        "addressLine1",
+        "city",
+        "country",
+        "emailVerified",
+        "accountStatus",
+        "createdAt"
+      ]
     }
   },
   "firestore": {
@@ -234,6 +372,10 @@
     "/newsletter_subscribers/{subscriberId}": {
       "schema": "NewsletterSubscriber",
       "description": "Collection of life sciences technical newsletter subscribers."
+    },
+    "/user_profiles/{userId}": {
+      "schema": "UserProfile",
+      "description": "Collection of structured partner and investigator user registration profiles keyed by Firebase Auth UID."
     }
   }
 }

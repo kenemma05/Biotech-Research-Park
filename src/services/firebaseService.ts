@@ -1,6 +1,8 @@
 import { 
   collection, 
   addDoc, 
+  setDoc,
+  getDoc,
   serverTimestamp, 
   query, 
   where, 
@@ -10,6 +12,27 @@ import {
   updateDoc 
 } from 'firebase/firestore';
 import { db, auth, handleFirestoreError, OperationType } from '../lib/firebase';
+
+export interface UserProfileData {
+  userId: string;
+  fullName: string;
+  email: string;
+  username: string;
+  organization: string;
+  jobTitle: string;
+  partnerType: string;
+  phoneNumber: string;
+  addressLine1: string;
+  addressLine2?: string;
+  city: string;
+  stateProvinceRegion?: string;
+  zipPostalCode?: string;
+  country: string;
+  emailVerified: boolean;
+  accountStatus: 'active' | 'pending_verification' | 'suspended';
+  createdAt?: any;
+  updatedAt?: any;
+}
 
 export interface ContactInquiryPayload {
   name: string;
@@ -378,4 +401,73 @@ export async function updateInquiryStatus(
   } catch (error) {
     handleFirestoreError(error, OperationType.UPDATE, path);
   }
+}
+
+// 8. Create or Save Partner User Profile
+export async function saveUserProfile(data: Omit<UserProfileData, 'createdAt' | 'updatedAt'>): Promise<void> {
+  const path = `user_profiles/${data.userId}`;
+  try {
+    const docRef = doc(db, 'user_profiles', data.userId);
+    const payload: Record<string, any> = {
+      userId: data.userId.trim().slice(0, 128),
+      fullName: data.fullName.trim().slice(0, 100),
+      email: data.email.trim().toLowerCase().slice(0, 100),
+      username: data.username.trim().slice(0, 50),
+      organization: data.organization.trim().slice(0, 150),
+      jobTitle: data.jobTitle.trim().slice(0, 100),
+      partnerType: data.partnerType.trim(),
+      phoneNumber: data.phoneNumber.trim().slice(0, 40),
+      addressLine1: data.addressLine1.trim().slice(0, 200),
+      city: data.city.trim().slice(0, 100),
+      country: data.country.trim().slice(0, 100),
+      emailVerified: Boolean(data.emailVerified),
+      accountStatus: data.accountStatus,
+      createdAt: serverTimestamp()
+    };
+
+    if (data.addressLine2 && data.addressLine2.trim()) {
+      payload.addressLine2 = data.addressLine2.trim().slice(0, 200);
+    }
+    if (data.stateProvinceRegion && data.stateProvinceRegion.trim()) {
+      payload.stateProvinceRegion = data.stateProvinceRegion.trim().slice(0, 100);
+    }
+    if (data.zipPostalCode && data.zipPostalCode.trim()) {
+      payload.zipPostalCode = data.zipPostalCode.trim().slice(0, 30);
+    }
+
+    await setDoc(docRef, payload);
+  } catch (error) {
+    handleFirestoreError(error, OperationType.CREATE, path);
+  }
+}
+
+// 9. Get Partner User Profile
+export async function getUserProfile(userId: string): Promise<UserProfileData | null> {
+  const path = `user_profiles/${userId}`;
+  try {
+    const snap = await getDoc(doc(db, 'user_profiles', userId));
+    if (!snap.exists()) return null;
+    return snap.data() as UserProfileData;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.GET, path);
+  }
+}
+
+// 10. Subscribe to Current User's Partner Profile
+export function subscribeToUserProfile(
+  userId: string,
+  callback: (profile: UserProfileData | null) => void
+): () => void {
+  const path = `user_profiles/${userId}`;
+  return onSnapshot(
+    doc(db, 'user_profiles', userId),
+    (snap) => {
+      if (snap.exists()) {
+        callback(snap.data() as UserProfileData);
+      } else {
+        callback(null);
+      }
+    },
+    (err) => handleFirestoreError(err, OperationType.GET, path)
+  );
 }

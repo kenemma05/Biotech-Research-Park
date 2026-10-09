@@ -26,6 +26,12 @@ export const PRODUCT_RX_IMAGE = '/src/assets/images/product_prescription_rx_1791
 export const PRODUCT_DIAGNOSTICS_IMAGE = '/src/assets/images/product_translational_diagnostics_1791490202198.jpg';
 export const PRODUCT_OPHTHALMIC_IMAGE = '/src/assets/images/product_ophthalmic_eyecare_1791490212137.jpg';
 export const PRODUCT_VETERINARY_IMAGE = '/src/assets/images/product_veterinary_pharma_1791490233453.jpg';
+export const PUB_ROBOTIC_ISOLATOR_IMAGE = '/src/assets/images/pub_robotic_isolator_fill_finish_1791520235045.jpg';
+export const PUB_DNA_TO_API_IMAGE = '/src/assets/images/pub_dna_to_api_bioprocess_1791520246653.jpg';
+export const PUB_GOLDEN_TRIANGLE_IMAGE = '/src/assets/images/pub_golden_triangle_biotech_cluster_1791520256162.jpg';
+export const PUB_MRNA_LNP_IMAGE = '/src/assets/images/pub_mrna_lnp_microfluidics_1791520265708.jpg';
+export const PUB_EL_MASS_SPEC_IMAGE = '/src/assets/images/pub_extractables_leachables_mass_spec_1791520276006.jpg';
+export const PUB_PERFUSION_BIOREACTOR_IMAGE = '/src/assets/images/pub_continuous_perfusion_bioreactor_1791520285599.jpg';
 
 export const PIPELINE_ASSETS: PipelineAsset[] = [
   {
@@ -294,7 +300,24 @@ export const BLOG_POSTS: BlogPost[] = [
     readTime: '6 min read',
     excerpt: 'The revision of EU GMP Annex 1 has mandated stricter particulate limits and gloveless operations. Here is how our Bedfordshire facility integrates robotic filling arms to achieve zero manual interventions.',
     contentSnippet: 'Modern biopharmaceuticals—such as bispecific antibodies, mRNA-lipid nanoparticles, and delicate viral vectors—cannot tolerate thermal terminal sterilization. As a result, aseptic containment is the critical determinant of batch integrity. At our Bedfordshire campus, we have transitioned our primary production line to next-generation closed isolators, resulting in a 99.999% particulate exclusion rate across 12 consecutive commercial runs.',
-    tags: ['Aseptic Processing', 'EU GMP Annex 1', 'Robotics', 'Fill-Finish']
+    tags: ['Aseptic Processing', 'EU GMP Annex 1', 'Robotics', 'Fill-Finish'],
+    image: PUB_ROBOTIC_ISOLATOR_IMAGE,
+    imageCaption: 'Grade A (ISO 4.8) gloveless robotic isolator aseptic vial filling line operating under unidirectional laminar airflow.',
+    galleryImages: [
+      {
+        url: PUB_ROBOTIC_ISOLATOR_IMAGE,
+        caption: 'Fig 1.1: Dual articulated cleanroom robotics dosing 2R Type I borosilicate vials with 100% in-process weight verification.'
+      },
+      {
+        url: PUB_PERFUSION_BIOREACTOR_IMAGE,
+        caption: 'Fig 1.2: Upstream sterile bulk drug substance (BDS) transfer manifold feeding the Grade A isolator suite.'
+      }
+    ],
+    keyMetrics: [
+      { label: 'Particulate Exclusion', value: '99.999%' },
+      { label: 'Cleanroom Classification', value: 'Grade A / ISO 4.8' },
+      { label: 'Dosing Precision', value: '±0.3% IPC' }
+    ]
   },
   {
     id: 'blog-2',
@@ -310,7 +333,24 @@ export const BLOG_POSTS: BlogPost[] = [
     readTime: '8 min read',
     excerpt: 'By coupling automated CRISPR target identification with pre-engineered high-titer CHO host expression strains, sponsors can compress the discovery-to-IND timeline from 18 months down to 11 months.',
     contentSnippet: 'Speed to clinic is vital for emerging life sciences ventures. Every month shaved off the preclinical timeline reduces burn rate and brings life-saving therapies to patients faster. Our platform combines high-throughput gene synthesis with automated micro-bioreactors (Ambr 250) running parallel parameter sweeps. This delivers robust clone selection within 21 days with predictable scalability up to our 2,000L production tanks.',
-    tags: ['Gene Synthesis', 'High-Titer CHO', 'Process Development', 'CDMO']
+    tags: ['Gene Synthesis', 'High-Titer CHO', 'Process Development', 'CDMO'],
+    image: PUB_DNA_TO_API_IMAGE,
+    imageCaption: 'High-throughput Ambr® 250 modular micro-bioreactor array paired with real-time CRISPR sequence validation.',
+    galleryImages: [
+      {
+        url: PUB_DNA_TO_API_IMAGE,
+        caption: 'Fig 2.1: Automated 24-way parallel Ambr 250 vessels executing Design of Experiments (DoE) media optimization.'
+      },
+      {
+        url: BENTO_DNA_IMAGE,
+        caption: 'Fig 2.2: High-throughput genomic sequencing and site-directed vector integration profiling.'
+      }
+    ],
+    keyMetrics: [
+      { label: 'IND Timeline Reduction', value: '40% Faster' },
+      { label: 'Clone Selection Window', value: '21 Days' },
+      { label: 'Monoclonal Titer Yield', value: '> 6.8 g/L' }
+    ]
   },
   {
     id: 'blog-3',
@@ -326,7 +366,123 @@ export const BLOG_POSTS: BlogPost[] = [
     readTime: '5 min read',
     excerpt: 'Situated directly between Oxford and Cambridge with direct connectivity to Greater London, our regional corridor is emerging as the vital manufacturing backbone of the UK Golden Triangle, providing physical cleanroom scale that metropolitan labs lack.',
     contentSnippet: 'While discovery research thrives in university incubators in Cambridge and London, those academic centers quickly run out of the industrial square footage required for large-scale pilot plants, multi-thousand-liter bioreactors, and cGMP warehousing. Bedfordshire Biotech bridges that gap with over 45,000 m² of specialized bio-manufacturing infrastructure, world-class transport links via Greater London transport networks, and direct ties to leading British biotechnology research groups.',
-    tags: ['UK Life Sciences', 'Golden Triangle', 'Infrastructure', 'Greater London']
+    tags: ['UK Life Sciences', 'Golden Triangle', 'Infrastructure', 'Greater London'],
+    image: PUB_GOLDEN_TRIANGLE_IMAGE,
+    imageCaption: 'Aerial twilight view of our 45,000 m² UK Life Sciences Biomanufacturing Campus in the Oxford-Cambridge-London Golden Triangle.',
+    galleryImages: [
+      {
+        url: PUB_GOLDEN_TRIANGLE_IMAGE,
+        caption: 'Fig 3.1: Integrated cGMP biomanufacturing suites, cryogenic cold-chain logistics hub, and translational R&D campus.'
+      },
+      {
+        url: BEDFORDSHIRE_FACILITY_IMAGE,
+        caption: 'Fig 3.2: Main clinical manufacturing complex with dedicated ISO Class 5–7 modular cleanroom bays.'
+      }
+    ],
+    keyMetrics: [
+      { label: 'cGMP Campus Footprint', value: '45,000 m²' },
+      { label: 'Cold-Chain Dispatch', value: '< 24 Hours' },
+      { label: 'Renewable Energy Grid', value: '100% REGO' }
+    ]
+  },
+  {
+    id: 'blog-4',
+    slug: 'microfluidic-mrna-lnp-encapsulation-formulation',
+    title: 'Precision Microfluidic Encapsulation of Ionizable Lipid Nanoparticles (mRNA-LNP) for Targeted Delivery',
+    category: 'Genetics & Biotechnology',
+    author: {
+      name: 'Dr. Priya Nair',
+      role: 'Director of Formulation & Nanomedicine Delivery',
+      avatarInitials: 'PN'
+    },
+    date: '29 July 2026',
+    readTime: '7 min read',
+    excerpt: 'Controlling hydrodynamic flow-focusing mixing ratios in laminar microfluidic channels enables monodisperse LNP architectures (< 95 nm, PDI < 0.08) with > 96% mRNA encapsulation efficiency.',
+    contentSnippet: 'Next-generation extrahepatic mRNA therapeutics require strict control over lipid nanoparticle size distribution, surface zeta potential, and bilayer morphology. At our Formulation Development laboratory, we utilize non-turbulent microfluidic impingement mixers scaled in parallel to transition seamlessly from 1 mL preclinical screening batches to 50 L sterile cGMP clinical lots without altering particle physics.',
+    tags: ['mRNA-LNP', 'Microfluidics', 'Drug Delivery', 'Nanomedicine'],
+    image: PUB_MRNA_LNP_IMAGE,
+    imageCaption: 'Precision microfluidic hydrodynamic flow-focusing chip synthesizing monodisperse mRNA lipid nanoparticles.',
+    galleryImages: [
+      {
+        url: PUB_MRNA_LNP_IMAGE,
+        caption: 'Fig 4.1: Laminar microfluidic encapsulation channel coupled with inline dynamic light scattering (DLS) particle sizing.'
+      },
+      {
+        url: CAPABILITIES_DRUG_DELIVERY_IMAGE,
+        caption: 'Fig 4.2: Cryo-TEM structural verification of multi-lamellar ionizable lipid nanoparticle cores.'
+      }
+    ],
+    keyMetrics: [
+      { label: 'Encapsulation Efficiency', value: '> 96.4%' },
+      { label: 'Polydispersity Index', value: 'PDI < 0.08' },
+      { label: 'Mean Hydrodynamic Size', value: '88 – 94 nm' }
+    ]
+  },
+  {
+    id: 'blog-5',
+    slug: 'extractables-leachables-single-use-bioprocess-systems',
+    title: 'High-Resolution Orbitrap LC-MS/MS Profiling of Extractables & Leachables in Single-Use Bioprocessing',
+    category: 'UK Science & Innovation',
+    author: {
+      name: 'Dr. Marcus Vance',
+      role: 'Principal Analytical Chemist, E&L Regulatory Compliance',
+      avatarInitials: 'MV'
+    },
+    date: '15 July 2026',
+    readTime: '9 min read',
+    excerpt: 'Comprehensive USP <1663> and <1664> toxicological qualification of gamma-irradiated fluoropolymer manifolds and multilayer bioreactor films using sub-ppb Orbitrap mass spectrometry.',
+    contentSnippet: 'As biomanufacturing relies increasingly on disposable single-use assemblies, regulatory scrutiny from the MHRA, FDA, and EMA on polymer degradation products has intensified. Our ISO 17025 accredited bioanalytical suite combines headspace GC-MS/MS, UHPLC-Q-Exactive Orbitrap HRMS, and ICP-MS to identify non-volatile, semi-volatile, and elemental leachables well below the Analytical Evaluation Threshold (AET).',
+    tags: ['Extractables & Leachables', 'Orbitrap HRMS', 'USP <1663>', 'Regulatory CMC'],
+    image: PUB_EL_MASS_SPEC_IMAGE,
+    imageCaption: 'ISO 17025 analytical chemistry suite performing sub-ppb Orbitrap LC-MS/MS leachables screening on single-use bioprocess polymers.',
+    galleryImages: [
+      {
+        url: PUB_EL_MASS_SPEC_IMAGE,
+        caption: 'Fig 5.1: Thermo Scientific Orbitrap Exploris high-resolution accurate-mass (HRAM) screening of antioxidant degradants.'
+      },
+      {
+        url: RESEARCH_EL_TESTING_IMAGE,
+        caption: 'Fig 5.2: Controlled solvent extraction vessels operating under accelerated ICH Q1A thermal conditions.'
+      }
+    ],
+    keyMetrics: [
+      { label: 'Detection Sensitivity', value: '< 0.5 ppb' },
+      { label: 'Mass Accuracy', value: '< 1.0 ppm' },
+      { label: 'Regulatory Standard', value: 'USP <1663>/<1664>' }
+    ]
+  },
+  {
+    id: 'blog-6',
+    slug: 'continuous-perfusion-biomanufacturing-2000l-scale',
+    title: 'Scaling Continuous Perfusion Bioprocessing to 2,000L: Intensified Upstream Yields & Tangential Flow Filtration',
+    category: 'Biomanufacturing',
+    author: {
+      name: 'Dr. Alistair Finch',
+      role: 'VP of Pharmaceutical Manufacturing, Bedfordshire Biotech',
+      avatarInitials: 'AF'
+    },
+    date: '02 July 2026',
+    readTime: '7 min read',
+    excerpt: 'Integrating alternating tangential flow (ATF) cell retention with automated 2,000L single-use bioreactor trains achieves sustained viable cell densities above 85 × 10⁶ cells/mL over 30-day campaigns.',
+    contentSnippet: 'Labile recombinant enzymes and complex bispecific formats often suffer from product clipping or aggregation during prolonged residence times in traditional fed-batch cultures. By deploying intensified continuous perfusion with inline Raman spectroscopy feedback and single-pass tangential flow filtration (SPTFF), our Grade C biomanufacturing suites deliver a 4.5-fold volumetric productivity increase while maintaining >99.8% monomeric purity.',
+    tags: ['Continuous Perfusion', '2,000L Single-Use', 'Tangential Flow', 'Bioprocessing'],
+    image: PUB_PERFUSION_BIOREACTOR_IMAGE,
+    imageCaption: '2,000L cGMP single-use bioreactor train integrated with automated tangential flow filtration (TFF-02) and SCADA telemetry.',
+    galleryImages: [
+      {
+        url: PUB_PERFUSION_BIOREACTOR_IMAGE,
+        caption: 'Fig 6.1: 2,000L commercial bioreactor housing with automated peristaltic media addition and TFF cell retention skid.'
+      },
+      {
+        url: BENTO_MANUFACTURING_IMAGE,
+        caption: 'Fig 6.2: Downstream continuous chromatography purification suite operating under 21 CFR Part 11 electronic batch records.'
+      }
+    ],
+    keyMetrics: [
+      { label: 'Peak Cell Density', value: '85×10⁶ /mL' },
+      { label: 'Volumetric Yield Gain', value: '4.5× vs Fed-Batch' },
+      { label: 'Monomeric Purity', value: '> 99.85%' }
+    ]
   }
 ];
 

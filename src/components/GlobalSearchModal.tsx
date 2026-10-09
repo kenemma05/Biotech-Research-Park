@@ -147,8 +147,8 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
         description: `${post.excerpt} ${post.contentSnippet}`,
         category: 'News & Publications',
         badge: post.category,
-        tags: [post.category, post.author.name, post.readTime, 'News', 'Publication'],
-        targetPage: 'blog',
+        tags: [post.category, post.author.name, post.readTime, 'News', 'Publication', 'Publications'],
+        targetPage: 'publications',
         subItemId: post.id
       });
     });

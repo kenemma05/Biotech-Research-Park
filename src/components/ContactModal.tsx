@@ -3,6 +3,7 @@ import { X, Send, CheckCircle2, Phone, Mail, MapPin, Loader2, Database } from 'l
 import { CORPORATE_DETAILS } from '../data/biotechData';
 import { submitPartnerInquiry } from '../services/firebaseService';
 import { useFirebase } from '../context/FirebaseContext';
+import { useToast } from './GlobalToast';
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
   initialSubject = ''
 }) => {
   const { user, openPortal } = useFirebase();
+  const { showToast } = useToast();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -64,6 +66,11 @@ export const ContactModal: React.FC<ContactModalProps> = ({
       });
       setSubmittedDocId(docId);
       setSubmitted(true);
+      showToast({
+        title: 'Partner Inquiry Submitted',
+        message: `Your inquiry (${formData.subject}) has been recorded (Ref: ${docId || 'Confirmed'}).`,
+        variant: 'success'
+      });
     } catch (err: any) {
       console.error('Submission failed:', err);
       setErrorMsg('Failed to dispatch inquiry to Firebase backend. Please try again.');

@@ -2,6 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { 
   getAuth, 
   GoogleAuthProvider, 
+  OAuthProvider,
   signInWithPopup, 
   signOut,
   onAuthStateChanged,
@@ -9,6 +10,10 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
   sendPasswordResetEmail,
+  sendEmailVerification,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence,
   type User 
 } from 'firebase/auth';
 import { 
@@ -105,14 +110,43 @@ export async function testConnection() {
 // Call test connection when module loads
 testConnection();
 
-export async function signInWithGoogle() {
+export async function configureAuthPersistence(rememberMe: boolean = true) {
   try {
+    await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
+  } catch (persistErr) {
+    console.warn('Auth persistence fallback:', persistErr);
+  }
+}
+
+export async function signInWithGoogle(rememberMe: boolean = true) {
+  try {
+    await configureAuthPersistence(rememberMe);
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
     const result = await signInWithPopup(auth, provider);
+    if (rememberMe) {
+      await configureAuthPersistence(true);
+    }
     return result.user;
   } catch (err) {
     console.error('Google Sign-In failed:', err);
+    throw err;
+  }
+}
+
+export async function signInWithApple(rememberMe: boolean = true) {
+  try {
+    await configureAuthPersistence(rememberMe);
+    const provider = new OAuthProvider('apple.com');
+    provider.addScope('email');
+    provider.addScope('name');
+    const result = await signInWithPopup(auth, provider);
+    if (rememberMe) {
+      await configureAuthPersistence(true);
+    }
+    return result.user;
+  } catch (err) {
+    console.error('Apple Sign-In failed:', err);
     throw err;
   }
 }
@@ -123,6 +157,13 @@ export async function signUpWithEmail(email: string, password: string, displayNa
     if (displayName && cred.user) {
       await updateProfile(cred.user, { displayName });
     }
+    if (cred.user && !cred.user.emailVerified) {
+      try {
+        await sendEmailVerification(cred.user);
+      } catch (verifyErr) {
+        console.warn('Verification email dispatch notice:', verifyErr);
+      }
+    }
     return cred.user;
   } catch (err) {
     console.error('Sign up failed:', err);
@@ -130,14 +171,25 @@ export async function signUpWithEmail(email: string, password: string, displayNa
   }
 }
 
-export async function signInWithEmail(email: string, password: string) {
+export async function signInWithEmail(email: string, password: string, rememberMe: boolean = true) {
   try {
+    await configureAuthPersistence(rememberMe);
     const cred = await signInWithEmailAndPassword(auth, email, password);
+    if (rememberMe) {
+      await setPersistence(auth, browserLocalPersistence);
+    }
     return cred.user;
   } catch (err) {
     console.error('Email sign in failed:', err);
     throw err;
   }
+}
+
+export async function resendVerificationEmail() {
+  if (!auth.currentUser) {
+    throw new Error('No active user session found.');
+  }
+  await sendEmailVerification(auth.currentUser);
 }
 
 export async function resetPassword(email: string) {
