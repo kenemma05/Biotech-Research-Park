@@ -7,6 +7,66 @@ import {
   CHEMICALS_LIQUID_HANDLER_IMAGE
 } from './biotechData';
 
+export interface SubTopicSeoMetadata {
+  seoTitle: string;
+  metaDescription: string;
+  suggestedSlug: string;
+  primaryKeyword: string;
+  secondaryKeywords: string[];
+}
+
+export interface SubTopicContentSection {
+  id: string;
+  heading: string;
+  subheadings: {
+    title: string;
+    paragraphs: string[];
+    bullets?: string[];
+  }[];
+  dataPoints?: {
+    metric: string;
+    label: string;
+    context: string;
+  }[];
+}
+
+export interface SubTopicScientificVisual {
+  sectionTitle: string;
+  concept: string;
+  shows: string;
+  relevance: string;
+  motionConcept: string;
+  motionType: 'molecular' | 'nanoparticle' | 'polymer' | 'chromatography' | 'clinical' | 'regulatory' | 'forensic' | 'bioprocess';
+  imagePrompt: string;
+  altText: string;
+  caption: string;
+  imageUrl: string;
+}
+
+export interface SubTopicHighlightCard {
+  category: 'Scientific Capability' | 'Technology' | 'Expertise' | 'Application' | 'Innovation' | 'Clinical Relevance' | 'Commercial Value';
+  title: string;
+  description: string;
+  metric?: string;
+}
+
+export interface SubTopicCtaSection {
+  eyebrow: string;
+  headline: string;
+  description: string;
+  primaryActionLabel: string;
+  primaryActionSubject: string;
+  secondaryActionLabel: string;
+  secondaryActionTarget: string;
+}
+
+export interface SubTopicRelatedPage {
+  slug: string;
+  title: string;
+  subCategory: string;
+  rationale: string;
+}
+
 export interface SubTopicPageData {
   id: string;
   slug: string;
@@ -16,6 +76,16 @@ export interface SubTopicPageData {
   heroBadge: string;
   heroHeadline?: string;
   heroSubheadline?: string;
+  heroIntroCopy?: string;
+  primaryCtaLabel?: string;
+  secondaryCtaLabel?: string;
+  recommendedHeroMotion?: string;
+  seoMetadata?: SubTopicSeoMetadata;
+  structuredContentSections?: SubTopicContentSection[];
+  scientificVisuals?: SubTopicScientificVisual[];
+  keyHighlights?: SubTopicHighlightCard[];
+  ctaSection?: SubTopicCtaSection;
+  relatedPages?: SubTopicRelatedPage[];
   valuePropBullets?: string[];
   executiveSummary: string;
   leadParagraph: string;

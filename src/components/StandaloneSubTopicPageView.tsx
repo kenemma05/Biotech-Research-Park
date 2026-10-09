@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, type Variants, AnimatePresence } from 'framer-motion';
 import { SubTopicPageData } from '../data/subTopicData';
+import { UkScienceEnhancedSections } from './UkScienceEnhancedSections';
 import { 
   Building2, 
   MapPin, 
@@ -154,6 +155,19 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
   const galleryImages = pageData.galleryImages || [];
   const currentImage = galleryImages[activeImageIdx] || (pageData.heroImage ? { url: pageData.heroImage, caption: pageData.title, tag: 'Overview' } : null);
 
+  // Dynamically update document title & meta description for SEO on page navigation
+  useEffect(() => {
+    if (pageData.seoMetadata) {
+      document.title = pageData.seoMetadata.seoTitle;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute('content', pageData.seoMetadata.metaDescription);
+      }
+    } else {
+      document.title = `${pageData.title} | Bedfordshire Biotech Limited`;
+    }
+  }, [pageData]);
+
   return (
     <article className="min-h-screen bg-white text-[#0A192F] flex flex-col w-full overflow-hidden">
       {/* 1. Full-Width Hero Section (Dark Navy #0A192F / #0F172A) */}
@@ -264,26 +278,26 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => onOpenContact(`${pageData.title} - Request Lot Analysis & Batch CoA Inspection`)}
+              onClick={() => onOpenContact(`${pageData.title} - ${pageData.primaryCtaLabel || 'Technical & Commercial Inquiry'}`)}
               className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-blue-600/30 flex items-center gap-2 cursor-pointer transition-colors"
             >
-              <span>Request Lot Analysis</span>
+              <span>{pageData.primaryCtaLabel || 'Request Lot Analysis'}</span>
               <ArrowRight className="w-4 h-4" />
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => {
-                const matrixEl = document.getElementById('product-catalog-matrix');
-                if (matrixEl) {
-                  matrixEl.scrollIntoView({ behavior: 'smooth' });
+                const firstSec = document.getElementById('scientific-foundation-and-capabilities') || document.getElementById('product-catalog-matrix');
+                if (firstSec) {
+                  firstSec.scrollIntoView({ behavior: 'smooth' });
                 } else {
-                  onOpenContact(`${pageData.title} - Product Catalog Inquiries`);
+                  onOpenContact(`${pageData.title} - ${pageData.secondaryCtaLabel || 'Technical Dossier Inquiry'}`);
                 }
               }}
               className="px-6 py-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-slate-200 hover:text-white font-semibold text-xs uppercase tracking-wider flex items-center gap-2 cursor-pointer transition-colors"
             >
-              <span>Explore Product Catalog</span>
+              <span>{pageData.secondaryCtaLabel || 'Explore Product Catalog'}</span>
               <ArrowUpRight className="w-4 h-4" />
             </motion.button>
           </motion.div>
@@ -1384,6 +1398,15 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
             </motion.div>
           )}
 
+          {/* ========================================================================= */}
+          {/* UK SCIENCE ENHANCED MONOGRAPH, VISUAL CONCEPTS, HIGHLIGHTS & RELATED      */}
+          {/* ========================================================================= */}
+          <UkScienceEnhancedSections
+            pageData={pageData}
+            onNavigate={onNavigate}
+            onOpenContact={onOpenContact}
+          />
+
         </div>
       </section>
 
@@ -1398,25 +1421,31 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
         <div className="max-w-7xl mx-auto rounded-3xl bg-white border border-slate-200 p-8 sm:p-12 shadow-xl flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="max-w-2xl space-y-3">
             <div className="text-xs font-mono uppercase text-blue-600 font-bold">
-              {pageData.category === 'Products' || pageData.slug.startsWith('products-')
-                ? 'Commercial Product Supply & Regulatory Dossier Allocation'
-                : pageData.id === 'chemicals' 
-                  ? 'Custom Chemical Synthesis & Bulk Reagent Supply' 
-                  : 'Contract Manufacturing & Commercial Operations'}
+              {pageData.ctaSection
+                ? pageData.ctaSection.eyebrow
+                : pageData.category === 'Products' || pageData.slug.startsWith('products-')
+                  ? 'Commercial Product Supply & Regulatory Dossier Allocation'
+                  : pageData.id === 'chemicals' 
+                    ? 'Custom Chemical Synthesis & Bulk Reagent Supply' 
+                    : 'Contract Manufacturing & Commercial Operations'}
             </div>
             <h3 className="text-2xl sm:text-4xl font-extrabold text-[#0A192F] tracking-tight">
-              {pageData.category === 'Products' || pageData.slug.startsWith('products-')
-                ? `Initiate Commercial Order, Tender Allocation or Licensing for ${pageData.title}`
-                : pageData.id === 'chemicals'
-                  ? 'Initiate Custom Synthesis, Bulk Order Quotes, or Technical Sample Requisitions'
-                  : 'Initiate Commercial Tech Transfer or Laboratory Study'}
+              {pageData.ctaSection
+                ? pageData.ctaSection.headline
+                : pageData.category === 'Products' || pageData.slug.startsWith('products-')
+                  ? `Initiate Commercial Order, Tender Allocation or Licensing for ${pageData.title}`
+                  : pageData.id === 'chemicals'
+                    ? 'Initiate Custom Synthesis, Bulk Order Quotes, or Technical Sample Requisitions'
+                    : 'Initiate Commercial Tech Transfer or Laboratory Study'}
             </h3>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-              {pageData.category === 'Products' || pageData.slug.startsWith('products-')
-                ? 'Connect directly with our commercial directors, QP batch release officers, and supply chain managers. We provide validated batch documentation, Certificates of Analysis (CoA), Drug Master Files (DMF), and flexible delivery allocations from our Greater London facility.'
-                : pageData.id === 'chemicals'
-                  ? 'Connect directly with our senior process chemists and analytical QC directors. Whether you require tailored packaging configurations, pilot-scale custom synthesis, or multi-metric tonne bulk supply with dedicated lot reservations, our Greater London facility is ready to support your timeline.'
-                  : 'Our technical project managers and Qualified Persons (QPs) are available for detailed feasibility audits, study protocol authoring, and slot scheduling across our Greater London facility.'}
+              {pageData.ctaSection
+                ? pageData.ctaSection.description
+                : pageData.category === 'Products' || pageData.slug.startsWith('products-')
+                  ? 'Connect directly with our commercial directors, QP batch release officers, and supply chain managers. We provide validated batch documentation, Certificates of Analysis (CoA), Drug Master Files (DMF), and flexible delivery allocations from our Greater London facility.'
+                  : pageData.id === 'chemicals'
+                    ? 'Connect directly with our senior process chemists and analytical QC directors. Whether you require tailored packaging configurations, pilot-scale custom synthesis, or multi-metric tonne bulk supply with dedicated lot reservations, our Greater London facility is ready to support your timeline.'
+                    : 'Our technical project managers and Qualified Persons (QPs) are available for detailed feasibility audits, study protocol authoring, and slot scheduling across our Greater London facility.'}
             </p>
           </div>
 
@@ -1424,17 +1453,31 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => onOpenContact(`${pageData.title} - ${pageData.category === 'Products' ? 'Commercial Procurement & Pricing Quotation' : pageData.id === 'chemicals' ? 'Custom Synthesis & Bulk Supply Inquiries' : 'Technical Consultation'}`)}
+              onClick={() => onOpenContact(
+                pageData.ctaSection
+                  ? pageData.ctaSection.primaryActionSubject
+                  : `${pageData.title} - ${pageData.category === 'Products' ? 'Commercial Procurement & Pricing Quotation' : pageData.id === 'chemicals' ? 'Custom Synthesis & Bulk Supply Inquiries' : 'Technical Consultation'}`
+              )}
               className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
-              <span>{pageData.category === 'Products' ? 'Request Commercial Pricing & Allocation' : pageData.id === 'chemicals' ? 'Request Custom Synthesis / Bulk Quote' : 'Contact Scientific Lead'}</span>
+              <span>
+                {pageData.ctaSection
+                  ? pageData.ctaSection.primaryActionLabel
+                  : pageData.category === 'Products'
+                    ? 'Request Commercial Pricing & Allocation'
+                    : pageData.id === 'chemicals'
+                      ? 'Request Custom Synthesis / Bulk Quote'
+                      : 'Contact Scientific Lead'}
+              </span>
               <ArrowRight className="w-4 h-4" />
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => {
-                if (pageData.category === 'Products') {
+                if (pageData.ctaSection) {
+                  onNavigate(pageData.ctaSection.secondaryActionTarget);
+                } else if (pageData.category === 'Products') {
                   onOpenContact(`${pageData.title} - Technical Batch Dossier & CoA Inspection`);
                 } else if (pageData.id === 'chemicals') {
                   onOpenContact(`${pageData.title} - Technical Sample & Specification Request`);
@@ -1444,7 +1487,15 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
               }}
               className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#0A192F] hover:bg-slate-800 text-white font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
-              <span>{pageData.category === 'Products' ? 'Request Technical Dossier' : pageData.id === 'chemicals' ? 'Request Technical Sample' : 'CDMO Capabilities'}</span>
+              <span>
+                {pageData.ctaSection
+                  ? pageData.ctaSection.secondaryActionLabel
+                  : pageData.category === 'Products'
+                    ? 'Request Technical Dossier'
+                    : pageData.id === 'chemicals'
+                      ? 'Request Technical Sample'
+                      : 'CDMO Capabilities'}
+              </span>
               <ArrowUpRight className="w-4 h-4" />
             </motion.button>
           </div>

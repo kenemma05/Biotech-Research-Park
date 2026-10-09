@@ -1,6 +1,7 @@
 import { SubTopicPageData } from './subTopicData';
+import { enrichUkSciencePage } from './ukScienceEnhancements';
 
-export const UK_SCIENCE_PAGES: SubTopicPageData[] = [
+const RAW_UK_SCIENCE_PAGES: SubTopicPageData[] = [
   {
     id: 'neuroscience',
     slug: 'uk-science-neuroscience',
@@ -2054,6 +2055,8 @@ export const UK_SCIENCE_PAGES: SubTopicPageData[] = [
     contactFocus: 'Public Health Initiatives & ESG Partnership Enquiries'
   }
 ];
+
+export const UK_SCIENCE_PAGES: SubTopicPageData[] = RAW_UK_SCIENCE_PAGES.map(enrichUkSciencePage);
 
 // Helper to look up a UK Science page by slug or id
 export function getUkSciencePage(slugOrId: string): SubTopicPageData | undefined {

@@ -309,8 +309,110 @@ export default function App() {
 
             {/* VIEW: RESEARCH */}
             {currentPage === 'research' && (
-              <div className="pt-24 bg-white min-h-screen">
-                <PipelineTracker onOpenInquiry={handleOpenContact} />
+              <div className="bg-white min-h-screen">
+                {/* Dark Navy Hero & 9-Page Research Laboratories Directory */}
+                <section className="bg-[#0A192F] text-white pt-32 pb-20 px-4 sm:px-6 lg:px-8 border-b border-blue-900/60 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-[radial-gradient(#1e3a8a_1px,transparent_1px)] [background-size:24px_24px] opacity-25 pointer-events-none" />
+                  <div className="max-w-7xl mx-auto relative z-10">
+                    <div className="flex items-center gap-2 text-xs font-mono uppercase text-cyan-400 mb-3 font-bold">
+                      <Sparkles className="w-4 h-4" />
+                      <span>Research & Analytical Laboratories · 9 Specialised Divisions</span>
+                    </div>
+                    <h1 className="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-tight max-w-4xl">
+                      Pharmaceutical Research,{' '}
+                      <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                        Analytical Testing & Innovation
+                      </span>
+                    </h1>
+                    <p className="mt-4 text-base sm:text-xl text-slate-300 max-w-3xl leading-relaxed">
+                      Explore our nine dedicated research, analytical characterization, composite materials, continuous-flow chemistry, and small-molecule medicinal sciences laboratories—engineered to advance discoveries from benchtop to regulatory approval.
+                    </p>
+                  </div>
+                </section>
+
+                {/* 9 Research Submenu Pages Directory Grid */}
+                <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10">
+                  <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200 pb-6">
+                    <div>
+                      <div className="flex items-center gap-2 text-xs font-mono uppercase text-blue-600 font-bold mb-1">
+                        <Layers className="w-4 h-4" />
+                        <span>Complete Research Menu Directory (9 Submenu Pages)</span>
+                      </div>
+                      <h2 className="text-2xl sm:text-4xl font-extrabold text-[#0A192F] tracking-tight">
+                        Specialised Research & Analytical Laboratories
+                      </h2>
+                    </div>
+                    <button
+                      onClick={() => handleOpenContact('Research & Analytical Services Consultation')}
+                      className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 self-start md:self-auto cursor-pointer transition-colors shadow-md shadow-blue-600/20"
+                    >
+                      <span>Contact Our Research Team</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {RESEARCH_PAGES.map((page, idx) => (
+                      <div
+                        key={page.id}
+                        onClick={() => handleNavigate(page.slug as PageView)}
+                        className="rounded-3xl bg-white border border-slate-200 hover:border-blue-500 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group cursor-pointer overflow-hidden"
+                      >
+                        <div>
+                          <div className="relative h-48 bg-[#0A192F] overflow-hidden border-b border-slate-200">
+                            {page.heroImage && (
+                              <img
+                                src={page.heroImage}
+                                alt={page.scientificVisuals?.[0]?.altText || page.title}
+                                referrerPolicy="no-referrer"
+                                className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500"
+                              />
+                            )}
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F] via-[#0A192F]/30 to-transparent" />
+                            <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-slate-950/80 backdrop-blur-md border border-cyan-500/40 text-cyan-300 font-mono text-[10px] uppercase font-bold">
+                              {page.subCategory}
+                            </div>
+                            <div className="absolute top-3 right-3 w-7 h-7 rounded-lg bg-slate-950/80 text-white font-mono text-xs font-bold flex items-center justify-center border border-slate-700">
+                              0{idx + 1}
+                            </div>
+                            <div className="absolute bottom-3 left-3 right-3">
+                              <span className="text-[11px] font-mono text-cyan-300 font-semibold truncate block">
+                                {page.heroBadge}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="p-6 space-y-3">
+                            <h3 className="text-base sm:text-lg font-extrabold text-[#0A192F] group-hover:text-blue-600 transition-colors leading-snug">
+                              {page.title}
+                            </h3>
+                            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">
+                              {page.heroIntroCopy || page.executiveSummary}
+                            </p>
+
+                            <div className="grid grid-cols-2 gap-2 pt-2">
+                              {page.keyStats.slice(0, 2).map((st, sIdx) => (
+                                <div key={sIdx} className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
+                                  <div className="text-xs font-extrabold font-mono text-blue-600 truncate">{st.value}</div>
+                                  <div className="text-[10px] font-mono text-slate-500 truncate">{st.label}</div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs font-mono font-bold text-blue-600 group-hover:bg-blue-50/50 transition-colors">
+                          <span>Explore Laboratory Page</span>
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                <div className="border-t border-slate-200">
+                  <PipelineTracker onOpenInquiry={handleOpenContact} />
+                </div>
                 <div className="bg-[#F8FAFC] border-t border-slate-200">
                   <ScienceMap
                     onGoToBedfordshireHub={() => handleNavigate('about')}
@@ -326,6 +428,7 @@ export default function App() {
                 <UkScienceView
                   onGoToBedfordshire={() => handleNavigate('about')}
                   onOpenContact={handleOpenContact}
+                  onNavigate={handleNavigate}
                 />
               </div>
             )}
@@ -352,7 +455,10 @@ export default function App() {
             {/* VIEW: OUR BLOG */}
             {currentPage === 'blog' && (
               <div className="pt-24 bg-white min-h-screen">
-                <BlogSection onOpenInquiry={handleOpenContact} />
+                <BlogSection
+                  onOpenInquiry={handleOpenContact}
+                  initialPostId={selectedCapabilityId}
+                />
               </div>
             )}
 

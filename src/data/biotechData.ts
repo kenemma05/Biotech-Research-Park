@@ -11,6 +11,21 @@ export const CAPABILITIES_DRUG_DELIVERY_IMAGE = '/src/assets/images/capabilities
 export const CHEMICALS_LATTICE_IMAGE = '/src/assets/images/specialty_chemicals_molecular_lattice_1791479312275.jpg';
 export const CHEMICALS_MICROFLUIDIC_IMAGE = '/src/assets/images/specialty_chemicals_microfluidic_chip_1791479328482.jpg';
 export const CHEMICALS_LIQUID_HANDLER_IMAGE = '/src/assets/images/specialty_chemicals_liquid_handler_1791479344475.jpg';
+export const UK_SCIENCE_NEUROSCIENCE_IMAGE = '/src/assets/images/uk_science_neuroscience_bbb_1791500189077.jpg';
+export const UK_SCIENCE_CLINICAL_TRIALS_IMAGE = '/src/assets/images/uk_science_clinical_trials_nhs_1791500199236.jpg';
+export const UK_SCIENCE_POLYMER_HYDROGEL_IMAGE = '/src/assets/images/uk_science_polymer_hydrogel_matrix_1791500209429.jpg';
+export const UK_SCIENCE_AUTOINJECTOR_IMAGE = '/src/assets/images/uk_science_autoinjector_device_1791500217996.jpg';
+export const UK_SCIENCE_FORENSICS_IMAGE = '/src/assets/images/uk_science_forensics_spectroscopy_1791500228538.jpg';
+export const RESEARCH_EL_TESTING_IMAGE = '/src/assets/images/research_extractables_leachables_lab_1791502874575.jpg';
+export const RESEARCH_PARTICULATES_IMAGE = '/src/assets/images/research_particulates_microscopy_1791502887609.jpg';
+export const RESEARCH_COMPOSITES_IMAGE = '/src/assets/images/research_composite_materials_testing_1791502898300.jpg';
+export const RESEARCH_FLOW_CHEMISTRY_IMAGE = '/src/assets/images/research_flow_chemistry_reactor_1791502908234.jpg';
+export const RESEARCH_SMALL_MOLECULE_IMAGE = '/src/assets/images/research_small_molecule_cadd_1791502917839.jpg';
+export const PRODUCT_API_IMAGE = '/src/assets/images/product_api_synthesis_1791490178665.jpg';
+export const PRODUCT_RX_IMAGE = '/src/assets/images/product_prescription_rx_1791490191025.jpg';
+export const PRODUCT_DIAGNOSTICS_IMAGE = '/src/assets/images/product_translational_diagnostics_1791490202198.jpg';
+export const PRODUCT_OPHTHALMIC_IMAGE = '/src/assets/images/product_ophthalmic_eyecare_1791490212137.jpg';
+export const PRODUCT_VETERINARY_IMAGE = '/src/assets/images/product_veterinary_pharma_1791490233453.jpg';
 
 export const PIPELINE_ASSETS: PipelineAsset[] = [
   {

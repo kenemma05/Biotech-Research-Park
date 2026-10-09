@@ -238,7 +238,7 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({
       </div>
 
       {/* Floating Ambient Controls */}
-      <div className="absolute top-24 right-4 sm:right-8 z-30 flex items-center gap-2">
+      <div className="absolute top-36 sm:top-32 right-4 sm:right-8 z-30 flex items-center gap-2">
         <button
           onClick={toggleVideoPlayback}
           className="p-2.5 rounded-xl bg-[#0F203C]/80 border border-slate-700/60 backdrop-blur-md text-slate-200 hover:text-white hover:border-blue-400 transition-all shadow-lg text-xs flex items-center gap-1.5"
@@ -262,7 +262,7 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({
 
       {/* Video Source Configuration Modal */}
       {showVideoConfig && (
-        <div className="absolute top-36 right-4 sm:right-8 z-40 w-96 max-w-[90vw] p-5 rounded-2xl bg-[#0F203C] border border-blue-500/40 shadow-2xl backdrop-blur-xl">
+        <div className="absolute top-48 sm:top-44 right-4 sm:right-8 z-40 w-96 max-w-[90vw] p-5 rounded-2xl bg-[#0F203C] border border-blue-500/40 shadow-2xl backdrop-blur-xl">
           <div className="flex items-center justify-between pb-3 border-b border-slate-700">
             <div className="flex items-center gap-2 text-xs font-semibold uppercase font-mono text-blue-400">
               <Layers className="w-4 h-4" />
@@ -314,16 +314,8 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({
       )}
 
       {/* 2. Hero Core Content & Typography (Deep Navy & Crisp White) */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-40 pb-16 flex-1 flex flex-col justify-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-36 sm:pt-44 pb-16 flex-1 flex flex-col justify-center">
         
-        {/* Subtle Institutional Kicker */}
-        <div className="inline-flex items-center gap-3 text-xs tracking-wider uppercase text-blue-300 font-mono mb-6">
-          <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-          <span>UK Life Sciences & Biopharmaceutical Innovation Hub</span>
-          <span className="text-slate-500">|</span>
-          <span className="text-slate-300">Greater London</span>
-        </div>
-
         {/* Bold Headline */}
         <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-5xl leading-[1.08] text-balance">
           Pioneering Cellular Therapeutics &{' '}

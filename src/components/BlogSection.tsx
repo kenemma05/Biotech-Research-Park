@@ -9,11 +9,24 @@ import {
 
 interface BlogSectionProps {
   onOpenInquiry: (subject: string) => void;
+  initialPostId?: string | null;
 }
 
-export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenInquiry }) => {
-  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenInquiry, initialPostId }) => {
+  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(() => {
+    if (initialPostId) {
+      return BLOG_POSTS.find(p => p.id === initialPostId) || null;
+    }
+    return null;
+  });
   const [filterTag, setFilterTag] = useState<string>('All');
+
+  React.useEffect(() => {
+    if (initialPostId) {
+      const found = BLOG_POSTS.find(p => p.id === initialPostId);
+      if (found) setSelectedPost(found);
+    }
+  }, [initialPostId]);
 
   const allTags = ['All', 'Biomanufacturing', 'Genetics & Biotechnology', 'UK Science & Innovation'];
 

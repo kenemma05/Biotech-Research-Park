@@ -1,6 +1,7 @@
 import { SubTopicPageData } from './subTopicData';
+import { enrichResearchPage } from './researchEnhancements';
 
-export const RESEARCH_PAGES: SubTopicPageData[] = [
+const RAW_RESEARCH_PAGES: SubTopicPageData[] = [
   {
     id: 'rd-overview',
     slug: 'research-research-and-development',
@@ -515,6 +516,8 @@ export const RESEARCH_PAGES: SubTopicPageData[] = [
     contactFocus: 'Medicinal Chemistry Collaboration & Small Molecule Lead Optimization'
   }
 ];
+
+export const RESEARCH_PAGES: SubTopicPageData[] = RAW_RESEARCH_PAGES.map(enrichResearchPage);
 
 // Helper to look up a Research page by slug or id
 export function getResearchPage(slugOrId: string): SubTopicPageData | undefined {

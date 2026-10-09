@@ -38,6 +38,7 @@ import {
   User
 } from 'lucide-react';
 import { useFirebase } from '../context/FirebaseContext';
+import { GlobalSearchModal } from './GlobalSearchModal';
 import { SCIENCE_CAPABILITIES, ScienceCapabilityItem } from '../data/biotechData';
 import { UK_SCIENCE_PAGES } from '../data/ukScienceData';
 import { OUR_SCIENCE_PAGES } from '../data/subTopicData';
@@ -58,6 +59,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const { user, submissions, openPortal, logout } = useFirebase();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
   
   // Dropdown & Mega Menu states
   const [scienceMegaMenuOpen, setScienceMegaMenuOpen] = useState(false);
@@ -142,7 +144,10 @@ export const Navbar: React.FC<NavbarProps> = ({
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        setGlobalSearchOpen(prev => !prev);
+      } else if (event.key === 'Escape') {
         setScienceMegaMenuOpen(false);
         setProductsDropdownOpen(false);
         setResearchDropdownOpen(false);
@@ -546,11 +551,26 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* 4. Products Webpage & Submenu */}
             <div 
-              className="relative flex items-center"
+              className="relative flex items-center gap-1"
               ref={productsNavRef}
               onMouseEnter={handleProductsMouseEnter}
               onMouseLeave={handleProductsMouseLeave}
             >
+              <a
+                href="/products.html"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick('products');
+                }}
+                className={`transition-colors relative py-1 text-xs tracking-wide uppercase cursor-pointer ${
+                  isProductsActive ? 'text-blue-400 font-bold' : 'text-slate-200 hover:text-white'
+                }`}
+              >
+                <span>Products</span>
+                {isProductsActive && (
+                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 rounded-full" />
+                )}
+              </a>
               <button
                 type="button"
                 onClick={(e) => {
@@ -560,21 +580,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                   setUkScienceMegaMenuOpen(false);
                   setProductsDropdownOpen(prev => !prev);
                 }}
-                className={`flex items-center gap-1 transition-colors relative py-1 text-xs tracking-wide uppercase cursor-pointer ${
-                  isProductsActive ? 'text-blue-400 font-bold' : 'text-slate-200 hover:text-white'
-                }`}
+                className="p-1 -ml-0.5 text-slate-300 hover:text-blue-400 transition-colors cursor-pointer"
                 aria-label="Toggle Products Submenu"
                 aria-expanded={productsDropdownOpen}
               >
-                <span>Products</span>
                 <ChevronDown 
                   className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                    productsDropdownOpen ? 'rotate-180 text-blue-400' : 'text-slate-300 hover:text-blue-400'
+                    productsDropdownOpen ? 'rotate-180 text-blue-400' : ''
                   }`} 
                 />
-                {isProductsActive && (
-                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 rounded-full" />
-                )}
               </button>
             </div>
 
@@ -703,6 +717,44 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
+        {/* Dedicated Sub-Header Bar Positioned Directly Below the Main Navigation Menu Bar */}
+        <div className="mt-2.5 pt-2 border-t border-white/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
+          {/* Left-Aligned Institutional Kicker Text */}
+          <div className="flex items-center gap-2.5 text-[11px] sm:text-xs tracking-wider uppercase font-mono text-blue-300 min-w-0">
+            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+            <span className="truncate sm:whitespace-normal font-medium">
+              UK Life Sciences &amp; Biopharmaceutical Innovation Hub
+            </span>
+            <span className="text-slate-500 shrink-0">|</span>
+            <span className="text-slate-200 font-semibold shrink-0">Greater London</span>
+          </div>
+
+          {/* Right-Aligned Search Bar */}
+          <div className="w-full sm:w-72 md:w-80 lg:w-96 shrink-0">
+            <button
+              type="button"
+              onClick={() => setGlobalSearchOpen(true)}
+              className="w-full px-3.5 py-2 rounded-xl bg-[#071120]/90 hover:bg-slate-900 text-slate-300 hover:text-white text-xs font-medium flex items-center justify-between gap-2.5 border border-slate-700/80 hover:border-cyan-500/60 shadow-inner transition-all cursor-pointer group"
+              aria-label="Search research pages, capabilities, or news articles"
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <Search className="w-3.5 h-3.5 text-cyan-400 shrink-0 group-hover:scale-110 transition-transform" />
+                <span className="truncate text-slate-300 group-hover:text-white">
+                  Search research, capabilities, or news...
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 shrink-0">
+                <span className="hidden md:inline-block text-[10px] font-mono text-cyan-400/90 uppercase tracking-wider">
+                  Search
+                </span>
+                <kbd className="px-1.5 py-0.5 text-[10px] font-mono bg-slate-800/90 text-slate-400 rounded border border-slate-700">
+                  ⌘K
+                </kbd>
+              </div>
+            </button>
+          </div>
+        </div>
+
         {/* ============================================================ */}
         {/* DESKTOP MEGA MENU PANEL FOR "OUR SCIENCE" (20 SUB-ITEMS)     */}
         {/* ============================================================ */}
@@ -769,13 +821,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
 
             {/* Bottom Footer Bar */}
-            <div className="mt-4 pt-3.5 border-t border-slate-800/80 flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2 text-slate-400 font-mono text-[11px]">
-                <span className="px-2 py-0.5 rounded bg-blue-950/70 text-blue-300 border border-blue-800/60 font-semibold">
-                  Dedicated Web Pages
-                </span>
-                <span>Each link navigates to an independent full-screen webpage</span>
-              </div>
+            <div className="mt-4 pt-3.5 border-t border-slate-800/80 flex items-center justify-end text-xs">
               <button
                 onClick={() => {
                   setScienceMegaMenuOpen(false);
@@ -863,13 +909,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
 
             {/* Bottom Footer Bar */}
-            <div className="mt-4 pt-3.5 border-t border-slate-800/80 flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2 text-slate-400 font-mono text-[11px]">
-                <span className="px-2 py-0.5 rounded bg-blue-950/70 text-blue-300 border border-blue-800/60 font-semibold">
-                  Dedicated Web Pages
-                </span>
-                <span>Click any item to view its independent landing page</span>
-              </div>
+            <div className="mt-4 pt-3.5 border-t border-slate-800/80 flex items-center justify-end text-xs">
               <button
                 onClick={() => {
                   setProductsDropdownOpen(false);
@@ -945,13 +985,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
 
             {/* Bottom Footer Bar */}
-            <div className="mt-4 pt-3.5 border-t border-slate-800/80 flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2 text-slate-400 font-mono text-[11px]">
-                <span className="px-2 py-0.5 rounded bg-blue-950/70 text-blue-300 border border-blue-800/60 font-semibold">
-                  Dedicated Web Pages
-                </span>
-                <span>Each link navigates to a dedicated full-screen page</span>
-              </div>
+            <div className="mt-4 pt-3.5 border-t border-slate-800/80 flex items-center justify-end text-xs">
               <button
                 onClick={() => {
                   setResearchDropdownOpen(false);
@@ -1027,13 +1061,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
 
             {/* Bottom Footer Bar */}
-            <div className="mt-4 pt-3.5 border-t border-slate-800/80 flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2 text-slate-400 font-mono text-[11px]">
-                <span className="px-2 py-0.5 rounded bg-blue-950/70 text-blue-300 border border-blue-800/60 font-semibold">
-                  Dedicated Web Pages
-                </span>
-                <span>Each link opens a full-screen webpage view</span>
-              </div>
+            <div className="mt-4 pt-3.5 border-t border-slate-800/80 flex items-center justify-end text-xs">
               <button
                 onClick={() => {
                   setUkScienceMegaMenuOpen(false);
@@ -1169,27 +1197,40 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* 2. Products Mobile Accordion (8 Dedicated Landing Pages) */}
             <div className="rounded-xl border border-slate-800 bg-slate-900/30 overflow-hidden">
-              <button
-                type="button"
-                onClick={() => setMobileProductsAccordionOpen(!mobileProductsAccordionOpen)}
-                className={`w-full px-3.5 py-3 transition-colors flex items-center justify-between cursor-pointer ${
+              <div
+                className={`w-full px-3.5 py-3 transition-colors flex items-center justify-between ${
                   isProductsActive || mobileProductsAccordionOpen 
                     ? 'bg-blue-600/20 text-blue-400 font-semibold' 
                     : 'text-slate-200 hover:bg-slate-800/60'
                 }`}
               >
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold">Products</span>
+                <a
+                  href="/products.html"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavClick('products');
+                  }}
+                  className="flex items-center gap-2 cursor-pointer flex-1"
+                >
+                  <span className="text-sm font-medium">Products</span>
                   <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30 font-semibold">
                     8 Portfolios
                   </span>
-                </div>
-                <ChevronDown 
-                  className={`w-4 h-4 transition-transform duration-200 ${
-                    mobileProductsAccordionOpen ? 'rotate-180 text-blue-400' : 'text-slate-400'
-                  }`} 
-                />
-              </button>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setMobileProductsAccordionOpen(!mobileProductsAccordionOpen)}
+                  className="p-1 text-slate-400 hover:text-white cursor-pointer"
+                  aria-label="Toggle Products Submenu Accordion"
+                  aria-expanded={mobileProductsAccordionOpen}
+                >
+                  <ChevronDown 
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      mobileProductsAccordionOpen ? 'rotate-180 text-blue-400' : ''
+                    }`} 
+                  />
+                </button>
+              </div>
 
               {mobileProductsAccordionOpen && (
                 <div className="p-2 space-y-1 bg-[#0A192F] border-t border-slate-800/80 animate-in fade-in-0 duration-150">
@@ -1505,6 +1546,21 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
       )}
+      {/* Global Website Search Modal */}
+      <GlobalSearchModal
+        isOpen={globalSearchOpen}
+        onClose={() => setGlobalSearchOpen(false)}
+        onNavigate={(page, subItem) => {
+          setGlobalSearchOpen(false);
+          setMobileMenuOpen(false);
+          onNavigate(page, subItem);
+        }}
+        onOpenContact={(subject) => {
+          setGlobalSearchOpen(false);
+          setMobileMenuOpen(false);
+          onOpenContact(subject);
+        }}
+      />
     </header>
   );
 };
