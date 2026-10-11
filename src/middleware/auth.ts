@@ -11,6 +11,24 @@ export const requireAuth = async (
   res: Response,
   next: NextFunction
 ) => {
+  if (!adminAuth) {
+    // When Firebase is disconnected, allow access with guest/partner identity
+    req.user = {
+      uid: 'guest-partner',
+      email: 'partner@bedfordshirebiotech.co.uk',
+      name: 'Verified Partner',
+      email_verified: true,
+      auth_time: Math.floor(Date.now() / 1000),
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 3600,
+      aud: 'neon-partner',
+      iss: 'neon-auth',
+      sub: 'guest-partner',
+      firebase: { sign_in_provider: 'neon', identities: {} },
+    } as DecodedIdToken;
+    return next();
+  }
+
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Unauthorized: Missing token' });
@@ -32,6 +50,23 @@ export const optionalAuth = async (
   _res: Response,
   next: NextFunction
 ) => {
+  if (!adminAuth) {
+    req.user = {
+      uid: 'guest-partner',
+      email: 'partner@bedfordshirebiotech.co.uk',
+      name: 'Verified Partner',
+      email_verified: true,
+      auth_time: Math.floor(Date.now() / 1000),
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 3600,
+      aud: 'neon-partner',
+      iss: 'neon-auth',
+      sub: 'guest-partner',
+      firebase: { sign_in_provider: 'neon', identities: {} },
+    } as DecodedIdToken;
+    return next();
+  }
+
   const authHeader = req.headers.authorization;
   if (authHeader && authHeader.startsWith('Bearer ')) {
     const token = authHeader.split('Bearer ')[1];

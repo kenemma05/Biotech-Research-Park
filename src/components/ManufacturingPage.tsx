@@ -6,7 +6,7 @@ import {
   Loader2,
   Database
 } from 'lucide-react';
-import { submitManufacturingRfp } from '../services/firebaseService';
+import { cdmoApi } from '../services/api';
 import { useFirebase } from '../context/FirebaseContext';
 import { useToast } from './GlobalToast';
 
@@ -50,7 +50,7 @@ export const ManufacturingPage: React.FC<ManufacturingPageProps> = ({ onOpenInqu
     setSubmitting(true);
     setErrorMsg(null);
     try {
-      const docId = await submitManufacturingRfp({
+      const res = await cdmoApi.createManufacturingRfp({
         name: formData.name,
         email: formData.email,
         company: formData.company || undefined,
@@ -61,16 +61,17 @@ export const ManufacturingPage: React.FC<ManufacturingPageProps> = ({ onOpenInqu
         projectTimeline: formData.projectTimeline,
         notes: formData.notes || undefined
       });
-      setSubmittedDocId(docId);
+      const generatedRef = res?.id ? `NEON-RFP-${res.id}` : `NEON-${Date.now()}`;
+      setSubmittedDocId(generatedRef);
       setFormSubmitted(true);
       showToast({
-        title: 'Manufacturing RFP Submitted',
-        message: `${formData.targetVolume} ${formData.modality} batch specification saved (Ref: ${docId || 'Confirmed'}).`,
+        title: 'Manufacturing RFP Saved to Neon',
+        message: `${formData.targetVolume} ${formData.modality} batch specification saved to Neon database (Ref: ${generatedRef}).`,
         variant: 'success'
       });
     } catch (err: any) {
       console.error('RFP submission failed:', err);
-      setErrorMsg('Failed to dispatch manufacturing RFP to Firebase backend. Please try again.');
+      setErrorMsg(err.message || 'Failed to save manufacturing RFP to the Neon database. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -211,10 +212,10 @@ export const ManufacturingPage: React.FC<ManufacturingPageProps> = ({ onOpenInqu
         {formSubmitted ? (
           <div className="p-8 rounded-2xl bg-blue-50 border border-blue-200 text-center animate-in fade-in duration-300">
             <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto mb-3" />
-            <h3 className="text-xl font-bold text-[#0A192F] mb-1">Manufacturing RFP Received & Saved to Firebase</h3>
+            <h3 className="text-xl font-bold text-[#0A192F] mb-1">Manufacturing RFP Recorded in Neon Database</h3>
             <p className="text-xs font-mono text-blue-700 font-semibold mb-3 flex items-center justify-center gap-1.5">
               <Database className="w-3.5 h-3.5" />
-              <span>Firestore Document ID: {submittedDocId || 'Confirmed'}</span>
+              <span>Neon Database Ref: {submittedDocId || 'Confirmed'}</span>
             </p>
             <p className="text-sm text-slate-600 max-w-lg mx-auto">
               Thank you, {formData.name}. Our Greater London Technical Operations and CDMO leadership will review your {formData.targetVolume} {formData.modality} program specifications and respond via {formData.email} within 2 business days.

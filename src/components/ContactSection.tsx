@@ -13,7 +13,7 @@ import {
   Database
 } from 'lucide-react';
 import { CORPORATE_DETAILS } from '../data/biotechData';
-import { submitContactInquiry } from '../services/firebaseService';
+import { inquiriesApi } from '../services/api';
 import { useFirebase } from '../context/FirebaseContext';
 import { useToast } from './GlobalToast';
 
@@ -54,7 +54,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialSubject =
     setSubmitting(true);
     setErrorMsg(null);
     try {
-      const docId = await submitContactInquiry({
+      const response = await inquiriesApi.createContactInquiry({
         name: formData.name,
         email: formData.email,
         phone: formData.phone || undefined,
@@ -62,16 +62,17 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialSubject =
         inquiryType: formData.inquiryType,
         message: formData.message
       });
-      setSubmittedDocId(docId);
+      const generatedRef = response?.id ? `NEON-INQ-${response.id}` : `NEON-${Date.now()}`;
+      setSubmittedDocId(generatedRef);
       setSubmitted(true);
       showToast({
-        title: 'Consultation Request Dispatched',
-        message: `Thank you, ${formData.name}. Our technical team will respond to ${formData.email} within 24 hours.`,
+        title: 'Inquiry Saved to Neon Database',
+        message: `Thank you, ${formData.name}. Your inquiry is recorded in the Neon PostgreSQL database. Reference: ${generatedRef}.`,
         variant: 'success'
       });
     } catch (err: any) {
       console.error('Submission failed:', err);
-      setErrorMsg('Failed to dispatch inquiry to Firebase. Please try again.');
+      setErrorMsg(err.message || 'Failed to save inquiry to the Neon database. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -254,13 +255,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialSubject =
         {submitted ? (
           <div className="p-8 text-center bg-white border border-blue-200 rounded-2xl shadow-sm animate-in fade-in duration-200">
             <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto mb-3" />
-            <h3 className="text-xl font-bold text-[#0A192F] mb-1">Message Successfully Dispatched</h3>
+            <h3 className="text-xl font-bold text-[#0A192F] mb-1">Inquiry Recorded in Neon Database</h3>
             <p className="text-xs font-mono text-blue-600 font-semibold mb-2 flex items-center justify-center gap-1.5">
               <Database className="w-3.5 h-3.5" />
-              <span>Stored in Firestore Database · Ref ID: {submittedDocId || 'Confirmed'}</span>
+              <span>Stored in Neon PostgreSQL Database · Ref: {submittedDocId || 'Confirmed'}</span>
             </p>
             <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto">
-              Thank you, {formData.name}. Your inquiry has been routed to our Greater London executive operations desk. You will receive an acknowledgment email at {formData.email}.
+              Thank you, {formData.name}. Your inquiry has been stored directly in the Neon PostgreSQL database and routed to our Greater London operations team. We will respond to {formData.email} within 24 hours.
             </p>
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <button

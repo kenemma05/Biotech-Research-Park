@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { PageView } from '../types';
 import { CORPORATE_DETAILS } from '../data/biotechData';
 import { Dna, MapPin, Phone, Mail, Globe, ExternalLink, ShieldCheck, Database, Loader2, CheckCircle2, ArrowRight } from 'lucide-react';
-import { subscribeNewsletter } from '../services/firebaseService';
+import { newsletterApi } from '../services/api';
 import { useFirebase } from '../context/FirebaseContext';
 import { useToast } from './GlobalToast';
 
@@ -25,17 +25,17 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => 
     setSubscribing(true);
     setNewsletterError(null);
     try {
-      await subscribeNewsletter(newsletterEmail, 'website_footer');
+      await newsletterApi.subscribe(newsletterEmail, 'website_footer');
       setSubscribed(true);
       showToast({
-        title: 'Subscribed to R&D Briefing',
-        message: `${newsletterEmail} has been added to our scientific and regulatory dispatch list.`,
+        title: 'Subscribed to Neon R&D Briefing',
+        message: `${newsletterEmail} has been added to our Neon database newsletter registry.`,
         variant: 'success'
       });
       setNewsletterEmail('');
-    } catch (err) {
+    } catch (err: any) {
       console.error('Newsletter subscription failed:', err);
-      setNewsletterError('Subscription failed. Please try again.');
+      setNewsletterError(err.message || 'Subscription failed. Please try again.');
     } finally {
       setSubscribing(false);
     }

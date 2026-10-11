@@ -34,9 +34,21 @@ import {
 } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
 
-const app = initializeApp(firebaseConfig);
+export const isFirebaseConfigured = Boolean(firebaseConfig.apiKey && firebaseConfig.projectId);
 
-const customDbId = (firebaseConfig.firestoreDatabaseId && firebaseConfig.firestoreDatabaseId !== '(default)' && firebaseConfig.firestoreDatabaseId !== '')
+const activeConfig = isFirebaseConfigured
+  ? firebaseConfig
+  : {
+      projectId: 'disconnected-project',
+      apiKey: 'disconnected-api-key-safe-placeholder',
+      authDomain: 'disconnected.firebaseapp.com',
+      storageBucket: 'disconnected.firebasestorage.app',
+      appId: '1:000000000000:web:disconnected0000',
+    };
+
+const app = initializeApp(activeConfig);
+
+const customDbId = (isFirebaseConfigured && firebaseConfig.firestoreDatabaseId && firebaseConfig.firestoreDatabaseId !== '(default)' && firebaseConfig.firestoreDatabaseId !== '')
   ? firebaseConfig.firestoreDatabaseId
   : undefined;
 
@@ -98,17 +110,20 @@ export function handleFirestoreError(error: unknown, operationType: OperationTyp
 }
 
 export async function testConnection() {
+  if (!isFirebaseConfigured) return;
   try {
     await getDocFromServer(doc(db, 'test', 'connection'));
   } catch (error) {
     if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.error("Please check your Firebase configuration.");
+      console.warn("Please check your Firebase configuration.");
     }
   }
 }
 
 // Call test connection when module loads
-testConnection();
+if (isFirebaseConfigured) {
+  testConnection();
+}
 
 export async function configureAuthPersistence(rememberMe: boolean = true) {
   try {

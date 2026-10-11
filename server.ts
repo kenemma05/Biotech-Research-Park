@@ -15,6 +15,17 @@ import {
   getCommentsByPostId,
   addPublicationComment,
 } from './src/db/users.ts';
+import {
+  getFacilitySuiteMetrics,
+  updateFacilitySuiteMetric,
+  getFacilityThroughputMetrics,
+  recordFacilityThroughputMetric,
+  getResearchPapers,
+  createResearchPaper,
+  updateInquiryStatusDb,
+  deleteInquiryDb,
+} from './src/db/laboratory.ts';
+import { testNeonConnection } from './src/lib/db.ts';
 
 const ADMIN_EMAILS = ['felixeric813@gmail.com', 'kenemma05@gmail.com', 'emmakenn005@gmail.com'];
 
@@ -199,6 +210,105 @@ async function startServer() {
     } catch (error: any) {
       console.error('Failed to add comment:', error);
       res.status(500).json({ error: error.message || 'Failed to add comment' });
+    }
+  });
+
+  // Neon Database status & healthcheck
+  app.get('/api/db/health', async (_req, res) => {
+    try {
+      const health = await testNeonConnection();
+      res.json(health);
+    } catch (error: any) {
+      res.status(500).json({ ok: false, error: error.message });
+    }
+  });
+
+  // 1. Cleanroom Laboratory Suites CRUD
+  app.get('/api/laboratory/suites', async (_req, res) => {
+    try {
+      const suites = await getFacilitySuiteMetrics();
+      res.json(suites);
+    } catch (error: any) {
+      console.error('Failed to get suites:', error);
+      res.status(500).json({ error: error.message || 'Failed to fetch suite metrics' });
+    }
+  });
+
+  app.patch('/api/laboratory/suites/:suiteId', async (req, res) => {
+    try {
+      const updated = await updateFacilitySuiteMetric(req.params.suiteId, req.body);
+      res.json(updated);
+    } catch (error: any) {
+      console.error('Failed to update suite:', error);
+      res.status(500).json({ error: error.message || 'Failed to update suite metric' });
+    }
+  });
+
+  // 2. Facility Throughput Telemetry CRUD
+  app.get('/api/laboratory/throughput', async (_req, res) => {
+    try {
+      const metrics = await getFacilityThroughputMetrics();
+      res.json(metrics);
+    } catch (error: any) {
+      console.error('Failed to get throughput:', error);
+      res.status(500).json({ error: error.message || 'Failed to fetch throughput telemetry' });
+    }
+  });
+
+  app.post('/api/laboratory/throughput', async (req, res) => {
+    try {
+      const created = await recordFacilityThroughputMetric(req.body);
+      res.status(201).json(created);
+    } catch (error: any) {
+      console.error('Failed to record throughput:', error);
+      res.status(500).json({ error: error.message || 'Failed to record throughput telemetry' });
+    }
+  });
+
+  // 3. Research Papers & Lab Publications CRUD
+  app.get('/api/laboratory/papers', async (_req, res) => {
+    try {
+      const papers = await getResearchPapers();
+      res.json(papers);
+    } catch (error: any) {
+      console.error('Failed to get papers:', error);
+      res.status(500).json({ error: error.message || 'Failed to fetch research papers' });
+    }
+  });
+
+  app.post('/api/laboratory/papers', async (req, res) => {
+    try {
+      const created = await createResearchPaper(req.body);
+      res.status(201).json(created);
+    } catch (error: any) {
+      console.error('Failed to create paper:', error);
+      res.status(500).json({ error: error.message || 'Failed to create research paper' });
+    }
+  });
+
+  // 4. Inquiries Status Management & Deletion
+  app.patch('/api/inquiries/:type/:id/status', async (req, res) => {
+    try {
+      const result = await updateInquiryStatusDb(
+        req.params.type,
+        Number(req.params.id),
+        req.body.status,
+        req.body.adminNotes
+      );
+      res.json(result);
+    } catch (error: any) {
+      console.error('Failed to update inquiry status:', error);
+      res.status(500).json({ error: error.message || 'Failed to update inquiry status' });
+    }
+  });
+
+  app.delete('/api/inquiries/:type/:id', async (req, res) => {
+    try {
+      const result = await deleteInquiryDb(req.params.type, Number(req.params.id));
+      res.json(result);
+    } catch (error: any) {
+      console.error('Failed to delete inquiry:', error);
+      res.status(500).json({ error: error.message || 'Failed to delete inquiry' });
     }
   });
 

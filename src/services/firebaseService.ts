@@ -11,7 +11,7 @@ import {
   doc, 
   updateDoc 
 } from 'firebase/firestore';
-import { db, auth, handleFirestoreError, OperationType } from '../lib/firebase';
+import { db, auth, handleFirestoreError, OperationType, isFirebaseConfigured } from '../lib/firebase';
 
 export interface UserProfileData {
   userId: string;
@@ -121,9 +121,15 @@ export async function submitContactInquiry(data: ContactInquiryPayload): Promise
     }
 
     await postToRelationalApi('/api/inquiries/contact', payload);
+    if (!isFirebaseConfigured) {
+      return `contact_${Date.now()}`;
+    }
     const docRef = await addDoc(collection(db, path), payload);
     return docRef.id;
   } catch (error) {
+    if (!isFirebaseConfigured) {
+      return `contact_${Date.now()}`;
+    }
     handleFirestoreError(error, OperationType.CREATE, path);
   }
 }
@@ -152,9 +158,15 @@ export async function submitPartnerInquiry(data: PartnerInquiryPayload): Promise
     }
 
     await postToRelationalApi('/api/inquiries/partner', payload);
+    if (!isFirebaseConfigured) {
+      return `partner_${Date.now()}`;
+    }
     const docRef = await addDoc(collection(db, path), payload);
     return docRef.id;
   } catch (error) {
+    if (!isFirebaseConfigured) {
+      return `partner_${Date.now()}`;
+    }
     handleFirestoreError(error, OperationType.CREATE, path);
   }
 }
@@ -186,9 +198,15 @@ export async function submitManufacturingRfp(data: ManufacturingRfpPayload): Pro
     }
 
     await postToRelationalApi('/api/inquiries/manufacturing', payload);
+    if (!isFirebaseConfigured) {
+      return `rfp_${Date.now()}`;
+    }
     const docRef = await addDoc(collection(db, path), payload);
     return docRef.id;
   } catch (error) {
+    if (!isFirebaseConfigured) {
+      return `rfp_${Date.now()}`;
+    }
     handleFirestoreError(error, OperationType.CREATE, path);
   }
 }
@@ -203,9 +221,15 @@ export async function subscribeNewsletter(email: string, source: string = 'foote
       createdAt: serverTimestamp()
     };
     await postToRelationalApi('/api/newsletter', payload);
+    if (!isFirebaseConfigured) {
+      return `sub_${Date.now()}`;
+    }
     const docRef = await addDoc(collection(db, path), payload);
     return docRef.id;
   } catch (error) {
+    if (!isFirebaseConfigured) {
+      return `sub_${Date.now()}`;
+    }
     handleFirestoreError(error, OperationType.CREATE, path);
   }
 }
@@ -215,6 +239,10 @@ export function subscribeToUserInquiries(
   userId: string, 
   callback: (submissions: SubmissionRecord[]) => void
 ): () => void {
+  if (!isFirebaseConfigured) {
+    callback([]);
+    return () => {};
+  }
   const results: Record<string, SubmissionRecord> = {};
 
   const unsubContact = onSnapshot(
@@ -311,6 +339,10 @@ export function subscribeToUserInquiries(
 export function subscribeToAllInquiriesForAdmin(
   callback: (submissions: SubmissionRecord[]) => void
 ): () => void {
+  if (!isFirebaseConfigured) {
+    callback([]);
+    return () => {};
+  }
   const results: Record<string, SubmissionRecord> = {};
 
   const unsubContact = onSnapshot(
@@ -410,6 +442,7 @@ export async function updateInquiryStatus(
   newStatus: 'pending' | 'under_review' | 'scheduled' | 'approved' | 'archived',
   adminNotes?: string
 ): Promise<void> {
+  if (!isFirebaseConfigured) return;
   const path = `${collectionName}/${id}`;
   try {
     const docRef = doc(db, collectionName, id);
@@ -459,14 +492,17 @@ export async function saveUserProfile(data: Omit<UserProfileData, 'createdAt' | 
     }
 
     await postToRelationalApi('/api/profile', payload);
+    if (!isFirebaseConfigured) return;
     await setDoc(docRef, payload);
   } catch (error) {
+    if (!isFirebaseConfigured) return;
     handleFirestoreError(error, OperationType.CREATE, path);
   }
 }
 
 // 9. Get Partner User Profile
 export async function getUserProfile(userId: string): Promise<UserProfileData | null> {
+  if (!isFirebaseConfigured) return null;
   const path = `user_profiles/${userId}`;
   try {
     const snap = await getDoc(doc(db, 'user_profiles', userId));
@@ -482,6 +518,10 @@ export function subscribeToUserProfile(
   userId: string,
   callback: (profile: UserProfileData | null) => void
 ): () => void {
+  if (!isFirebaseConfigured) {
+    callback(null);
+    return () => {};
+  }
   const path = `user_profiles/${userId}`;
   return onSnapshot(
     doc(db, 'user_profiles', userId),

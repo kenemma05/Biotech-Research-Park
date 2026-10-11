@@ -18,13 +18,15 @@ import {
   Phone
 } from 'lucide-react';
 import { useFirebase } from '../context/FirebaseContext';
-import { updateInquiryStatus, type SubmissionRecord } from '../services/firebaseService';
+import { type SubmissionRecord } from '../services/firebaseService';
+import { inquiriesApi } from '../services/api';
 
 export const FirebasePortalModal: React.FC = () => {
   const { 
     user, 
     isAdmin, 
     submissions, 
+    refreshSubmissions,
     isPortalOpen, 
     closePortal, 
     loginWithGoogle, 
@@ -49,17 +51,13 @@ export const FirebasePortalModal: React.FC = () => {
     if (!selectedItem || !newStatus) return;
     setStatusUpdateLoading(true);
     try {
-      const collectionMap: Record<string, 'contact_inquiries' | 'partner_inquiries' | 'manufacturing_rfps'> = {
-        contact: 'contact_inquiries',
-        partner: 'partner_inquiries',
-        manufacturing: 'manufacturing_rfps'
-      };
-      await updateInquiryStatus(
-        collectionMap[selectedItem.type],
-        selectedItem.id,
-        newStatus as any,
+      await inquiriesApi.updateStatus(
+        selectedItem.type as any,
+        Number(selectedItem.id),
+        newStatus,
         adminNoteInput || undefined
       );
+      await refreshSubmissions();
       setSelectedItem(prev => prev ? { ...prev, status: newStatus as any, adminNotes: adminNoteInput || prev.adminNotes } : null);
       setNewStatus('');
       setAdminNoteInput('');
@@ -109,7 +107,7 @@ export const FirebasePortalModal: React.FC = () => {
                 </h2>
                 <span className="flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Live Firestore Sync
+                  Live Neon PostgreSQL Sync
                 </span>
               </div>
               <p className="text-xs text-slate-500">

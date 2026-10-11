@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -21,8 +21,10 @@ import {
   ShieldCheck, 
   Layers, 
   Zap,
-  Info
+  Info,
+  Database
 } from 'lucide-react';
+import { laboratoryApi, type FacilitySuiteMetric } from '../services/api';
 
 interface SuiteMetric {
   suite: string;
@@ -190,6 +192,15 @@ const CustomThroughputTooltip: React.FC<CustomTooltipProps> = ({ active, payload
 
 export const FacilityCapacityMetricsChart: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'suites' | 'throughput'>('suites');
+  const [suiteData, setSuiteData] = useState<SuiteMetric[]>(SUITE_CAPACITY_DATA);
+
+  useEffect(() => {
+    laboratoryApi.getSuiteMetrics().then(suites => {
+      if (suites && suites.length > 0) {
+        setSuiteData(suites as any);
+      }
+    }).catch(err => console.warn('Neon suites sync notice:', err));
+  }, []);
 
   return (
     <div className="mt-10 pt-8 border-t border-slate-200">
@@ -200,12 +211,16 @@ export const FacilityCapacityMetricsChart: React.FC = () => {
           <div className="flex items-center gap-2 text-xs font-mono uppercase text-blue-600 font-bold mb-1">
             <Activity className="w-3.5 h-3.5" />
             <span>Operational Throughput & Engineering Telemetry</span>
+            <span className="flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold ml-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Neon DB Telemetry
+            </span>
           </div>
           <h4 className="text-xl sm:text-2xl font-extrabold text-[#0A192F] tracking-tight">
             Bedfordshire Facility Capacity Metrics
           </h4>
           <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl">
-            Real-time visualization of cleanroom suite square footage, current cGMP plant utilization rates, and active fill-finish throughput ceilings.
+            Real-time visualization of cleanroom suite square footage, current cGMP plant utilization rates, and active fill-finish throughput ceilings directly from Neon PostgreSQL.
           </p>
         </div>
 
@@ -311,7 +326,7 @@ export const FacilityCapacityMetricsChart: React.FC = () => {
           <ResponsiveContainer width="100%" height="100%">
             {activeTab === 'suites' ? (
               <ComposedChart
-                data={SUITE_CAPACITY_DATA}
+                data={suiteData}
                 margin={{ top: 20, right: 20, bottom: 25, left: 10 }}
               >
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />

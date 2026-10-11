@@ -20,6 +20,7 @@ import {
   type SubmissionRecord,
   type UserProfileData
 } from '../services/firebaseService';
+import { inquiriesApi } from '../services/api';
 
 export interface RegistrationPayload {
   fullName: string;
@@ -53,6 +54,7 @@ interface FirebaseContextType {
   resendVerification: () => Promise<void>;
   logout: () => Promise<void>;
   submissions: SubmissionRecord[];
+  refreshSubmissions: () => Promise<void>;
   isPortalOpen: boolean;
   openPortal: () => void;
   closePortal: () => void;
@@ -93,9 +95,81 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return () => unsubscribe();
   }, []);
 
+  const refreshSubmissions = async () => {
+    try {
+      const data = await inquiriesApi.getInquiries();
+      const records: SubmissionRecord[] = [];
+      if (data?.contacts) {
+        data.contacts.forEach((c: any) => {
+          records.push({
+            id: String(c.id),
+            type: 'contact',
+            title: c.inquiryType || 'General Inquiry',
+            name: c.name,
+            email: c.email,
+            company: c.company,
+            phone: c.phone,
+            details: c.message,
+            status: (c.status as any) || 'pending',
+            createdAt: c.createdAt,
+            adminNotes: c.adminNotes,
+          });
+        });
+      }
+      if (data?.partners) {
+        data.partners.forEach((p: any) => {
+          records.push({
+            id: String(p.id),
+            type: 'partner',
+            title: p.subject || 'Partner Inquiry',
+            name: p.name,
+            email: p.email,
+            company: p.company,
+            phone: p.phone,
+            details: p.message,
+            status: (p.status as any) || 'pending',
+            createdAt: p.createdAt,
+            adminNotes: p.adminNotes,
+          });
+        });
+      }
+      if (data?.rfps) {
+        data.rfps.forEach((r: any) => {
+          records.push({
+            id: String(r.id),
+            type: 'manufacturing',
+            title: `CDMO: ${r.modality} (${r.targetVolume})`,
+            name: r.name,
+            email: r.email,
+            company: r.company,
+            details: `Phase: ${r.phase} | Fill: ${r.fillFinishFormat} | Timeline: ${r.projectTimeline}${r.notes ? ` | Notes: ${r.notes}` : ''}`,
+            status: (r.status as any) || 'pending',
+            createdAt: r.createdAt,
+            adminNotes: r.adminNotes,
+          });
+        });
+      }
+      records.sort((a, b) => new Date(b.createdAt as any).getTime() - new Date(a.createdAt as any).getTime());
+      setSubmissions(records);
+    } catch (err) {
+      console.warn('Neon inquiries sync notice:', err);
+    }
+  };
+
+  useEffect(() => {
+    refreshSubmissions();
+    const interval = setInterval(refreshSubmissions, 8000);
+    return () => clearInterval(interval);
+  }, [user, isAdmin]);
+
+  useEffect(() => {
+    if (isPortalOpen) {
+      refreshSubmissions();
+    }
+  }, [isPortalOpen]);
+
   useEffect(() => {
     if (!user) {
-      setSubmissions([]);
       setUserProfile(null);
       return;
     }
@@ -104,22 +178,10 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       setUserProfile(profile);
     });
 
-    let unsubInquiries: () => void;
-    if (isAdmin) {
-      unsubInquiries = subscribeToAllInquiriesForAdmin((all) => {
-        setSubmissions(all);
-      });
-    } else {
-      unsubInquiries = subscribeToUserInquiries(user.uid, (mine) => {
-        setSubmissions(mine);
-      });
-    }
-
     return () => {
       unsubProfile();
-      unsubInquiries();
     };
-  }, [user, isAdmin]);
+  }, [user]);
 
   const loginWithGoogle = async (rememberMe: boolean | unknown = true): Promise<User> => {
     try {
@@ -253,6 +315,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         resendVerification,
         logout,
         submissions,
+        refreshSubmissions,
         isPortalOpen,
         openPortal: () => setIsPortalOpen(true),
         closePortal: () => setIsPortalOpen(false),

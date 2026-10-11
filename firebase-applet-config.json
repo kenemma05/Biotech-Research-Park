@@ -1,12 +1,12 @@
 {
-  "projectId": "silken-might-zct7q",
-  "appId": "1:261547712573:web:28065c1f4c9eda41b84a54",
-  "apiKey": "AIzaSyBvPTDEMrEPttCATLWFzHF9gdN7Owl4F-o",
-  "authDomain": "silken-might-zct7q.firebaseapp.com",
-  "firestoreDatabaseId": "ai-studio-bedfordshirebiot-185c0cdd-65ae-4246-86dd-4dfd32672d98",
-  "storageBucket": "silken-might-zct7q.firebasestorage.app",
-  "messagingSenderId": "261547712573",
+  "projectId": "",
+  "appId": "",
+  "apiKey": "",
+  "authDomain": "",
+  "firestoreDatabaseId": "",
+  "storageBucket": "",
+  "messagingSenderId": "",
   "measurementId": "",
-  "oAuthClientId": "261547712573-b8mvpasj0s9o16ikg451usq1ldop56mg.apps.googleusercontent.com",
+  "oAuthClientId": "",
   "recaptchaSiteKey": ""
 }
