@@ -8,7 +8,7 @@ import {
   Eye, 
   EyeOff, 
   Dna, 
-  Database, 
+  ShieldCheck, 
   LogOut, 
   ArrowLeft,
   UserCheck,
@@ -324,7 +324,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
                         onClick={openPortal}
                         className="w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2 transition-colors cursor-pointer"
                       >
-                        <Database className="w-4 h-4" />
+                        <ShieldCheck className="w-4 h-4" />
                         <span>Open Client Portal</span>
                       </button>
 

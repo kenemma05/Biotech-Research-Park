@@ -710,7 +710,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate }) => {
                         onClick={openPortal}
                         className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer"
                       >
-                        <Database className="w-4 h-4" />
+                        <ShieldCheck className="w-4 h-4" />
                         <span>Open Client Portal</span>
                       </button>
                       <button

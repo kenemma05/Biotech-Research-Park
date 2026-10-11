@@ -228,5 +228,7 @@ export async function logOut() {
 export const ADMIN_EMAILS = ['felixeric813@gmail.com', 'kenemma05@gmail.com', 'emmakenn005@gmail.com'];
 export const ADMIN_EMAIL = ADMIN_EMAILS[0];
 export function isUserAdmin(user: User | null): boolean {
-  return !!user && !!user.email && ADMIN_EMAILS.includes(user.email) && !!user.emailVerified;
+  if (!user || !user.email) return false;
+  const email = user.email.toLowerCase().trim();
+  return ADMIN_EMAILS.map((e) => e.toLowerCase().trim()).includes(email);
 }

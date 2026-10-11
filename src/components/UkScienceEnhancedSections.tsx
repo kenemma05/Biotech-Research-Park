@@ -233,7 +233,7 @@ export const UkScienceEnhancedSections: React.FC<UkScienceEnhancedSectionsProps>
                 onClick={() => setShowSeoDrawer(!showSeoDrawer)}
                 className="text-xs font-mono text-slate-500 hover:text-blue-600 flex items-center gap-1.5 border border-slate-200 hover:border-blue-300 px-3 py-1.5 rounded-xl bg-slate-50 transition-colors cursor-pointer self-start sm:self-auto"
               >
-                <Database className="w-3.5 h-3.5 text-blue-600" />
+                <FileText className="w-3.5 h-3.5 text-blue-600" />
                 <span>{showSeoDrawer ? 'Hide Technical Indexing Metadata' : 'Inspect Page Taxonomy & Indexing'}</span>
               </button>
             )}

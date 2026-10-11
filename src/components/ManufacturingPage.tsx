@@ -61,17 +61,15 @@ export const ManufacturingPage: React.FC<ManufacturingPageProps> = ({ onOpenInqu
         projectTimeline: formData.projectTimeline,
         notes: formData.notes || undefined
       });
-      const generatedRef = res?.id ? `NEON-RFP-${res.id}` : `NEON-${Date.now()}`;
-      setSubmittedDocId(generatedRef);
       setFormSubmitted(true);
       showToast({
-        title: 'Manufacturing RFP Saved to Neon',
-        message: `${formData.targetVolume} ${formData.modality} batch specification saved to Neon database (Ref: ${generatedRef}).`,
+        title: 'Thank you!',
+        message: 'Your submission has been received successfully.',
         variant: 'success'
       });
     } catch (err: any) {
       console.error('RFP submission failed:', err);
-      setErrorMsg(err.message || 'Failed to save manufacturing RFP to the Neon database. Please try again.');
+      setErrorMsg('Unable to submit your request at this time. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -210,29 +208,26 @@ export const ManufacturingPage: React.FC<ManufacturingPageProps> = ({ onOpenInqu
         </div>
 
         {formSubmitted ? (
-          <div className="p-8 rounded-2xl bg-blue-50 border border-blue-200 text-center animate-in fade-in duration-300">
+          <div className="p-8 sm:p-12 rounded-2xl bg-emerald-50/60 border border-emerald-200 text-center animate-in fade-in duration-300">
             <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto mb-3" />
-            <h3 className="text-xl font-bold text-[#0A192F] mb-1">Manufacturing RFP Recorded in Neon Database</h3>
-            <p className="text-xs font-mono text-blue-700 font-semibold mb-3 flex items-center justify-center gap-1.5">
-              <Database className="w-3.5 h-3.5" />
-              <span>Neon Database Ref: {submittedDocId || 'Confirmed'}</span>
-            </p>
-            <p className="text-sm text-slate-600 max-w-lg mx-auto">
-              Thank you, {formData.name}. Our Greater London Technical Operations and CDMO leadership will review your {formData.targetVolume} {formData.modality} program specifications and respond via {formData.email} within 2 business days.
+            <h3 className="text-xl sm:text-2xl font-bold text-[#0A192F] mb-2">
+              Thank you! Your submission has been received successfully.
+            </h3>
+            <p className="text-sm text-slate-600 max-w-lg mx-auto leading-relaxed">
+              Thank you, {formData.name}. Our Technical Operations and CDMO leadership will review your program specifications and respond via {formData.email} within 2 business days under standard non-disclosure terms.
             </p>
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <button
                 onClick={() => setFormSubmitted(false)}
-                className="px-6 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-800 text-xs font-mono uppercase hover:bg-slate-50 transition-colors font-bold shadow-sm"
+                className="px-6 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-800 text-xs font-semibold hover:bg-slate-50 transition-colors shadow-xs"
               >
                 Submit Another Batch Profile
               </button>
               <button
                 onClick={openPortal}
-                className="px-6 py-2.5 rounded-xl bg-blue-600 text-white text-xs font-mono uppercase hover:bg-blue-500 transition-colors font-bold shadow-md flex items-center gap-1.5"
+                className="px-6 py-2.5 rounded-xl bg-blue-600 text-white text-xs font-semibold hover:bg-blue-500 transition-colors shadow-md flex items-center gap-1.5"
               >
-                <Database className="w-3.5 h-3.5" />
-                <span>Track in Enterprise Portal</span>
+                <span>View Inquiries Portal</span>
               </button>
             </div>
           </div>

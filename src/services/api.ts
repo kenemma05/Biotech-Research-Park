@@ -1,7 +1,7 @@
 /**
  * @file api.ts
  * CRUD services for Research Inquiries, CDMO Service Requests, and Laboratory Data.
- * Connects with the Express backend backed by Neon PostgreSQL.
+ * Connects with the secure enterprise backend service.
  */
 
 // ---------------------------------------------------------------------

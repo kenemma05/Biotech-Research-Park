@@ -410,7 +410,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={openPortal}
                   className="text-slate-300 hover:text-white flex items-center gap-1.5 font-medium transition-colors cursor-pointer"
                 >
-                  <Database className="w-3.5 h-3.5 text-blue-400" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
                   <span>Client Portal</span>
                   {submissions.length > 0 && (
                     <span className="px-1.5 py-0.2 rounded-full bg-blue-600 text-[10px] font-bold text-white">
@@ -687,7 +687,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={openPortal}
                 className="px-3.5 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-semibold flex items-center gap-2 border border-slate-700 transition-colors cursor-pointer"
               >
-                <Database className="w-3.5 h-3.5 text-blue-400" />
+                <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
                 <span>Client Portal</span>
                 {submissions.length > 0 && (
                   <span className="w-5 h-5 rounded-full bg-blue-600 text-[10px] flex items-center justify-center font-bold text-white">
@@ -1507,7 +1507,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       className="w-full text-left px-3.5 py-2.5 rounded-lg transition-colors flex items-center justify-between text-slate-200 hover:bg-slate-800/60 cursor-pointer"
                     >
                       <div className="flex items-center gap-2.5">
-                        <Database className="w-4 h-4 text-blue-400" />
+                        <ShieldCheck className="w-4 h-4 text-blue-400" />
                         <span>Client Portal</span>
                       </div>
                       {submissions.length > 0 && (

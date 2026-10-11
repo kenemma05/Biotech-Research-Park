@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
@@ -213,13 +215,31 @@ async function startServer() {
     }
   });
 
-  // Neon Database status & healthcheck
+  // Operational health check endpoints (sanitized for public safety)
   app.get('/api/db/health', async (_req, res) => {
     try {
       const health = await testNeonConnection();
-      res.json(health);
+      res.json({
+        ok: health.ok,
+        status: health.ok ? 'healthy' : 'degraded',
+        timestamp: new Date().toISOString(),
+      });
     } catch (error: any) {
-      res.status(500).json({ ok: false, error: error.message });
+      res.status(500).json({ ok: false, status: 'error' });
+    }
+  });
+
+  app.get('/api/health', async (_req, res) => {
+    try {
+      const dbHealth = await testNeonConnection();
+      res.json({
+        ok: dbHealth.ok,
+        status: dbHealth.ok ? 'healthy' : 'degraded',
+        service: 'Bedfordshire Biotech Enterprise Platform',
+        timestamp: new Date().toISOString(),
+      });
+    } catch (error: any) {
+      res.status(500).json({ ok: false, status: 'error' });
     }
   });
 

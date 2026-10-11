@@ -199,7 +199,7 @@ export const FacilityCapacityMetricsChart: React.FC = () => {
       if (suites && suites.length > 0) {
         setSuiteData(suites as any);
       }
-    }).catch(err => console.warn('Neon suites sync notice:', err));
+    }).catch(err => console.warn('Suites sync notice:', err));
   }, []);
 
   return (
@@ -213,14 +213,14 @@ export const FacilityCapacityMetricsChart: React.FC = () => {
             <span>Operational Throughput & Engineering Telemetry</span>
             <span className="flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold ml-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Neon DB Telemetry
+              Live Facility Telemetry
             </span>
           </div>
           <h4 className="text-xl sm:text-2xl font-extrabold text-[#0A192F] tracking-tight">
             Bedfordshire Facility Capacity Metrics
           </h4>
           <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl">
-            Real-time visualization of cleanroom suite square footage, current cGMP plant utilization rates, and active fill-finish throughput ceilings directly from Neon PostgreSQL.
+            Real-time visualization of cleanroom suite square footage, current cGMP plant utilization rates, and active fill-finish throughput ceilings.
           </p>
         </div>
 

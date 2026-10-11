@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { X, Send, CheckCircle2, Phone, Mail, MapPin, Loader2, Database } from 'lucide-react';
+import { X, Send, CheckCircle2, Phone, Mail, MapPin, Loader2 } from 'lucide-react';
 import { CORPORATE_DETAILS } from '../data/biotechData';
 import { inquiriesApi } from '../services/api';
 import { useFirebase } from '../context/FirebaseContext';
 import { useToast } from './GlobalToast';
+import { submissionDiagnostics } from '../utils/submissionDiagnostics';
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -30,7 +31,6 @@ export const ContactModal: React.FC<ContactModalProps> = ({
 
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [submittedDocId, setSubmittedDocId] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
@@ -55,6 +55,16 @@ export const ContactModal: React.FC<ContactModalProps> = ({
     e.preventDefault();
     setSubmitting(true);
     setErrorMsg(null);
+
+    const startTime = performance.now();
+    const attemptId = submissionDiagnostics.startSubmission('partner', '/api/inquiries/partner', {
+      name: formData.name,
+      email: formData.email,
+      company: formData.company || undefined,
+      subjectOrType: formData.subject,
+      message: formData.message,
+    });
+
     try {
       const res = await inquiriesApi.createPartnerInquiry({
         name: formData.name,
@@ -64,17 +74,20 @@ export const ContactModal: React.FC<ContactModalProps> = ({
         subject: formData.subject,
         message: formData.message
       });
-      const generatedRef = res?.id ? `NEON-PTR-${res.id}` : `NEON-${Date.now()}`;
-      setSubmittedDocId(generatedRef);
+      const durationMs = Math.round(performance.now() - startTime);
+      submissionDiagnostics.recordSuccess(attemptId, res.id, durationMs);
+
       setSubmitted(true);
       showToast({
-        title: 'Partner Inquiry Saved to Neon',
-        message: `Your inquiry (${formData.subject}) has been recorded in the Neon PostgreSQL database (Ref: ${generatedRef}).`,
+        title: 'Thank you!',
+        message: 'Your submission has been received successfully.',
         variant: 'success'
       });
     } catch (err: any) {
+      const durationMs = Math.round(performance.now() - startTime);
+      submissionDiagnostics.recordFailure(attemptId, err, err.status || 500, err.statusText, durationMs);
       console.error('Submission failed:', err);
-      setErrorMsg(err.message || 'Failed to save inquiry to the Neon database. Please try again.');
+      setErrorMsg('Unable to submit your message at this time. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -115,35 +128,32 @@ export const ContactModal: React.FC<ContactModalProps> = ({
         </div>
 
         {submitted ? (
-          <div className="my-8 p-6 rounded-2xl bg-blue-50 border border-blue-200 text-center animate-in fade-in duration-200">
-            <CheckCircle2 className="w-10 h-10 text-emerald-600 mx-auto mb-2" />
-            <h3 className="text-lg font-bold text-[#0A192F] mb-1">Inquiry Recorded in Neon Database</h3>
-            <p className="text-xs font-mono text-blue-700 font-semibold mb-2 flex items-center justify-center gap-1.5">
-              <Database className="w-3.5 h-3.5" />
-              <span>Neon Database Ref: {submittedDocId || 'Confirmed'}</span>
+          <div className="my-8 p-6 rounded-2xl bg-emerald-50/60 border border-emerald-200 text-center animate-in fade-in duration-200">
+            <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto mb-3" />
+            <h3 className="text-xl font-bold text-[#0A192F] mb-2">
+              Thank you! Your submission has been received successfully.
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+              Our technical desk will review your inquiry and reach out to {formData.email} within 24 hours under standard non-disclosure terms.
             </p>
-            <p className="text-xs text-slate-600">
-              Thank you, {formData.name}. Our technical desk will reach out to {formData.email} within 24 hours.
-            </p>
-            <div className="mt-5 flex items-center justify-center gap-3">
+            <div className="mt-6 flex items-center justify-center gap-3">
               <button
                 onClick={() => {
                   setSubmitted(false);
                   onClose();
                 }}
-                className="px-4 py-2 border border-slate-300 text-slate-700 text-xs font-mono rounded-lg hover:bg-white shadow-sm font-bold"
+                className="px-5 py-2.5 border border-slate-300 text-slate-700 text-xs rounded-xl hover:bg-white shadow-xs font-semibold"
               >
-                Close Window
+                Close
               </button>
               <button
                 onClick={() => {
                   onClose();
                   openPortal();
                 }}
-                className="px-4 py-2 bg-blue-600 text-white text-xs font-mono rounded-lg hover:bg-blue-500 shadow-md font-bold flex items-center gap-1.5"
+                className="px-5 py-2.5 bg-blue-600 text-white text-xs rounded-xl hover:bg-blue-500 shadow-md font-semibold flex items-center gap-1.5"
               >
-                <Database className="w-3.5 h-3.5" />
-                <span>Track in Portal</span>
+                <span>View Inquiries Portal</span>
               </button>
             </div>
           </div>

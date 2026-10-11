@@ -98,7 +98,7 @@ export const FirebasePortalModal: React.FC = () => {
         <div className="px-6 py-5 border-b border-slate-200 flex items-center justify-between bg-[#F8FAFC]">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
-              <Database className="w-5 h-5" />
+              <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -107,7 +107,7 @@ export const FirebasePortalModal: React.FC = () => {
                 </h2>
                 <span className="flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Live Neon PostgreSQL Sync
+                  Active Enterprise Sync
                 </span>
               </div>
               <p className="text-xs text-slate-500">
@@ -149,7 +149,7 @@ export const FirebasePortalModal: React.FC = () => {
           ) : (
             <div className="flex items-center gap-2 text-slate-600">
               <ShieldAlert className="w-4 h-4 text-amber-500" />
-              <span>Signed out. Forms submitted will still write dynamically to Firestore database.</span>
+              <span>Sign in to review your saved submissions and receive status notifications.</span>
             </div>
           )}
 
@@ -179,11 +179,11 @@ export const FirebasePortalModal: React.FC = () => {
           {!user ? (
             <div className="text-center py-12 px-4 max-w-md mx-auto space-y-4">
               <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto shadow-inner">
-                <Database className="w-7 h-7" />
+                <ShieldCheck className="w-7 h-7" />
               </div>
-              <h3 className="text-lg font-bold text-[#0A192F]">Dynamic Form Submissions Connected</h3>
+              <h3 className="text-lg font-bold text-[#0A192F]">Enterprise Submissions Portal</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                All forms on this website (Contact Us, Partner Inquiries, CDMO RFP batch reservations, and technical newsletter) dynamically dispatch and persist records into the Google Cloud Firestore backend.
+                Review and track your submissions, technical consultations, CDMO batch reservations, and partnership inquiries in real time.
               </p>
               <div className="pt-2">
                 <button

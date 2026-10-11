@@ -9,13 +9,13 @@ import {
   Clock,
   Globe,
   ExternalLink,
-  Loader2,
-  Database
+  Loader2
 } from 'lucide-react';
 import { CORPORATE_DETAILS } from '../data/biotechData';
 import { inquiriesApi } from '../services/api';
 import { useFirebase } from '../context/FirebaseContext';
 import { useToast } from './GlobalToast';
+import { submissionDiagnostics } from '../utils/submissionDiagnostics';
 
 interface ContactSectionProps {
   initialSubject?: string;
@@ -36,7 +36,6 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialSubject =
 
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [submittedDocId, setSubmittedDocId] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
@@ -53,6 +52,16 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialSubject =
     e.preventDefault();
     setSubmitting(true);
     setErrorMsg(null);
+
+    const startTime = performance.now();
+    const attemptId = submissionDiagnostics.startSubmission('contact', '/api/inquiries/contact', {
+      name: formData.name,
+      email: formData.email,
+      company: formData.company || undefined,
+      subjectOrType: formData.inquiryType,
+      message: formData.message,
+    });
+
     try {
       const response = await inquiriesApi.createContactInquiry({
         name: formData.name,
@@ -62,17 +71,20 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialSubject =
         inquiryType: formData.inquiryType,
         message: formData.message
       });
-      const generatedRef = response?.id ? `NEON-INQ-${response.id}` : `NEON-${Date.now()}`;
-      setSubmittedDocId(generatedRef);
+      const durationMs = Math.round(performance.now() - startTime);
+      submissionDiagnostics.recordSuccess(attemptId, response.id, durationMs);
+
       setSubmitted(true);
       showToast({
-        title: 'Inquiry Saved to Neon Database',
-        message: `Thank you, ${formData.name}. Your inquiry is recorded in the Neon PostgreSQL database. Reference: ${generatedRef}.`,
+        title: 'Thank you!',
+        message: 'Your submission has been received successfully.',
         variant: 'success'
       });
     } catch (err: any) {
+      const durationMs = Math.round(performance.now() - startTime);
+      submissionDiagnostics.recordFailure(attemptId, err, err.status || 500, err.statusText, durationMs);
       console.error('Submission failed:', err);
-      setErrorMsg(err.message || 'Failed to save inquiry to the Neon database. Please try again.');
+      setErrorMsg('Unable to submit your inquiry at this time. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -253,29 +265,26 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialSubject =
         </div>
 
         {submitted ? (
-          <div className="p-8 text-center bg-white border border-blue-200 rounded-2xl shadow-sm animate-in fade-in duration-200">
+          <div className="p-8 sm:p-12 text-center bg-white border border-emerald-200 rounded-2xl shadow-sm animate-in fade-in duration-200">
             <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto mb-3" />
-            <h3 className="text-xl font-bold text-[#0A192F] mb-1">Inquiry Recorded in Neon Database</h3>
-            <p className="text-xs font-mono text-blue-600 font-semibold mb-2 flex items-center justify-center gap-1.5">
-              <Database className="w-3.5 h-3.5" />
-              <span>Stored in Neon PostgreSQL Database · Ref: {submittedDocId || 'Confirmed'}</span>
-            </p>
-            <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto">
-              Thank you, {formData.name}. Your inquiry has been stored directly in the Neon PostgreSQL database and routed to our Greater London operations team. We will respond to {formData.email} within 24 hours.
+            <h3 className="text-xl sm:text-2xl font-bold text-[#0A192F] mb-2">
+              Thank you! Your submission has been received successfully.
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto leading-relaxed">
+              Thank you, {formData.name}. Your inquiry has been routed to our corporate advisory team. We will review your requirements and respond to {formData.email} within 24 hours under standard non-disclosure terms.
             </p>
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <button
                 onClick={() => setSubmitted(false)}
-                className="px-5 py-2.5 rounded-xl border border-slate-300 text-xs font-mono uppercase text-slate-700 hover:bg-slate-50 transition-colors"
+                className="px-5 py-2.5 rounded-xl border border-slate-300 text-xs text-slate-700 hover:bg-slate-50 transition-colors font-semibold"
               >
                 Send Another Message
               </button>
               <button
                 onClick={openPortal}
-                className="px-5 py-2.5 rounded-xl bg-blue-600 text-xs font-mono uppercase text-white hover:bg-blue-500 transition-colors shadow-md flex items-center gap-1.5"
+                className="px-5 py-2.5 rounded-xl bg-blue-600 text-xs text-white hover:bg-blue-500 transition-colors shadow-md flex items-center gap-1.5 font-semibold"
               >
-                <Database className="w-3.5 h-3.5" />
-                <span>Track in Enterprise Portal</span>
+                <span>View Inquiries Portal</span>
               </button>
             </div>
           </div>

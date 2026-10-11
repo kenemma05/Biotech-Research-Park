@@ -152,7 +152,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       records.sort((a, b) => new Date(b.createdAt as any).getTime() - new Date(a.createdAt as any).getTime());
       setSubmissions(records);
     } catch (err) {
-      console.warn('Neon inquiries sync notice:', err);
+      console.warn('Inquiries sync notice:', err);
     }
   };
 

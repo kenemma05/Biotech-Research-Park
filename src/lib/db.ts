@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import { Pool, PoolConfig } from 'pg';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { neon, NeonQueryFunction } from '@neondatabase/serverless';
@@ -82,26 +84,94 @@ export async function query<T = any>(text: string, params?: any[]): Promise<T[]>
   }
 }
 
-// 5. Connection health check
-export async function testNeonConnection(): Promise<{ ok: boolean; message: string; timestamp?: string }> {
+export interface NeonDiagnosticReport {
+  ok: boolean;
+  status: 'connected' | 'unconfigured' | 'error';
+  message: string;
+  database: string | null;
+  serverTime?: string;
+  latencyMs?: number;
+  projectId?: string;
+  branch?: string;
+  tables?: {
+    contactInquiries: number;
+    partnerInquiries: number;
+    manufacturingRfps: number;
+  };
+  details?: Record<string, any>;
+  timestamp: string;
+}
+
+// 5. Connection health check with detailed diagnostic telemetry
+export async function testNeonConnection(): Promise<NeonDiagnosticReport> {
+  const timestamp = new Date().toISOString();
+  const projectId = process.env.NEON_PROJECT_ID || 'steep-haze-58773380';
+  const branch = process.env.NEON_BRANCH || 'production';
+
   if (!isDatabaseConfigured || !neonPool) {
     return {
       ok: false,
+      status: 'unconfigured',
       message: 'Neon connection is unconfigured (DATABASE_URL not set). In-memory mock layer is active.',
+      database: null,
+      projectId,
+      branch,
+      timestamp,
     };
   }
 
+  const startTime = performance.now();
   try {
-    const res = await neonPool.query('SELECT NOW() as current_time, current_database() as db_name');
+    const res = await neonPool.query('SELECT NOW() as current_time, current_database() as db_name, version() as pg_version');
+    const latencyMs = Math.round(performance.now() - startTime);
+
+    // Count inquiries to confirm table readiness
+    let tableCounts = { contactInquiries: 0, partnerInquiries: 0, manufacturingRfps: 0 };
+    try {
+      const cRes = await neonPool.query('SELECT count(*) as c FROM contact_inquiries');
+      const pRes = await neonPool.query('SELECT count(*) as c FROM partner_inquiries');
+      const rRes = await neonPool.query('SELECT count(*) as c FROM manufacturing_rfps');
+      tableCounts = {
+        contactInquiries: parseInt(cRes.rows[0]?.c || '0', 10),
+        partnerInquiries: parseInt(pRes.rows[0]?.c || '0', 10),
+        manufacturingRfps: parseInt(rRes.rows[0]?.c || '0', 10),
+      };
+    } catch (tableErr) {
+      console.warn('[Diagnostics] Table verification warning:', tableErr);
+    }
+
+    const dbName = res.rows[0]?.db_name || 'neondb';
     return {
       ok: true,
-      message: `Connected to Neon database: ${res.rows[0]?.db_name}`,
-      timestamp: res.rows[0]?.current_time?.toISOString(),
+      status: 'connected',
+      message: `Successfully connected to Neon PostgreSQL database: ${dbName}`,
+      database: dbName,
+      serverTime: res.rows[0]?.current_time?.toISOString(),
+      latencyMs,
+      projectId,
+      branch,
+      tables: tableCounts,
+      details: {
+        poolMax: 10,
+        ssl: true,
+      },
+      timestamp,
     };
   } catch (error: any) {
+    const latencyMs = Math.round(performance.now() - startTime);
     return {
       ok: false,
+      status: 'error',
       message: `Neon connection check failed: ${error.message}`,
+      database: null,
+      latencyMs,
+      projectId,
+      branch,
+      details: {
+        code: error.code,
+        routine: error.routine,
+      },
+      timestamp,
     };
   }
 }

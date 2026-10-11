@@ -270,9 +270,27 @@ export async function createContactInquiryRecord(data: {
           status: 'pending',
         })
         .returning();
+
+      // Mirror to partner_inquiries table so inquiries appear under both tables in Neon console
+      try {
+        await db.insert(partnerInquiries).values({
+          userId: data.userId ?? null,
+          name: data.name,
+          email: data.email,
+          phone: data.phone || null,
+          company: data.company || null,
+          subject: data.inquiryType,
+          message: data.message,
+          status: 'pending',
+        });
+      } catch (mirrorErr) {
+        console.warn('[Neon Sync] Minor issue mirroring to partner_inquiries:', mirrorErr);
+      }
+
       return result[0];
     } catch (error) {
-      console.warn('Database query failed in createContactInquiryRecord, falling back to in-memory store:', error);
+      console.error('[Neon DB Error] Failed to insert contact inquiry into Neon:', error);
+      throw error;
     }
   }
 
@@ -318,9 +336,27 @@ export async function createPartnerInquiryRecord(data: {
           status: 'pending',
         })
         .returning();
+
+      // Mirror to contact_inquiries table so inquiries appear under both tables in Neon console
+      try {
+        await db.insert(contactInquiries).values({
+          userId: data.userId ?? null,
+          name: data.name,
+          email: data.email,
+          phone: data.phone || null,
+          company: data.company || null,
+          inquiryType: data.subject,
+          message: data.message,
+          status: 'pending',
+        });
+      } catch (mirrorErr) {
+        console.warn('[Neon Sync] Minor issue mirroring to contact_inquiries:', mirrorErr);
+      }
+
       return result[0];
     } catch (error) {
-      console.warn('Database query failed in createPartnerInquiryRecord, falling back to in-memory store:', error);
+      console.error('[Neon DB Error] Failed to insert partner inquiry into Neon:', error);
+      throw error;
     }
   }
 
@@ -374,7 +410,8 @@ export async function createManufacturingRfpRecord(data: {
         .returning();
       return result[0];
     } catch (error) {
-      console.warn('Database query failed in createManufacturingRfpRecord, falling back to in-memory store:', error);
+      console.error('[Neon DB Error] Failed to insert manufacturing RFP into Neon:', error);
+      throw error;
     }
   }
 
@@ -417,7 +454,8 @@ export async function createNewsletterSubscription(email: string, source: string
         .returning();
       return result[0];
     } catch (error) {
-      console.warn('Database query failed in createNewsletterSubscription, falling back to in-memory store:', error);
+      console.error('[Neon DB Error] Failed to insert newsletter subscriber into Neon:', error);
+      throw error;
     }
   }
 

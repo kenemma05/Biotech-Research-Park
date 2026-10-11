@@ -28,14 +28,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => 
       await newsletterApi.subscribe(newsletterEmail, 'website_footer');
       setSubscribed(true);
       showToast({
-        title: 'Subscribed to Neon R&D Briefing',
-        message: `${newsletterEmail} has been added to our Neon database newsletter registry.`,
+        title: 'Thank you!',
+        message: 'Your submission has been received successfully. You have been subscribed to our R&D briefings.',
         variant: 'success'
       });
       setNewsletterEmail('');
     } catch (err: any) {
       console.error('Newsletter subscription failed:', err);
-      setNewsletterError(err.message || 'Subscription failed. Please try again.');
+      setNewsletterError('Subscription could not be processed at this time. Please try again.');
     } finally {
       setSubscribing(false);
     }
@@ -311,8 +311,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => 
               onClick={openPortal}
               className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-blue-300 hover:text-white text-xs font-bold flex items-center justify-center gap-2 transition-colors shrink-0"
             >
-              <Database className="w-3.5 h-3.5 text-blue-400" />
-              <span>Submissions Portal {submissions.length > 0 ? `(${submissions.length})` : ''}</span>
+              <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+              <span>Client Portal {submissions.length > 0 ? `(${submissions.length})` : ''}</span>
             </button>
           </div>
         </div>
