@@ -91,7 +91,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
         </button>
 
         <div className="text-xs font-mono uppercase text-blue-600 font-bold mb-1">
-          BIOTECH RESEARCH PARK (Operating as Bedfordshire Biotech) · Reg: {CORPORATE_DETAILS.registrationNumber}
+          Business: Bedfordshire Biotech is registered as BIOTECH RESEARCH PARK · Registered Company Name: BIOTECH RESEARCH PARK · Company number {CORPORATE_DETAILS.registrationNumber}
         </div>
         <h2 className="text-2xl font-extrabold text-[#0A192F]">
           Direct Enterprise Engagement

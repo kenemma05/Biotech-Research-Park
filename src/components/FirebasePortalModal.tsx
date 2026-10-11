@@ -113,7 +113,7 @@ export const FirebasePortalModal: React.FC = () => {
                 </span>
               </div>
               <p className="text-xs text-slate-500">
-                BIOTECH RESEARCH PARK (Operating as Bedfordshire Biotech) · Real-Time Backend
+                Business: Bedfordshire Biotech is registered as BIOTECH RESEARCH PARK · Registered Company Name: BIOTECH RESEARCH PARK · Company number 11399495
               </p>
             </div>
           </div>

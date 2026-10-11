@@ -465,7 +465,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 BIOTECH RESEARCH PARK
               </span>
               <span className="text-[10px] sm:text-[11px] font-mono tracking-wider text-slate-300">
-                Operating as <span className="text-blue-400 font-semibold">Bedfordshire Biotech</span>
+                Business: <span className="text-blue-400 font-semibold">Bedfordshire Biotech</span> · Company number 11399495
               </span>
             </div>
           </button>

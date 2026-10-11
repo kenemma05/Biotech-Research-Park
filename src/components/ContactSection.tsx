@@ -89,8 +89,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialSubject =
         <h2 className="text-3xl sm:text-5xl font-extrabold text-[#0A192F] tracking-tight">
           Connect with BIOTECH RESEARCH PARK
         </h2>
-        <p className="text-sm font-mono text-blue-700 font-semibold mt-1">
-          Operating as Bedfordshire Biotech · Company Reg No.: {CORPORATE_DETAILS.registrationNumber}
+        <p className="text-sm font-mono text-blue-700 font-semibold mt-1.5">
+          Business: Bedfordshire Biotech is registered as BIOTECH RESEARCH PARK · Registered Company Name: BIOTECH RESEARCH PARK · Company number {CORPORATE_DETAILS.registrationNumber}
         </p>
         <p className="mt-3 text-base text-slate-600 leading-relaxed">
           Whether you are evaluating our CDMO biomanufacturing suites, out-licensing clinical assets, or scheduling an on-site audit at our Greater London facility, our corporate team responds under mutual NDA within 24 hours.
@@ -114,7 +114,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialSubject =
                 <h3 className="text-lg font-bold text-[#0A192F]">Registered Office Address</h3>
               </div>
               <span className="text-[11px] font-mono text-slate-600 bg-white px-2.5 py-1 rounded-md border border-slate-200 font-semibold shadow-xs">
-                Reg: {CORPORATE_DETAILS.registrationNumber}
+                Company number {CORPORATE_DETAILS.registrationNumber}
               </span>
             </div>
 
@@ -122,7 +122,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialSubject =
               <div className="flex items-start gap-3 text-slate-700">
                 <MapPin className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />
                 <div className="leading-relaxed">
-                  <span className="font-bold text-[#0A192F] block">BIOTECH RESEARCH PARK</span>
+                  <span className="font-bold text-[#0A192F] block">Registered Company Name: BIOTECH RESEARCH PARK</span>
+                  <span className="text-blue-700 font-mono font-semibold text-[11px] block mb-0.5">Business: Bedfordshire Biotech is registered as BIOTECH RESEARCH PARK (Company number 11399495)</span>
                   <span className="text-slate-600 block">c/o Hunters Law LLP</span>
                   <span className="text-slate-600 block">Lincoln's Inn, 9 New Square</span>
                   <span className="text-slate-600 block">London, Greater London</span>

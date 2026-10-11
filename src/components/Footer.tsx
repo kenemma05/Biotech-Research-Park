@@ -59,8 +59,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => 
                 <span className="font-display font-bold text-lg text-white tracking-tight block">
                   {CORPORATE_DETAILS.registeredCorporateName}
                 </span>
-                <span className="text-[11px] font-mono uppercase tracking-widest text-slate-300">
-                  (Operating as {CORPORATE_DETAILS.operatingName})
+                <span className="text-[11px] font-mono uppercase tracking-widest text-slate-300 block">
+                  Business: {CORPORATE_DETAILS.operatingName} is registered as {CORPORATE_DETAILS.registeredCorporateName}
                 </span>
               </div>
             </div>
@@ -69,8 +69,20 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => 
               Integrated life sciences enterprise operating advanced genomic engineering, recombinant biochemistry, and cGMP third-party pharmaceutical biomanufacturing from Greater London, United Kingdom, with corporate liaison in the United States.
             </p>
 
-            <div className="pt-2 flex flex-wrap items-center gap-3 text-[11px] font-mono text-slate-300">
-              <span className="text-white font-semibold">Company Reg No.: {CORPORATE_DETAILS.registrationNumber}</span>
+            <div className="p-3 rounded-xl bg-slate-900/70 border border-slate-700/80 space-y-1 text-[11px] font-mono text-slate-300 max-w-md">
+              <div className="text-white font-semibold">
+                Business: Bedfordshire Biotech is registered as BIOTECH RESEARCH PARK
+              </div>
+              <div>
+                Registered Company Name: <span className="text-cyan-300 font-semibold">BIOTECH RESEARCH PARK</span>
+              </div>
+              <div>
+                Company number <span className="text-white font-bold">{CORPORATE_DETAILS.registrationNumber}</span>
+              </div>
+            </div>
+
+            <div className="pt-1 flex flex-wrap items-center gap-3 text-[11px] font-mono text-slate-300">
+              <span className="text-white font-semibold">Company number {CORPORATE_DETAILS.registrationNumber}</span>
               <span>·</span>
               <span className="text-blue-400 font-semibold">MHRA Licence: UK-GMP-48201</span>
               <span>·</span>
@@ -128,12 +140,17 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => 
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('publications')} className="hover:text-blue-400 transition-colors">
+                <button onClick={() => onNavigate('publications')} className="hover:text-blue-400 transition-colors cursor-pointer">
                   Publications
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('register')} className="hover:text-blue-400 transition-colors">
+                <button onClick={() => onNavigate('faqs')} className="hover:text-blue-400 transition-colors cursor-pointer font-semibold text-cyan-300">
+                  FAQs
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('register')} className="hover:text-blue-400 transition-colors cursor-pointer">
                   Register Partner Account
                 </button>
               </li>
@@ -317,7 +334,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => 
                   <h4 className="text-sm font-bold text-white">Registered Office Address</h4>
                 </div>
                 <span className="text-[10px] font-mono text-slate-300 bg-slate-800 px-2 py-0.5 rounded border border-slate-700">
-                  Reg: {CORPORATE_DETAILS.registrationNumber}
+                  Company number {CORPORATE_DETAILS.registrationNumber}
                 </span>
               </div>
 
@@ -325,7 +342,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => 
                 <div className="flex items-start gap-2.5 text-slate-300">
                   <MapPin className="w-4 h-4 text-blue-400 mt-0.5 shrink-0" />
                   <div className="leading-relaxed">
-                    <span className="font-semibold text-white block">BIOTECH RESEARCH PARK</span>
+                    <span className="font-semibold text-white block">Registered Company Name: BIOTECH RESEARCH PARK</span>
+                    <span className="text-cyan-300 text-[11px] font-mono block mb-0.5">Business: Bedfordshire Biotech is registered as BIOTECH RESEARCH PARK (Company number 11399495)</span>
                     <span className="text-slate-300 block">c/o Hunters Law LLP</span>
                     <span className="text-slate-300 block">Lincoln's Inn, 9 New Square</span>
                     <span className="text-slate-300 block">London, Greater London</span>
@@ -412,7 +430,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => 
         {/* Bottom Bar: Copyright & Compliance */}
         <div className="pt-8 border-t border-slate-700/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400 font-mono">
           <div>
-            © 2026 BIOTECH RESEARCH PARK (Operating as Bedfordshire Biotech). All rights reserved. Company Reg No.: {CORPORATE_DETAILS.registrationNumber} (Registered in England & Wales).
+            © 2026 Business: Bedfordshire Biotech is registered as BIOTECH RESEARCH PARK · Registered Company Name: BIOTECH RESEARCH PARK · Company number {CORPORATE_DETAILS.registrationNumber} (Registered in England & Wales).
           </div>
           <div className="flex flex-wrap items-center gap-4">
             <a href={CORPORATE_DETAILS.officialWebsite} className="text-blue-400 hover:text-blue-300">
@@ -420,6 +438,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => 
             </a>
             <span>·</span>
             <span className="text-slate-300">MHRA cGMP Verified</span>
+            <span>·</span>
+            <button onClick={() => onNavigate('faqs')} className="text-blue-400 hover:text-blue-300 transition-colors cursor-pointer">
+              FAQs
+            </button>
             <span>·</span>
             <span>Privacy Policy</span>
             <span>·</span>

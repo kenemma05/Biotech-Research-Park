@@ -48,8 +48,8 @@ export const AboutView: React.FC<AboutViewProps> = ({
         <h1 className="text-3xl sm:text-5xl font-extrabold text-[#0A192F] tracking-tight leading-tight">
           BIOTECH RESEARCH PARK
         </h1>
-        <p className="text-sm sm:text-base font-mono text-blue-700 font-semibold mt-1">
-          Operating as Bedfordshire Biotech · Company Reg No.: {CORPORATE_DETAILS.registrationNumber}
+        <p className="text-sm sm:text-base font-mono text-blue-700 font-semibold mt-1.5">
+          Business: Bedfordshire Biotech is registered as BIOTECH RESEARCH PARK · Registered Company Name: BIOTECH RESEARCH PARK · Company number {CORPORATE_DETAILS.registrationNumber}
         </p>
         <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-3xl leading-relaxed">
           Bridging scientific discovery and commercial biomanufacturing. We provide the physical, intellectual, and regulatory foundation for next-generation medicine across Britain and the world.
@@ -513,15 +513,19 @@ export const AboutView: React.FC<AboutViewProps> = ({
 
             <div className="space-y-2.5 text-xs text-slate-700">
               <div className="flex justify-between py-1.5 border-b border-slate-200/60">
-                <span className="text-slate-500">Registered Corporate Name</span>
+                <span className="text-slate-500">Business Registration Status</span>
+                <span className="font-bold text-blue-700">Bedfordshire Biotech is registered as BIOTECH RESEARCH PARK</span>
+              </div>
+              <div className="flex justify-between py-1.5 border-b border-slate-200/60">
+                <span className="text-slate-500">Registered Company Name</span>
                 <span className="font-bold text-[#0A192F]">BIOTECH RESEARCH PARK</span>
               </div>
               <div className="flex justify-between py-1.5 border-b border-slate-200/60">
-                <span className="text-slate-500">Operating Trading Name</span>
+                <span className="text-slate-500">Operating Business Name</span>
                 <span className="font-bold text-blue-700">Bedfordshire Biotech</span>
               </div>
               <div className="flex justify-between py-1.5 border-b border-slate-200/60">
-                <span className="text-slate-500">Company Registration Number</span>
+                <span className="text-slate-500">Company number</span>
                 <span className="font-mono font-bold text-[#0A192F]">11399495</span>
               </div>
               <div className="flex justify-between py-1.5 border-b border-slate-200/60">

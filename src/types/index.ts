@@ -9,6 +9,7 @@ export type PageView =
   | 'manufacturing'
   | 'blog'
   | 'publications'
+  | 'faqs'
   | 'contacts'
   | 'login'
   | 'register'
@@ -88,4 +89,24 @@ export interface BlogPost {
     label: string;
     value: string;
   }[];
+  fullSections?: {
+    heading?: string;
+    paragraphs: string[];
+  }[];
+  executiveContact?: {
+    sectionTitle: string;
+    subtitle: string;
+    name: string;
+    role: string;
+    organization: string;
+    registeredOfficeLabel: string;
+    registeredOfficeLines: string[];
+    tel: string;
+    faxMail: string;
+    emails: string[];
+    website: string;
+    closingHeading: string;
+    closingParagraphs: string[];
+    signOff: string;
+  };
 }

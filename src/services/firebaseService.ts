@@ -78,6 +78,25 @@ export interface SubmissionRecord {
   adminNotes?: string;
 }
 
+async function postToRelationalApi(endpoint: string, body: Record<string, any>) {
+  try {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+    if (auth.currentUser) {
+      const token = await auth.currentUser.getIdToken();
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    await fetch(endpoint, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(body),
+    });
+  } catch (err) {
+    console.warn('Relational sync warning:', err);
+  }
+}
+
 // 1. Submit General Contact Inquiry
 export async function submitContactInquiry(data: ContactInquiryPayload): Promise<string> {
   const path = 'contact_inquiries';
@@ -101,6 +120,7 @@ export async function submitContactInquiry(data: ContactInquiryPayload): Promise
       payload.userId = auth.currentUser.uid;
     }
 
+    await postToRelationalApi('/api/inquiries/contact', payload);
     const docRef = await addDoc(collection(db, path), payload);
     return docRef.id;
   } catch (error) {
@@ -131,6 +151,7 @@ export async function submitPartnerInquiry(data: PartnerInquiryPayload): Promise
       payload.userId = auth.currentUser.uid;
     }
 
+    await postToRelationalApi('/api/inquiries/partner', payload);
     const docRef = await addDoc(collection(db, path), payload);
     return docRef.id;
   } catch (error) {
@@ -164,6 +185,7 @@ export async function submitManufacturingRfp(data: ManufacturingRfpPayload): Pro
       payload.userId = auth.currentUser.uid;
     }
 
+    await postToRelationalApi('/api/inquiries/manufacturing', payload);
     const docRef = await addDoc(collection(db, path), payload);
     return docRef.id;
   } catch (error) {
@@ -180,6 +202,7 @@ export async function subscribeNewsletter(email: string, source: string = 'foote
       source: source.trim().slice(0, 100),
       createdAt: serverTimestamp()
     };
+    await postToRelationalApi('/api/newsletter', payload);
     const docRef = await addDoc(collection(db, path), payload);
     return docRef.id;
   } catch (error) {
@@ -435,6 +458,7 @@ export async function saveUserProfile(data: Omit<UserProfileData, 'createdAt' | 
       payload.zipPostalCode = data.zipPostalCode.trim().slice(0, 30);
     }
 
+    await postToRelationalApi('/api/profile', payload);
     await setDoc(docRef, payload);
   } catch (error) {
     handleFirestoreError(error, OperationType.CREATE, path);

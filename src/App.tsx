@@ -19,6 +19,7 @@ import { ProductsView } from './components/ProductsView';
 import { UkScienceView } from './components/UkScienceView';
 import { StandaloneSubTopicPageView } from './components/StandaloneSubTopicPageView';
 import { BlogSection } from './components/BlogSection';
+import { FaqsView } from './components/FaqsView';
 import { LoginPage } from './components/LoginPage';
 import { RegisterPage } from './components/RegisterPage';
 import { ContactSection } from './components/ContactSection';
@@ -55,7 +56,7 @@ export default function App() {
         if (getSubTopicPage(path) || getUkSciencePage(path) || getResearchPage(path) || getProductPage(path)) return path;
         const validRoutes: PageView[] = [
           'home', 'about', 'science', 'products', 'research', 
-          'uk-science', 'bedfordshire-uk', 'manufacturing', 'blog', 'publications', 'contacts',
+          'uk-science', 'bedfordshire-uk', 'manufacturing', 'blog', 'publications', 'faqs', 'contacts',
           'login', 'register'
         ];
         if (validRoutes.includes(path as PageView)) return path as PageView;
@@ -68,8 +69,21 @@ export default function App() {
     return 'home';
   };
 
-  const [currentPage, setCurrentPage] = useState<PageView>(getInitialPage);
-  const [selectedCapabilityId, setSelectedCapabilityId] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState<PageView>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('post')) return 'publications';
+    }
+    return getInitialPage();
+  });
+  const [selectedCapabilityId, setSelectedCapabilityId] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const postParam = params.get('post');
+      if (postParam) return postParam;
+    }
+    return null;
+  });
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [contactSubject, setContactSubject] = useState<string>('General Enterprise Inquiry');
 
@@ -462,6 +476,14 @@ export default function App() {
                   initialPostId={selectedCapabilityId}
                 />
               </div>
+            )}
+
+            {/* VIEW: FAQS */}
+            {currentPage === 'faqs' && (
+              <FaqsView
+                onOpenContact={handleOpenContact}
+                onNavigateToPublications={() => handleNavigate('publications')}
+              />
             )}
 
             {/* VIEW: LOGIN */}

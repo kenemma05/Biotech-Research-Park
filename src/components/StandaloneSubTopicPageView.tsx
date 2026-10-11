@@ -164,7 +164,7 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
         metaDesc.setAttribute('content', pageData.seoMetadata.metaDescription);
       }
     } else {
-      document.title = `${pageData.title} | Bedfordshire Biotech Limited`;
+      document.title = `${pageData.title} | Bedfordshire Biotech — BIOTECH RESEARCH PARK (Company number 11399495)`;
     }
   }, [pageData]);
 

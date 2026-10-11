@@ -32,6 +32,13 @@ export const PUB_GOLDEN_TRIANGLE_IMAGE = '/src/assets/images/pub_golden_triangle
 export const PUB_MRNA_LNP_IMAGE = '/src/assets/images/pub_mrna_lnp_microfluidics_1791520265708.jpg';
 export const PUB_EL_MASS_SPEC_IMAGE = '/src/assets/images/pub_extractables_leachables_mass_spec_1791520276006.jpg';
 export const PUB_PERFUSION_BIOREACTOR_IMAGE = '/src/assets/images/pub_continuous_perfusion_bioreactor_1791520285599.jpg';
+export const PUB_BIO_STINGRAYCIN_PELLETS_IMAGE = '/src/assets/images/pub_bio_stingraycin_pellets_1791533272407.jpg';
+export const PUB_STINGRAYCIN_QUALITY_ASSAY_IMAGE = '/src/assets/images/pub_stingraycin_quality_assay_1791533283140.jpg';
+export const PUB_BIO_STINGRAYCIN_FLUID_IMAGE = '/src/assets/images/pub_bio_stingraycin_fluid_1791533778380.jpg';
+export const PUB_STINGRAYCIN_FLUID_FILTRATION_IMAGE = '/src/assets/images/pub_stingraycin_fluid_filtration_1791533790675.jpg';
+export const PUB_CORNERSTONES_MEDICAL_IMAGE = '/src/assets/images/pub_cornerstones_medical_advancement_1791535215882.jpg';
+export const PUB_LIFE_SCIENCES_COLLABORATORS_IMAGE = '/src/assets/images/pub_life_sciences_collaborators_network_1791535228117.jpg';
+export const PUB_INDIA_SOURCING_SUPPLY_IMAGE = '/src/assets/images/pub_india_sourcing_supply_chain_1791535240647.jpg';
 
 export const PIPELINE_ASSETS: PipelineAsset[] = [
   {
@@ -287,6 +294,398 @@ export const RESEARCH_CENTERS: ResearchCenter[] = [
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    id: 'blog-cornerstones-medical-advancement',
+    slug: 'unveiling-the-cornerstones-of-medical-advancement',
+    title: 'Unveiling the Cornerstones of Medical Advancement',
+    category: 'UK Science & Innovation',
+    author: {
+      name: 'Mr. Thomas Meany',
+      role: 'Chief Executive Officer / Chair-Person, Bedfordshire Biotech by BIOTECH RESEARCH PARK',
+      avatarInitials: 'TM'
+    },
+    date: '09 October 2026',
+    readTime: '5 min read',
+    excerpt: 'Bedfordshire Biotech by BIOTECH RESEARCH PARK outlines the foundational pillars driving next-generation medical advancement—integrating translational molecular biology, cGMP biopharmaceutical engineering, rigorous analytical validation, and global collaborative supply resilience.',
+    contentSnippet: 'True medical advancement rests on the convergence of four indispensable cornerstones: fundamental scientific discovery, precision formulation and bioprocess scalability, uncompromising regulatory quality assurance, and strategic global partnerships. At Bedfordshire Biotech by BIOTECH RESEARCH PARK, we bridge laboratory breakthroughs with clinical reality to deliver transformative therapies and critical biochemical materials worldwide.',
+    tags: ['Medical Advancement', 'Translational Research', 'Biopharmaceutical R&D', 'Executive Vision'],
+    image: PUB_CORNERSTONES_MEDICAL_IMAGE,
+    imageCaption: 'Bedfordshire Biotech by BIOTECH RESEARCH PARK integrated translational discovery, molecular modeling, and cGMP bioprocessing suites.',
+    galleryImages: [
+      {
+        url: PUB_CORNERSTONES_MEDICAL_IMAGE,
+        caption: 'Fig 1.1: Integrated molecular drug discovery and high-throughput genomic sequencing at Bedfordshire Biotech.'
+      },
+      {
+        url: CAPABILITIES_ANALYTICAL_IMAGE,
+        caption: 'Fig 1.2: Precision analytical characterization and stability qualification supporting global regulatory filings.'
+      }
+    ],
+    keyMetrics: [
+      { label: 'Core Pillars', value: '4 Strategic Domains' },
+      { label: 'Quality Standard', value: 'MHRA / FDA / EMA cGMP' },
+      { label: 'Global Mission', value: 'Patient Health & Discovery' }
+    ],
+    fullSections: [
+      {
+        heading: '1. Translational Scientific Discovery & Molecular Precision',
+        paragraphs: [
+          'At Bedfordshire Biotech by BIOTECH RESEARCH PARK, medical advancement begins with a deep commitment to decoding complex biological pathways. By uniting computational genomics, structural biochemistry, and high-throughput screening, our laboratories accelerate the identification of high-value therapeutic targets and specialty biochemical compounds.',
+          'From novel biologics and targeted nanomedicine carriers to essential research materials such as Bio Stingraycin Pellets and Bio Stingraycin Fluid, every program is engineered on empirical rigor and reproducible methodology.'
+        ]
+      },
+      {
+        heading: '2. Scalable Biopharmaceutical & Chemical Process Engineering',
+        paragraphs: [
+          'A discovery in a petri dish can only impact human health when it can be manufactured reliably at scale. Our second cornerstone focuses on seamless technology transfer from benchtop synthesis to commercial cGMP production—encompassing upstream cell culture, continuous flow chemistry, sterile fluid filtration, and automated gloveless isolator fill-finish.'
+        ]
+      },
+      {
+        heading: '3. Uncompromising Quality Control & Regulatory Stewardship',
+        paragraphs: [
+          'Meeting the stringent benchmarks of the MHRA, FDA, EMA, and international pharmacopeias requires exhaustive analytical verification. Through sub-ppb mass spectrometry, crystallographic diffraction, and ICH-compliant stability testing, we safeguard patient safety and product integrity across every batch.'
+        ]
+      },
+      {
+        heading: '4. Collaborative Global Ecosystems',
+        paragraphs: [
+          'No single institution can solve the world’s most urgent healthcare challenges in isolation. Bedfordshire Biotech actively cultivates long-term alliances with academic Principal Investigators, clinical trial networks, commercial business development partners, and specialized raw material suppliers worldwide.'
+        ]
+      }
+    ],
+    executiveContact: {
+      sectionTitle: 'Executive Leadership & Strategic Inquiries',
+      subtitle: 'Mr. Thomas Meany, CEO/Chair-Person',
+      name: 'Mr. Thomas Meany',
+      role: 'Chief Executive Officer / Chair-Person',
+      organization: 'Bedfordshire Biotech by BIOTECH RESEARCH PARK',
+      registeredOfficeLabel: 'Registered Office:',
+      registeredOfficeLines: [
+        'c/o Hunters Law LLP',
+        "Lincoln's Inn, 9 New Square",
+        'London, Greater London',
+        'WC2A 3QN, United Kingdom'
+      ],
+      tel: '+44(0)7412261412 | +44(0)8703163665',
+      faxMail: '+44(0)8703155991 | +44(0)8703163669',
+      emails: ['ceo_wa.nathan@bedfordshirebiotech.co.uk', 'bedfordshirebiotech@gmail.com'],
+      website: 'www.bedfordshirebiotech.co.uk',
+      closingHeading: 'Partner With Us to Advance Global Medicine',
+      closingParagraphs: [
+        'We invite visionary scientific leaders, healthcare institutions, and industry partners to connect directly with our executive office to explore how we can advance the cornerstones of medical innovation together.'
+      ],
+      signOff: 'Bedfordshire Biotech by BIOTECH RESEARCH PARK'
+    }
+  },
+  {
+    id: 'blog-calling-life-sciences-collaborators',
+    slug: 'calling-on-life-sciences-collaborators-academic-clinical-commercial-partners',
+    title: 'Calling on Life Sciences Collaborators: Academic PIs, Commercial BD Partners, Clinical Investigators & Cross-Industry Bio-Innovators',
+    category: 'Strategic Procurement & Supply',
+    author: {
+      name: 'Mr. Thomas Meany',
+      role: 'Chief Executive Officer / Chair-Person, Bedfordshire Biotech by BIOTECH RESEARCH PARK',
+      avatarInitials: 'TM'
+    },
+    date: '09 October 2026',
+    readTime: '5 min read',
+    excerpt: 'Bedfordshire Biotech by BIOTECH RESEARCH PARK is issuing an open call for multidisciplinary collaboration across five core partnership tracks: Life Sciences Collaborators, Academic / Lab Research (Principal Investigators), Commercial / Deals Business Development Partners, Clinical Trials / Health Investigators, and Cross-Industry Bio-Innovators.',
+    contentSnippet: 'Advancing transformative therapies and next-generation biotechnology platforms requires deep synergy across academia, clinical medicine, commercial strategy, and cross-industry bio-innovation. Bedfordshire Biotech by BIOTECH RESEARCH PARK invites Principal Investigators (PIs), Business Development (BD) executives, Clinical Investigators, and Strategic Bio-Innovators to partner with our British and global research network.',
+    tags: ['Life Sciences Partner', 'Principal Investigator (PI)', 'Business Development (BD)', 'Clinical Collaborator', 'Bio-Innovator'],
+    image: PUB_LIFE_SCIENCES_COLLABORATORS_IMAGE,
+    imageCaption: 'Interdisciplinary collaboration session uniting Academic Principal Investigators, Clinical Trial Investigators, and Commercial BD Partners.',
+    galleryImages: [
+      {
+        url: PUB_LIFE_SCIENCES_COLLABORATORS_IMAGE,
+        caption: 'Fig 2.1: Translational research and clinical protocol alignment between academic PIs and Bedfordshire Biotech leadership.'
+      },
+      {
+        url: UK_SCIENCE_CLINICAL_TRIALS_IMAGE,
+        caption: 'Fig 2.2: Multi-center clinical trials and healthcare investigator coordination across UK and international hospital sites.'
+      }
+    ],
+    keyMetrics: [
+      { label: 'Collaboration Tracks', value: '5 Strategic Roles' },
+      { label: 'Research Scope', value: 'Bench-to-Clinic & BD' },
+      { label: 'Engagement Level', value: 'Direct Executive Access' }
+    ],
+    fullSections: [
+      {
+        heading: 'Open Call for Global Multi-Disciplinary Partners',
+        paragraphs: [
+          'Bedfordshire Biotech by BIOTECH RESEARCH PARK is actively expanding its global collaborative ecosystem. We are calling on visionary organizations, research laboratories, clinical institutions, and commercial leaders across the following five dedicated partnership categories to join forces with us:'
+        ]
+      },
+      {
+        heading: '1. Life Sciences Collaborator / Partner',
+        paragraphs: [
+          'We welcome comprehensive co-development alliances with biotechnology firms, pharmaceutical developers, and specialty research organizations seeking shared cleanroom infrastructure, joint IP generation, and end-to-end bioprocessing support.'
+        ]
+      },
+      {
+        heading: '2. Academic / Lab Research — Academic Partner / Principal Investigator (PI)',
+        paragraphs: [
+          'We partner directly with university laboratories, translational research institutes, and Principal Investigators (PIs) to bridge early-stage molecular discoveries, novel assay methodologies, and emerging targets across the translational gap into preclinical validation and cGMP scale-up.'
+        ]
+      },
+      {
+        heading: '3. Commercial / Deals — Business Development (BD) Partner',
+        paragraphs: [
+          'Our executive team seeks Business Development (BD) Partners for in-licensing, out-licensing, joint ventures, regional commercialization agreements, and strategic capital or distribution deals across global pharmaceutical and life science markets.'
+        ]
+      },
+      {
+        heading: '4. Clinical Trials / Health — Clinical Collaborator / Investigator',
+        paragraphs: [
+          'We invite hospital networks, Chief and Principal Clinical Investigators, and clinical research organizations (CROs) to collaborate on Phase I–III clinical trial execution, biomarker validation, patient cohort recruitment, and real-world therapeutic outcomes.'
+        ]
+      },
+      {
+        heading: '5. Cross-Industry Innovation — Bio-Innovator / Strategic Partner',
+        paragraphs: [
+          'Breakthroughs increasingly occur at the intersection of disciplines. We are calling on Cross-Industry Bio-Innovators and Strategic Partners across AI computational modeling, advanced biomaterials, cosmeceuticals, green chemistry, and medical device engineering to co-create disruptive solutions.'
+        ]
+      }
+    ],
+    executiveContact: {
+      sectionTitle: 'Primary Contact for Partnership & Collaboration Inquiries',
+      subtitle: 'Mr. Thomas Meany, CEO/Chair-Person',
+      name: 'Mr. Thomas Meany',
+      role: 'Chief Executive Officer / Chair-Person',
+      organization: 'Bedfordshire Biotech by BIOTECH RESEARCH PARK',
+      registeredOfficeLabel: 'Registered Office:',
+      registeredOfficeLines: [
+        'c/o Hunters Law LLP',
+        "Lincoln's Inn, 9 New Square",
+        'London, Greater London',
+        'WC2A 3QN, United Kingdom'
+      ],
+      tel: '+44(0)7412261412 | +44(0)8703163665',
+      faxMail: '+44(0)8703155991 | +44(0)8703163669',
+      emails: ['ceo_wa.nathan@bedfordshirebiotech.co.uk', 'bedfordshirebiotech@gmail.com'],
+      website: 'www.bedfordshirebiotech.co.uk',
+      closingHeading: 'Connect With Our Executive Office Today',
+      closingParagraphs: [
+        'Whether you are a Principal Investigator, a Business Development executive, a Clinical Investigator, or a Cross-Industry Bio-Innovator, we invite you to reach out directly to Mr. Thomas Meany to initiate a confidential partnership discussion.'
+      ],
+      signOff: 'Bedfordshire Biotech by BIOTECH RESEARCH PARK'
+    }
+  },
+  {
+    id: 'blog-india-sourcing-collaboration',
+    slug: 'calling-on-life-science-suppliers-sourcing-companies-india-collaboration',
+    title: 'Calling on Life Science Suppliers & Sourcing Companies to Collaborate With Us in Sourcing Materials from India',
+    category: 'Strategic Procurement & Supply',
+    author: {
+      name: 'Mr. Thomas Meany',
+      role: 'Chief Executive Officer / Chair-Person, Bedfordshire Biotech by BIOTECH RESEARCH PARK',
+      avatarInitials: 'TM'
+    },
+    date: '09 October 2026',
+    readTime: '4 min read',
+    excerpt: 'Bedfordshire Biotech by BIOTECH RESEARCH PARK is actively seeking established Life Science Suppliers, Procurement Specialists, and Sourcing Companies to collaborate with us in sourcing high-purity pharmaceutical, biochemical, and research materials from India.',
+    contentSnippet: 'India stands as one of the world’s premier hubs for active pharmaceutical ingredients (APIs), specialty biochemicals, and life science raw materials. To support our expanding UK and global R&D and manufacturing pipelines, Bedfordshire Biotech by BIOTECH RESEARCH PARK invites reputable Indian life science suppliers, export houses, and specialized sourcing companies to enter into long-term strategic procurement partnerships.',
+    tags: ['India Material Sourcing', 'Life Science Suppliers', 'Sourcing Company', 'UK-India Biotech Corridor'],
+    image: PUB_INDIA_SOURCING_SUPPLY_IMAGE,
+    imageCaption: 'India–UK Life Sciences Procurement & Quality Assurance Corridor handling serialized API lots and temperature-monitored biological materials.',
+    galleryImages: [
+      {
+        url: PUB_INDIA_SOURCING_SUPPLY_IMAGE,
+        caption: 'Fig 3.1: Validated cold-chain and quality assurance verification for pharmaceutical and biochemical materials sourced from India.'
+      },
+      {
+        url: PRODUCT_API_IMAGE,
+        caption: 'Fig 3.2: High-purity active pharmaceutical precursors and specialty biochemical compounds undergoing incoming QC release.'
+      }
+    ],
+    keyMetrics: [
+      { label: 'Target Region', value: 'India Life Sciences Hub' },
+      { label: 'Partner Profile', value: 'Suppliers & Sourcing Cos.' },
+      { label: 'Compliance Standard', value: 'ISO / cGMP / GDP Verified' }
+    ],
+    fullSections: [
+      {
+        heading: 'Strategic Call for India Life Science Suppliers & Sourcing Companies',
+        paragraphs: [
+          'Bedfordshire Biotech by BIOTECH RESEARCH PARK is strengthening its international supply chain resilience and is actively calling on qualified Life Science Suppliers and specialized Sourcing Companies to collaborate with us in sourcing critical materials from India.',
+          'As our medical research, biotechnology, cosmetic science, and pharmaceutical manufacturing programs continue to scale, establishing dependable, transparent, and quality-assured sourcing channels across India’s leading life science clusters (including Hyderabad, Bengaluru, Ahmedabad, Mumbai, Pune, and Visakhapatnam) is a top strategic priority.'
+        ]
+      },
+      {
+        heading: 'Materials & Capabilities of Interest',
+        paragraphs: [
+          'We are seeking direct manufacturers, authorized processors, export distributors, and vetted sourcing agencies in India capable of supplying and coordinating:',
+          '• Specialty Biochemicals & Bio-Materials (including Bio Stingraycin Pellets, Bio Stingraycin Fluid, and bioactive research compounds).',
+          '• Active Pharmaceutical Ingredients (APIs), synthetic intermediates, chiral catalysts, and high-purity laboratory reagents.',
+          '• Bioprocess consumables, sterile formulation excipients, and analytical reference standards meeting USP, Ph. Eur., BP, or IP specifications.'
+        ]
+      },
+      {
+        heading: 'What We Look For in a Sourcing & Supply Partner',
+        paragraphs: [
+          'Our ideal Indian supply and sourcing partners demonstrate rigorous quality management systems (ISO 9001, WHO-GMP, or cGMP alignment), complete batch-to-batch Certificate of Analysis (CoA) traceability, competitive commercial terms, and reliable international cold-chain or ambient export logistics to the United Kingdom.',
+          'If your organization is a Life Science Supplier or Sourcing Company with strong capabilities in India, we invite you to contact our Chief Executive Officer directly to establish a long-term procurement and sourcing alliance.'
+        ]
+      }
+    ],
+    executiveContact: {
+      sectionTitle: 'Primary Contact for India Sourcing & Supplier Inquiries',
+      subtitle: 'Mr. Thomas Meany, CEO/Chair-Person',
+      name: 'Mr. Thomas Meany',
+      role: 'Chief Executive Officer / Chair-Person',
+      organization: 'Bedfordshire Biotech by BIOTECH RESEARCH PARK',
+      registeredOfficeLabel: 'Registered Office:',
+      registeredOfficeLines: [
+        'c/o Hunters Law LLP',
+        "Lincoln's Inn, 9 New Square",
+        'London, Greater London',
+        'WC2A 3QN, United Kingdom'
+      ],
+      tel: '+44(0)7412261412 | +44(0)8703163665',
+      faxMail: '+44(0)8703155991 | +44(0)8703163669',
+      emails: ['ceo_wa.nathan@bedfordshirebiotech.co.uk', 'bedfordshirebiotech@gmail.com'],
+      website: 'www.bedfordshirebiotech.co.uk',
+      closingHeading: 'Building a Trusted UK–India Life Sciences Supply Bridge',
+      closingParagraphs: [
+        'We look forward to partnering with premier Indian suppliers and sourcing specialists to drive global scientific innovation, manufacturing excellence, and improved patient health worldwide.'
+      ],
+      signOff: 'Bedfordshire Biotech by BIOTECH RESEARCH PARK'
+    }
+  },
+  {
+    id: 'blog-stingraycin-fluid-suppliers',
+    slug: 'calling-all-suppliers-bedfordshire-biotech-seeks-partners-for-bio-stingraycin-fluid',
+    title: 'Calling All Suppliers: Bedfordshire Biotech by BIOTECH RESEARCH PARK Seeks Partners for Bio Stingraycin Fluid',
+    category: 'Strategic Procurement & Supply',
+    author: {
+      name: 'Mr. Thomas Meany',
+      role: 'Chief Executive Officer / Chair-Person, Bedfordshire Biotech by BIOTECH RESEARCH PARK',
+      avatarInitials: 'TM'
+    },
+    date: '09 October 2026',
+    readTime: '3 min read',
+    excerpt: 'Are you a supplier of Bio Stingraycin Fluid? If so, Bedfordshire Biotech by BIOTECH RESEARCH PARK wants to connect with you! Currently, we are in search of suppliers for Bio Stingraycin Fluid, a crucial component in our ongoing research and development endeavors.',
+    contentSnippet: 'As a pioneering force in medical research and biotechnology, Bedfordshire Biotech by BIOTECH RESEARCH PARK is committed to driving innovation and improving patient outcomes through the development and distribution of cutting-edge pharmaceuticals and biotech materials. Bio Stingraycin Fluid holds significant promise in various medical applications, and we are eager to collaborate with suppliers who share our passion for excellence and commitment to advancing healthcare.',
+    tags: ['Bio Stingraycin Fluid', 'Medical Research & R&D', 'Biotech Materials', 'Supplier Partnership'],
+    image: PUB_BIO_STINGRAYCIN_FLUID_IMAGE,
+    imageCaption: 'Sterile Bio Stingraycin Fluid undergoing precision volumetric sampling and analytical verification for pharmaceutical and medical research applications.',
+    galleryImages: [
+      {
+        url: PUB_BIO_STINGRAYCIN_FLUID_IMAGE,
+        caption: 'Fig 0.1: Sterile Bio Stingraycin Fluid reference lot prepared for medical application research and pharmaceutical formulation.'
+      },
+      {
+        url: PUB_STINGRAYCIN_FLUID_FILTRATION_IMAGE,
+        caption: 'Fig 0.2: Cleanroom membrane filtration and UV-Vis spectrophotometric purity verification of Bio Stingraycin Fluid.'
+      }
+    ],
+    keyMetrics: [
+      { label: 'Core Material', value: 'Bio Stingraycin Fluid' },
+      { label: 'Primary Focus', value: 'Medical & R&D' },
+      { label: 'Partnership Scope', value: 'Production & Distribution' }
+    ],
+    fullSections: [
+      {
+        paragraphs: [
+          'Are you a supplier of Bio Stingraycin Fluid? If so, Bedfordshire Biotech by BIOTECH RESEARCH PARK wants to connect with you!',
+          'As a pioneering force in medical research and biotechnology, Bedfordshire Biotech by BIOTECH RESEARCH PARK is committed to driving innovation and improving patient outcomes through the development and distribution of cutting-edge pharmaceuticals and biotech materials. Currently, we are in search of suppliers for Bio Stingraycin Fluid, a crucial component in our ongoing research and development endeavors.',
+          'Bio Stingraycin Fluid holds significant promise in various medical applications, and we are eager to collaborate with suppliers who share our passion for excellence and commitment to advancing healthcare. If your company specializes in the production or distribution of Bio Stingraycin Fluid, we invite you to join us on our mission to make a positive impact in the field of medicine.',
+          'For further details and to explore potential partnership opportunities, please reach out to the CEO with the following contact details:'
+        ]
+      }
+    ],
+    executiveContact: {
+      sectionTitle: 'Primary Contact for Supplier Inquiries',
+      subtitle: 'Mr. Thomas Meany, CEO/Chair-Person.',
+      name: 'Mr. Thomas Meany',
+      role: 'Chief Executive Officer / Chair-Person',
+      organization: 'Bedfordshire Biotech by BIOTECH RESEARCH PARK',
+      registeredOfficeLabel: 'Registered Office:',
+      registeredOfficeLines: [
+        'c/o Hunters Law LLP',
+        "Lincoln's Inn, 9 New Square",
+        'London, Greater London',
+        'WC2A 3QN, United Kingdom'
+      ],
+      tel: '+44(0)7412261412 | +44(0)8703163665',
+      faxMail: '+44(0)8703155991 | +44(0)8703163669',
+      emails: ['ceo_wa.nathan@bedfordshirebiotech.co.uk', 'bedfordshirebiotech@gmail.com'],
+      website: 'www.bedfordshirebiotech.co.uk',
+      closingHeading: 'Shaping a Healthier Future Together',
+      closingParagraphs: [
+        'Together, let’s push the boundaries of medical innovation and shape a healthier future for generations to come.'
+      ],
+      signOff: 'Bedfordshire Biotech by BIOTECH RESEARCH PARK'
+    }
+  },
+  {
+    id: 'blog-stingraycin-suppliers',
+    slug: 'calling-all-suppliers-of-bio-stingraycin-pellets-partnership',
+    title: 'Calling All Suppliers of Bio Stingraycin Pellets – Bedfordshire Biotech by BIOTECH RESEARCH PARK Wants to Partner With You!',
+    category: 'Strategic Procurement & Supply',
+    author: {
+      name: 'Mr. Thomas Meany',
+      role: 'Chief Executive Officer / Chair-Person, Bedfordshire Biotech by BIOTECH RESEARCH PARK',
+      avatarInitials: 'TM'
+    },
+    date: '09 October 2026',
+    readTime: '4 min read',
+    excerpt: 'Bedfordshire Biotech by BIOTECH RESEARCH PARK, a leading British innovator in the fields of medical research, biotechnology, and pharmaceutical development, is actively seeking dependable and capable suppliers of Bio Stingraycin Pellets for long-term collaboration.',
+    contentSnippet: 'As a company committed to advancing scientific discovery and improving patient health worldwide, we recognize Bio Stingraycin Pellets as a critical material in our ongoing and future initiatives. These pellets play a pivotal role not only in cosmetics, biotech and biopharmaceutical research but also across various biochemical, pharmaceutical, and chemical R&D and manufacturing processes. From drug formulation and synthesis to advanced material testing and compound development, Bio Stingraycin Pellets contribute substantially to our strategic goals.',
+    tags: ['Bio Stingraycin Pellets', 'Global Supplier Network', 'Biopharmaceutical R&D', 'Strategic Partnership'],
+    image: PUB_BIO_STINGRAYCIN_PELLETS_IMAGE,
+    imageCaption: 'High-purity Bio Stingraycin Pellets undergoing gravimetric and analytical verification for pharmaceutical, cosmetic, and biochemical R&D pipelines.',
+    galleryImages: [
+      {
+        url: PUB_BIO_STINGRAYCIN_PELLETS_IMAGE,
+        caption: 'Fig 0.1: Analytical reference batch of Bio Stingraycin Pellets prepared for compound development and formulation synthesis.'
+      },
+      {
+        url: PUB_STINGRAYCIN_QUALITY_ASSAY_IMAGE,
+        caption: 'Fig 0.2: Quality control and UHPLC chromatographic qualification of incoming Bio Stingraycin Pellet lots.'
+      }
+    ],
+    keyMetrics: [
+      { label: 'Core Material', value: 'Bio Stingraycin' },
+      { label: 'Collaboration Scope', value: 'Long-Term Supply' },
+      { label: 'Application Sectors', value: 'Biotech, Pharma & Cosmetics' }
+    ],
+    fullSections: [
+      {
+        paragraphs: [
+          'Bedfordshire Biotech Bedfordshire Biotech by BIOTECH RESEARCH PARK, a leading British innovator in the fields of medical research, biotechnology, and pharmaceutical development, is actively seeking dependable and capable suppliers of Bio Stingraycin Pellets for long-term collaboration.',
+          'As a company committed to advancing scientific discovery and improving patient health worldwide, we recognize Bio Stingraycin Pellets as a critical material in our ongoing and future initiatives. These pellets play a pivotal role not only in cosmetics, biotech and biopharmaceutical research but also across various biochemical, pharmaceutical, and chemical R&D and manufacturing processes. From drug formulation and synthesis to advanced material testing and compound development, Bio Stingraycin Pellets contribute substantially to our strategic goals.',
+          'We are currently expanding several of our research programs and production pipelines, and the availability of high-quality Bio Stingraycin Pellets is essential to meeting regulatory standards, clinical requirements, and manufacturing benchmarks. Whether you are a producer, processor, or distributor of Bio Stingraycin Pellets, we would like to explore a potential partnership with your organization.',
+          'Our ideal supply partner is one that can ensure consistent quality, competitive pricing, and reliable delivery schedules, while sharing in our vision of improving healthcare outcomes through rigorous science and innovation.',
+          'If your company is in a position to supply Bio Stingraycin Pellets and is interested in becoming part of our trusted global supplier network, we invite you to reach out to us for further engagement.'
+        ]
+      }
+    ],
+    executiveContact: {
+      sectionTitle: 'Primary Contact for Supplier Inquiries',
+      subtitle: 'For Executive-Level Discussions, Please Contact:',
+      name: 'Mr. Thomas Meany',
+      role: 'Chief Executive Officer / Chair-Person',
+      organization: 'Bedfordshire Biotech by BIOTECH RESEARCH PARK',
+      registeredOfficeLabel: 'Registered Office:',
+      registeredOfficeLines: [
+        'c/o Hunters Law LLP',
+        "Lincoln's Inn, 9 New Square",
+        'London, Greater London',
+        'WC2A 3QN, United Kingdom'
+      ],
+      tel: '+44 (0)7412 261412 | +44 (0)870 316 3665',
+      faxMail: '+44 (0)870 315 5991 | +44 (0)870 316 3669',
+      emails: ['ceo_wa.nathan@bedfordshirebiotech.co.uk', 'bedfordshirebiotech@gmail.com'],
+      website: 'www.bedfordshirebiotech.co.uk',
+      closingHeading: 'Join Us in Driving Global Innovation',
+      closingParagraphs: [
+        'At Bedfordshire Biotech, we believe that collaboration is key to scientific progress. We are building a healthier future through innovation, and we welcome forward-thinking suppliers to join us in that mission. This is more than a procurement opportunity — it is an invitation to be part of meaningful, high-impact work across the world’s most critical life science sectors.',
+        'Together, let’s redefine what’s possible in science, healthcare, and human well-being.'
+      ],
+      signOff: 'Bedfordshire Biotech · Bedfordshire Biotech by BIOTECH RESEARCH PARK'
+    }
+  },
+  {
     id: 'blog-1',
     slug: 'future-of-sterile-fill-finish-uk-manufacturing',
     title: 'Advancing Sterile Fill-Finish: How Robotic Isolators Eliminate Contamination in Modern Biologics',
@@ -488,8 +887,10 @@ export const BLOG_POSTS: BlogPost[] = [
 
 export const CORPORATE_DETAILS = {
   registeredCorporateName: 'BIOTECH RESEARCH PARK',
+  registeredCompanyName: 'BIOTECH RESEARCH PARK',
   operatingName: 'Bedfordshire Biotech',
   legalEntityFormat: 'BIOTECH RESEARCH PARK (Operating as Bedfordshire Biotech)',
+  registrationStatement: 'Bedfordshire Biotech is registered as BIOTECH RESEARCH PARK',
   companyName: 'Bedfordshire Biotech',
   registrationNumber: '11399495',
   officialWebsite: 'http://www.bedfordshirebiotech.co.uk',

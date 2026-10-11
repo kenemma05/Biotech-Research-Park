@@ -70,10 +70,24 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [isPortalOpen, setIsPortalOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       setIsAdmin(isUserAdmin(currentUser));
       setLoadingAuth(false);
+
+      if (currentUser) {
+        try {
+          const token = await currentUser.getIdToken();
+          await fetch('/api/me', {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        } catch (err) {
+          console.warn('User profile sync notice:', err);
+        }
+      }
     });
 
     return () => unsubscribe();

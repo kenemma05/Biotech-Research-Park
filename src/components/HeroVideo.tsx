@@ -2,12 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   ArrowRight, 
   ShieldCheck, 
-  Cpu, 
-  Play, 
-  Pause, 
-  Settings2,
-  CheckCircle2,
-  Layers
+  Cpu
 } from 'lucide-react';
 import { HERO_POSTER_IMAGE } from '../data/biotechData';
 
@@ -27,11 +22,8 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({
   onExplorePipeline,
   onPartnerManufacturing
 }) => {
-  const [videoSrc, setVideoSrc] = useState<string>(HERO_VIDEO_URL);
-  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(true);
+  const [videoSrc] = useState<string>(HERO_VIDEO_URL);
   const [hasVideoError, setHasVideoError] = useState<boolean>(false);
-  const [showVideoConfig, setShowVideoConfig] = useState<boolean>(false);
-  const [customInputUrl, setCustomInputUrl] = useState<string>('');
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -166,27 +158,6 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({
     };
   }, []);
 
-  const toggleVideoPlayback = () => {
-    if (videoRef.current) {
-      if (videoRef.current.paused) {
-        videoRef.current.play();
-        setIsVideoPlaying(true);
-      } else {
-        videoRef.current.pause();
-        setIsVideoPlaying(false);
-      }
-    }
-  };
-
-  const handleApplyCustomVideo = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (customInputUrl.trim()) {
-      setVideoSrc(customInputUrl.trim());
-      setHasVideoError(false);
-      setShowVideoConfig(false);
-    }
-  };
-
   return (
     <section className="relative w-full min-h-screen flex flex-col justify-between overflow-hidden bg-[#0A192F]">
       
@@ -236,82 +207,6 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({
         <div className="absolute inset-0 bg-gradient-to-r from-[#0A192F] via-[#0A192F]/85 to-transparent" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(37,99,235,0.2),rgba(255,255,255,0))]" />
       </div>
-
-      {/* Floating Ambient Controls */}
-      <div className="absolute top-36 sm:top-32 right-4 sm:right-8 z-30 flex items-center gap-2">
-        <button
-          onClick={toggleVideoPlayback}
-          className="p-2.5 rounded-xl bg-[#0F203C]/80 border border-slate-700/60 backdrop-blur-md text-slate-200 hover:text-white hover:border-blue-400 transition-all shadow-lg text-xs flex items-center gap-1.5"
-          title={isVideoPlaying ? "Pause ambient video" : "Play ambient video"}
-        >
-          {isVideoPlaying ? <Pause className="w-3.5 h-3.5 text-blue-400" /> : <Play className="w-3.5 h-3.5 text-blue-400" />}
-          <span className="hidden md:inline font-mono text-[11px]">
-            {isVideoPlaying ? "Loop Active" : "Paused"}
-          </span>
-        </button>
-
-        <button
-          onClick={() => setShowVideoConfig(!showVideoConfig)}
-          className="p-2.5 rounded-xl bg-[#0F203C]/80 border border-slate-700/60 backdrop-blur-md text-slate-200 hover:text-white hover:border-blue-400 transition-all shadow-lg text-xs flex items-center gap-1.5"
-          title="Configure video URL source"
-        >
-          <Settings2 className="w-3.5 h-3.5 text-blue-400" />
-          <span className="hidden md:inline font-mono text-[11px]">Source</span>
-        </button>
-      </div>
-
-      {/* Video Source Configuration Modal */}
-      {showVideoConfig && (
-        <div className="absolute top-48 sm:top-44 right-4 sm:right-8 z-40 w-96 max-w-[90vw] p-5 rounded-2xl bg-[#0F203C] border border-blue-500/40 shadow-2xl backdrop-blur-xl">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-700">
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase font-mono text-blue-400">
-              <Layers className="w-4 h-4" />
-              <span>Video Stream Integration</span>
-            </div>
-            <button 
-              onClick={() => setShowVideoConfig(false)}
-              className="text-slate-400 hover:text-white text-xs"
-            >
-              Close
-            </button>
-          </div>
-          <p className="text-xs text-slate-300 mt-3 leading-relaxed">
-            Current active placeholder is <code className="bg-slate-900 px-1.5 py-0.5 rounded text-blue-300 font-mono text-[11px]">{videoSrc}</code>. You can paste any live hosted MP4 video URL below to stream directly.
-          </p>
-          <form onSubmit={handleApplyCustomVideo} className="mt-3 space-y-2.5">
-            <input
-              type="text"
-              value={customInputUrl}
-              onChange={(e) => setCustomInputUrl(e.target.value)}
-              placeholder="https://example.com/video.mp4"
-              className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
-            />
-            <div className="flex items-center gap-2">
-              <button
-                type="submit"
-                className="flex-1 py-2 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-500 transition-colors"
-              >
-                Apply Video Link
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setVideoSrc(HERO_VIDEO_URL);
-                  setHasVideoError(false);
-                  setShowVideoConfig(false);
-                }}
-                className="px-3 py-2 bg-slate-800 text-slate-300 text-xs rounded-lg hover:bg-slate-700"
-              >
-                Reset Default
-              </button>
-            </div>
-          </form>
-          <div className="mt-3 pt-2 text-[10px] text-slate-400 font-mono flex items-center gap-1.5">
-            <CheckCircle2 className="w-3 h-3 text-blue-400" />
-            <span>WebGL molecular lattice acts as seamless fallback</span>
-          </div>
-        </div>
-      )}
 
       {/* 2. Hero Core Content & Typography (Deep Navy & Crisp White) */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-36 sm:pt-44 pb-16 flex-1 flex flex-col justify-center">
