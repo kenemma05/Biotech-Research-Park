@@ -31,6 +31,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
 
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState('');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
@@ -76,6 +77,19 @@ export const ContactModal: React.FC<ContactModalProps> = ({
       });
       const durationMs = Math.round(performance.now() - startTime);
       submissionDiagnostics.recordSuccess(attemptId, res.id, durationMs);
+
+      // Preserve submitted email for success confirmation message
+      setSubmittedEmail(formData.email);
+
+      // Clear all form controls in the frontend UI
+      setFormData({
+        name: user?.displayName || '',
+        email: user?.email || '',
+        phone: '',
+        company: '',
+        subject: initialSubject || 'Contract CDMO Manufacturing RFP',
+        message: ''
+      });
 
       setSubmitted(true);
       showToast({
@@ -134,7 +148,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
               Thank you! Your submission has been received successfully.
             </h3>
             <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
-              Our technical desk will review your inquiry and reach out to {formData.email} within 24 hours under standard non-disclosure terms.
+              Our technical desk will review your inquiry and reach out to {submittedEmail || 'your email'} within 24 hours under standard non-disclosure terms.
             </p>
             <div className="mt-6 flex items-center justify-center gap-3">
               <button

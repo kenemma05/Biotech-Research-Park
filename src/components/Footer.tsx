@@ -14,6 +14,7 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => {
   const { openPortal, user, submissions } = useFirebase();
   const { showToast } = useToast();
+  const currentYear = new Date().getFullYear();
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [subscribing, setSubscribing] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
@@ -430,7 +431,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => 
         {/* Bottom Bar: Copyright & Compliance */}
         <div className="pt-8 border-t border-slate-700/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400 font-mono">
           <div>
-            © 2026 Business: Bedfordshire Biotech is registered as BIOTECH RESEARCH PARK · Registered Company Name: BIOTECH RESEARCH PARK · Company number {CORPORATE_DETAILS.registrationNumber} (Registered in England & Wales).
+            © {currentYear} Business: Bedfordshire Biotech is registered as BIOTECH RESEARCH PARK · Registered Company Name: BIOTECH RESEARCH PARK · Company number {CORPORATE_DETAILS.registrationNumber} (Registered in England & Wales).
           </div>
           <div className="flex flex-wrap items-center gap-4">
             <a href={CORPORATE_DETAILS.officialWebsite} className="text-blue-400 hover:text-blue-300">

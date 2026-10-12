@@ -271,13 +271,6 @@ export default function App() {
                   />
                 </div>
 
-                {/* Latest Blog Posts & Publications (Off-White #F8FAFC Section Divider) */}
-                <div className="bg-[#F8FAFC] border-y border-slate-200">
-                  <BlogSection
-                    onOpenInquiry={handleOpenContact}
-                  />
-                </div>
-
                 {/* Direct Contact Form (Clean Pure White Section) */}
                 <div className="bg-white">
                   <ContactSection

@@ -1,11 +1,11 @@
 {
-  "projectId": "",
-  "appId": "",
-  "apiKey": "",
-  "authDomain": "",
-  "firestoreDatabaseId": "",
-  "storageBucket": "",
-  "messagingSenderId": "",
+  "projectId": "biotech-research-park",
+  "appId": "1:684118959657:web:biotechresearchpark",
+  "apiKey": "AIzaSyDCGBLFt9FvaN0MqJdsNhrb429oMXCQnS8",
+  "authDomain": "biotech-research-park.firebaseapp.com",
+  "firestoreDatabaseId": "(default)",
+  "storageBucket": "biotech-research-park.firebasestorage.app",
+  "messagingSenderId": "684118959657",
   "measurementId": "",
   "oAuthClientId": "",
   "recaptchaSiteKey": ""

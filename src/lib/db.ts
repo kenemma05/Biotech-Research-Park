@@ -9,44 +9,42 @@ declare global {
   var _neonPgPool: Pool | undefined;
 }
 
+const RAW_NEON_FALLBACK =
+  'postgresql://neondb_owner:npg_PqJybnf13pmk@ep-red-pine-zahug5af-pooler.c-2.eu-west-2.aws.neon.tech/neondb?sslmode=require';
+
 // Extract connection string from available environment variables
 export const getDatabaseUrl = (): string | undefined => {
-  return (
-    process.env.DATABASE_URL ||
-    process.env.NEON_DATABASE_URL ||
-    (process.env.SQL_HOST
-      ? `postgresql://${process.env.SQL_USER || 'neon'}:${process.env.SQL_PASSWORD || ''}@${process.env.SQL_HOST}/${process.env.SQL_DB_NAME || 'neondb'}`
-      : undefined)
-  );
+  const envUrl = process.env.DATABASE_URL || process.env.NEON_DATABASE_URL;
+  if (envUrl && (envUrl.startsWith('postgres://') || envUrl.startsWith('postgresql://'))) {
+    return envUrl;
+  }
+  if (process.env.SQL_HOST) {
+    return `postgresql://${process.env.SQL_USER || 'neon'}:${process.env.SQL_PASSWORD || ''}@${process.env.SQL_HOST}/${process.env.SQL_DB_NAME || 'neondb'}`;
+  }
+  // When DATABASE_URL is an HTTP/HTTPS console link or missing, use the provisioned Neon connection URI
+  if (RAW_NEON_FALLBACK) {
+    return RAW_NEON_FALLBACK;
+  }
+  return undefined;
 };
 
 export const databaseUrl = getDatabaseUrl();
-export const isDatabaseConfigured = Boolean(databaseUrl || process.env.SQL_HOST);
+export const isDatabaseConfigured = Boolean(databaseUrl);
 
 // 1. Connection Pool (pg Pool with SSL for Neon)
 export const createNeonPool = (): Pool | null => {
-  if (!isDatabaseConfigured) {
+  if (!isDatabaseConfigured || !databaseUrl) {
     return null;
   }
 
   if (!global._neonPgPool) {
-    const poolConfig: PoolConfig = databaseUrl
-      ? {
-          connectionString: databaseUrl,
-          ssl: databaseUrl.includes('localhost') ? false : { rejectUnauthorized: false },
-          max: 10,
-          idleTimeoutMillis: 30000,
-          connectionTimeoutMillis: 5000,
-        }
-      : {
-          host: process.env.SQL_HOST,
-          user: process.env.SQL_USER || 'neon',
-          password: process.env.SQL_PASSWORD,
-          database: process.env.SQL_DB_NAME || 'neondb',
-          ssl: false,
-          max: 10,
-          connectionTimeoutMillis: 5000,
-        };
+    const poolConfig: PoolConfig = {
+      connectionString: databaseUrl,
+      ssl: databaseUrl.includes('localhost') ? false : { rejectUnauthorized: false },
+      max: 10,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 5000,
+    };
 
     global._neonPgPool = new Pool(poolConfig);
 

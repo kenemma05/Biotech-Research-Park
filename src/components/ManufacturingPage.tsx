@@ -32,6 +32,7 @@ export const ManufacturingPage: React.FC<ManufacturingPageProps> = ({ onOpenInqu
 
   const [submitting, setSubmitting] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [submittedInfo, setSubmittedInfo] = useState<{ name: string; email: string }>({ name: '', email: '' });
   const [submittedDocId, setSubmittedDocId] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -60,6 +61,21 @@ export const ManufacturingPage: React.FC<ManufacturingPageProps> = ({ onOpenInqu
         fillFinishFormat: formData.fillFinishFormat,
         projectTimeline: formData.projectTimeline,
         notes: formData.notes || undefined
+      });
+      setSubmittedInfo({
+        name: formData.name,
+        email: formData.email
+      });
+      setFormData({
+        name: user?.displayName || '',
+        email: user?.email || '',
+        company: '',
+        modality: 'Monoclonal Antibody (mAb)',
+        phase: 'Phase I / Early Clinical',
+        targetVolume: '500L',
+        fillFinishFormat: 'Vials (Liquid)',
+        projectTimeline: 'Q1-Q2 2027',
+        notes: ''
       });
       setFormSubmitted(true);
       showToast({
@@ -214,7 +230,7 @@ export const ManufacturingPage: React.FC<ManufacturingPageProps> = ({ onOpenInqu
               Thank you! Your submission has been received successfully.
             </h3>
             <p className="text-sm text-slate-600 max-w-lg mx-auto leading-relaxed">
-              Thank you, {formData.name}. Our Technical Operations and CDMO leadership will review your program specifications and respond via {formData.email} within 2 business days under standard non-disclosure terms.
+              Thank you, {submittedInfo.name || 'valued partner'}. Our Technical Operations and CDMO leadership will review your program specifications and respond via {submittedInfo.email || 'your email'} within 2 business days under standard non-disclosure terms.
             </p>
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <button

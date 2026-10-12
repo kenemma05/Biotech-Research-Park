@@ -10,8 +10,7 @@ import {
   ArrowRight,
   Lock
 } from 'lucide-react';
-import { sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from '../lib/firebase';
+import { resetPassword } from '../lib/firebase';
 import { useToast } from './GlobalToast';
 
 export interface PasswordRecoveryModalProps {
@@ -89,7 +88,7 @@ export const PasswordRecoveryModal: React.FC<PasswordRecoveryModalProps> = ({
 
     try {
       setLoading(true);
-      await sendPasswordResetEmail(auth, targetEmail);
+      await resetPassword(targetEmail);
       setDispatchedEmail(targetEmail);
       setCooldown(60);
       showToast({

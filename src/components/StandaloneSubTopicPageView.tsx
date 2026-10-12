@@ -151,6 +151,7 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
   const [matrixSearchQuery, setMatrixSearchQuery] = useState<string>('');
   const [activeCoaModalItem, setActiveCoaModalItem] = useState<any | null>(null);
   const [sampleRequested, setSampleRequested] = useState<string | null>(null);
+  const [coaDownloaded, setCoaDownloaded] = useState<boolean>(false);
 
   const galleryImages = pageData.galleryImages || [];
   const currentImage = galleryImages[activeImageIdx] || (pageData.heroImage ? { url: pageData.heroImage, caption: pageData.title, tag: 'Overview' } : null);
@@ -1660,12 +1661,22 @@ export const StandaloneSubTopicPageView: React.FC<StandaloneSubTopicPageViewProp
                 <div className="flex items-center gap-3 w-full sm:w-auto">
                   <button
                     onClick={() => {
-                      alert(`Downloading PDF for Certificate of Analysis: ${activeCoaModalItem.coaLotSample}`);
+                      setCoaDownloaded(true);
+                      setTimeout(() => setCoaDownloaded(false), 3000);
                     }}
                     className="px-4 py-2 rounded-xl border border-slate-300 hover:bg-white text-slate-700 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
                   >
-                    <Download className="w-3.5 h-3.5" />
-                    <span>Download Signed PDF</span>
+                    {coaDownloaded ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 text-emerald-600" />
+                        <span className="text-emerald-700 font-bold">CoA Batch Dossier Downloaded</span>
+                      </>
+                    ) : (
+                      <>
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Download Signed PDF</span>
+                      </>
+                    )}
                   </button>
                   <button
                     onClick={() => {

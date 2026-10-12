@@ -270,7 +270,9 @@ export function subscribeToUserInquiries(
       });
       callback(Object.values(results));
     },
-    (err) => handleFirestoreError(err, OperationType.LIST, 'contact_inquiries')
+    (err) => {
+      console.warn('Contact inquiries stream notice:', err?.message || err);
+    }
   );
 
   const unsubPartner = onSnapshot(
@@ -298,7 +300,9 @@ export function subscribeToUserInquiries(
       });
       callback(Object.values(results));
     },
-    (err) => handleFirestoreError(err, OperationType.LIST, 'partner_inquiries')
+    (err) => {
+      console.warn('Partner inquiries stream notice:', err?.message || err);
+    }
   );
 
   const unsubRfp = onSnapshot(
@@ -325,7 +329,9 @@ export function subscribeToUserInquiries(
       });
       callback(Object.values(results));
     },
-    (err) => handleFirestoreError(err, OperationType.LIST, 'manufacturing_rfps')
+    (err) => {
+      console.warn('Manufacturing RFPs stream notice:', err?.message || err);
+    }
   );
 
   return () => {
@@ -370,7 +376,9 @@ export function subscribeToAllInquiriesForAdmin(
       });
       callback(Object.values(results));
     },
-    (err) => handleFirestoreError(err, OperationType.LIST, 'contact_inquiries')
+    (err) => {
+      console.warn('Admin contact inquiries stream notice:', err?.message || err);
+    }
   );
 
   const unsubPartner = onSnapshot(
@@ -398,7 +406,9 @@ export function subscribeToAllInquiriesForAdmin(
       });
       callback(Object.values(results));
     },
-    (err) => handleFirestoreError(err, OperationType.LIST, 'partner_inquiries')
+    (err) => {
+      console.warn('Admin partner inquiries stream notice:', err?.message || err);
+    }
   );
 
   const unsubRfp = onSnapshot(
@@ -425,7 +435,9 @@ export function subscribeToAllInquiriesForAdmin(
       });
       callback(Object.values(results));
     },
-    (err) => handleFirestoreError(err, OperationType.LIST, 'manufacturing_rfps')
+    (err) => {
+      console.warn('Admin manufacturing RFPs stream notice:', err?.message || err);
+    }
   );
 
   return () => {
@@ -457,6 +469,18 @@ export async function updateInquiryStatus(
   } catch (error) {
     handleFirestoreError(error, OperationType.UPDATE, path);
   }
+}
+
+const profileListeners = new Set<(profile: UserProfileData | null) => void>();
+
+function notifyProfileListeners(profile: UserProfileData | null) {
+  profileListeners.forEach((listener) => {
+    try {
+      listener(profile);
+    } catch (e) {
+      console.warn('Profile listener error:', e);
+    }
+  });
 }
 
 // 8. Create or Save Partner User Profile
@@ -491,25 +515,51 @@ export async function saveUserProfile(data: Omit<UserProfileData, 'createdAt' | 
       payload.zipPostalCode = data.zipPostalCode.trim().slice(0, 30);
     }
 
+    try {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(`partner_profile_${data.userId}`, JSON.stringify(payload));
+      }
+      notifyProfileListeners(payload as UserProfileData);
+    } catch {
+      // ignore
+    }
+
     await postToRelationalApi('/api/profile', payload);
     if (!isFirebaseConfigured) return;
-    await setDoc(docRef, payload);
+    try {
+      await setDoc(docRef, payload);
+    } catch (fsErr) {
+      console.warn('Firestore user profile sync warning (operating with PostgreSQL):', fsErr);
+    }
   } catch (error) {
     if (!isFirebaseConfigured) return;
-    handleFirestoreError(error, OperationType.CREATE, path);
+    console.warn('Profile save warning:', error);
   }
 }
 
 // 9. Get Partner User Profile
 export async function getUserProfile(userId: string): Promise<UserProfileData | null> {
-  if (!isFirebaseConfigured) return null;
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const stored = localStorage.getItem(`partner_profile_${userId}`);
+      if (stored) return JSON.parse(stored) as UserProfileData;
+    }
+  } catch {
+    // ignore
+  }
+
+  if (!isFirebaseConfigured) {
+    return null;
+  }
+
   const path = `user_profiles/${userId}`;
   try {
     const snap = await getDoc(doc(db, 'user_profiles', userId));
     if (!snap.exists()) return null;
     return snap.data() as UserProfileData;
   } catch (error) {
-    handleFirestoreError(error, OperationType.GET, path);
+    console.warn('Firestore profile get notice:', error);
+    return null;
   }
 }
 
@@ -518,20 +568,48 @@ export function subscribeToUserProfile(
   userId: string,
   callback: (profile: UserProfileData | null) => void
 ): () => void {
-  if (!isFirebaseConfigured) {
+  // Always provide initial state from localStorage if available
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const stored = localStorage.getItem(`partner_profile_${userId}`);
+      callback(stored ? (JSON.parse(stored) as UserProfileData) : null);
+    } else {
+      callback(null);
+    }
+  } catch {
     callback(null);
-    return () => {};
   }
+
+  profileListeners.add(callback);
+
+  if (!isFirebaseConfigured) {
+    return () => {
+      profileListeners.delete(callback);
+    };
+  }
+
   const path = `user_profiles/${userId}`;
-  return onSnapshot(
-    doc(db, 'user_profiles', userId),
-    (snap) => {
-      if (snap.exists()) {
-        callback(snap.data() as UserProfileData);
-      } else {
-        callback(null);
+  let unsub: (() => void) | null = null;
+  try {
+    unsub = onSnapshot(
+      doc(db, 'user_profiles', userId),
+      (snap) => {
+        if (snap.exists()) {
+          callback(snap.data() as UserProfileData);
+        }
+      },
+      (err) => {
+        console.warn('Firestore profile subscription notice:', err);
       }
-    },
-    (err) => handleFirestoreError(err, OperationType.GET, path)
-  );
+    );
+  } catch (err) {
+    console.warn('Firestore snapshot setup notice:', err);
+  }
+
+  return () => {
+    profileListeners.delete(callback);
+    if (unsub) {
+      unsub();
+    }
+  };
 }

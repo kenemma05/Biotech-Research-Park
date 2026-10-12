@@ -36,6 +36,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialSubject =
 
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submittedInfo, setSubmittedInfo] = useState<{ name: string; email: string }>({ name: '', email: '' });
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
@@ -73,6 +74,22 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialSubject =
       });
       const durationMs = Math.round(performance.now() - startTime);
       submissionDiagnostics.recordSuccess(attemptId, response.id, durationMs);
+
+      // Preserve submitted details for success confirmation display
+      setSubmittedInfo({
+        name: formData.name,
+        email: formData.email
+      });
+
+      // Clear all form controls in the frontend UI
+      setFormData({
+        name: user?.displayName || '',
+        email: user?.email || '',
+        phone: '',
+        company: '',
+        inquiryType: initialSubject || 'General Enterprise Inquiry',
+        message: ''
+      });
 
       setSubmitted(true);
       showToast({
@@ -271,7 +288,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialSubject =
               Thank you! Your submission has been received successfully.
             </h3>
             <p className="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto leading-relaxed">
-              Thank you, {formData.name}. Your inquiry has been routed to our corporate advisory team. We will review your requirements and respond to {formData.email} within 24 hours under standard non-disclosure terms.
+              Thank you, {submittedInfo.name || 'valued partner'}. Your inquiry has been routed to our corporate advisory team. We will review your requirements and respond to {submittedInfo.email || 'your email'} within 24 hours under standard non-disclosure terms.
             </p>
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <button

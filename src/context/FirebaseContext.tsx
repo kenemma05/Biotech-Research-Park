@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { onAuthStateChanged, type User } from 'firebase/auth';
+import type { User } from 'firebase/auth';
 import { 
   auth, 
+  onAuthStateChanged,
   signInWithGoogle, 
   signInWithApple,
   signUpWithEmail as fbSignUpWithEmail,
@@ -72,7 +73,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [isPortalOpen, setIsPortalOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser: User | null) => {
       setUser(currentUser);
       setIsAdmin(isUserAdmin(currentUser));
       setLoadingAuth(false);

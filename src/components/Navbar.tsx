@@ -446,7 +446,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
+        {/* Main Navigation Menu Bar */}
+        <div 
+          id="main-navigation-menu-bar"
+          data-testid="main-navigation-menu-bar"
+          aria-label="Main Navigation Menu Bar"
+          style={{ width: 'calc(100% + 30px)', maxWidth: 'calc(100% + 30px)' }}
+          className="flex items-center justify-between w-[calc(100%+30px)] -mx-[15px] max-w-[calc(100%+30px)] transition-all"
+        >
           
           {/* Logo / Brand Identity */}
           <button 
@@ -471,7 +478,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           {/* Desktop Navigation Menu */}
-          <nav className="hidden lg:flex items-center gap-4 xl:gap-7 text-sm font-medium">
+          <nav 
+            aria-label="Main Navigation"
+            data-testid="desktop-main-navigation"
+            className="hidden lg:flex items-center gap-4 xl:gap-7 text-sm font-medium px-[15px]"
+          >
             {/* 1. Home Webpage */}
             <a
               href="/"

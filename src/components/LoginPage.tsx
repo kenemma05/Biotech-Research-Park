@@ -15,8 +15,7 @@ import {
   Building2,
   MapPin
 } from 'lucide-react';
-import { setPersistence, browserLocalPersistence, browserSessionPersistence } from 'firebase/auth';
-import { auth } from '../lib/firebase';
+import { auth, configureAuthPersistence } from '../lib/firebase';
 import { useFirebase } from '../context/FirebaseContext';
 import { useToast } from './GlobalToast';
 import { PageView } from '../types';
@@ -73,17 +72,17 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
 
     try {
       setLoading(true);
-      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
+      await configureAuthPersistence(rememberMe);
       await signInWithEmail(trimmedIdentifier, password, rememberMe);
-      if (rememberMe) {
-        await setPersistence(auth, browserLocalPersistence);
-      }
       setSuccessMsg('Authentication verified. Welcome to the Biotech Research Park Partner Portal.');
       showToast({
         title: 'Signed In Successfully',
         message: `Authenticated as ${trimmedIdentifier}. Session persistence: ${rememberMe ? 'Remembered on device' : 'Current session'}.`,
         variant: 'success'
       });
+      // Clear form inputs in the frontend UI
+      setIdentifier('');
+      setPassword('');
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       if (msg.includes('user-not-found') || msg.includes('invalid-credential') || msg.includes('wrong-password')) {
@@ -107,11 +106,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
     setSuccessMsg(null);
     try {
       setGoogleLoading(true);
-      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
+      await configureAuthPersistence(rememberMe);
       await loginWithGoogle(rememberMe);
-      if (rememberMe) {
-        await setPersistence(auth, browserLocalPersistence);
-      }
       setSuccessMsg('Authenticated via Google Single Sign-On.');
       showToast({
         title: 'Google Sign-In Successful',
@@ -133,11 +129,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
     setSuccessMsg(null);
     try {
       setAppleLoading(true);
-      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
+      await configureAuthPersistence(rememberMe);
       await loginWithApple(rememberMe);
-      if (rememberMe) {
-        await setPersistence(auth, browserLocalPersistence);
-      }
       setSuccessMsg('Authenticated via Apple Single Sign-On.');
       showToast({
         title: 'Apple Sign-In Successful',
