@@ -8,6 +8,8 @@ import {
   Filter, 
   FileText, 
   ChevronRight,
+  Trash2,
+  RefreshCw,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { type SubmissionRecord } from '../types/auth';
@@ -22,6 +24,7 @@ export const PartnerPortalModal: React.FC = () => {
     isPortalOpen, 
     closePortal, 
     loginWithGoogle, 
+    loginAsAdmin,
     logout,
     adminEmail 
   } = useAuth();
@@ -55,6 +58,21 @@ export const PartnerPortalModal: React.FC = () => {
       setAdminNoteInput('');
     } catch (err) {
       console.error('Failed to update status:', err);
+    } finally {
+      setStatusUpdateLoading(false);
+    }
+  };
+
+  const handleDeleteInquiry = async () => {
+    if (!selectedItem) return;
+    if (!window.confirm(`Are you sure you want to permanently delete this inquiry record from the Neon database?`)) return;
+    setStatusUpdateLoading(true);
+    try {
+      await inquiriesApi.deleteInquiry(selectedItem.type, Number(selectedItem.id));
+      await refreshSubmissions();
+      setSelectedItem(null);
+    } catch (err) {
+      console.error('Failed to delete inquiry:', err);
     } finally {
       setStatusUpdateLoading(false);
     }
@@ -177,17 +195,24 @@ export const PartnerPortalModal: React.FC = () => {
               <p className="text-xs text-slate-600 leading-relaxed">
                 Review and track your submissions, technical consultations, CDMO batch reservations, and partnership inquiries in real time.
               </p>
-              <div className="pt-2">
+              <div className="pt-2 space-y-2">
                 <button
-                  onClick={loginWithGoogle}
-                  className="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2"
+                  onClick={() => loginAsAdmin()}
+                  className="w-full py-2.5 px-4 rounded-xl bg-[#0A192F] hover:bg-[#1E293B] text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-slate-900/20 flex items-center justify-center gap-2 border border-slate-700 cursor-pointer"
+                >
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  Sign In as Executive Admin ({adminEmail})
+                </button>
+                <button
+                  onClick={() => loginWithGoogle()}
+                  className="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <LogIn className="w-4 h-4" />
-                  Sign In with Google to Track Submissions
+                  Sign In with Google SSO (Partner Profile)
                 </button>
               </div>
               <p className="text-[11px] text-slate-400">
-                Are you an executive reviewer ({adminEmail})? Sign in to manage and inspect all form payloads live.
+                Connected directly to Neon Lakebase PostgreSQL (<span className="font-mono text-emerald-600">neondb · production</span>).
               </p>
             </div>
           ) : (
@@ -198,30 +223,39 @@ export const PartnerPortalModal: React.FC = () => {
                   <Filter className="w-3.5 h-3.5 text-slate-400" />
                   <span className="text-xs font-mono uppercase tracking-wider text-slate-500 font-bold">Filter By Source:</span>
                 </div>
-                <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-semibold">
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-semibold">
+                    <button
+                      onClick={() => setActiveFilter('all')}
+                      className={`px-3 py-1 rounded-lg transition-all ${activeFilter === 'all' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+                    >
+                      All ({submissions.length})
+                    </button>
+                    <button
+                      onClick={() => setActiveFilter('contact')}
+                      className={`px-3 py-1 rounded-lg transition-all ${activeFilter === 'contact' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+                    >
+                      Contact ({submissions.filter(s => s.type === 'contact').length})
+                    </button>
+                    <button
+                      onClick={() => setActiveFilter('partner')}
+                      className={`px-3 py-1 rounded-lg transition-all ${activeFilter === 'partner' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+                    >
+                      Licensing / Modal ({submissions.filter(s => s.type === 'partner').length})
+                    </button>
+                    <button
+                      onClick={() => setActiveFilter('manufacturing')}
+                      className={`px-3 py-1 rounded-lg transition-all ${activeFilter === 'manufacturing' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+                    >
+                      CDMO RFP ({submissions.filter(s => s.type === 'manufacturing').length})
+                    </button>
+                  </div>
                   <button
-                    onClick={() => setActiveFilter('all')}
-                    className={`px-3 py-1 rounded-lg transition-all ${activeFilter === 'all' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+                    onClick={refreshSubmissions}
+                    title="Refresh data from Neon database"
+                    className="p-2 rounded-xl border border-slate-200 text-slate-500 hover:text-blue-600 hover:bg-slate-100 transition-colors flex items-center justify-center cursor-pointer"
                   >
-                    All ({submissions.length})
-                  </button>
-                  <button
-                    onClick={() => setActiveFilter('contact')}
-                    className={`px-3 py-1 rounded-lg transition-all ${activeFilter === 'contact' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
-                  >
-                    Contact ({submissions.filter(s => s.type === 'contact').length})
-                  </button>
-                  <button
-                    onClick={() => setActiveFilter('partner')}
-                    className={`px-3 py-1 rounded-lg transition-all ${activeFilter === 'partner' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
-                  >
-                    Licensing / Modal ({submissions.filter(s => s.type === 'partner').length})
-                  </button>
-                  <button
-                    onClick={() => setActiveFilter('manufacturing')}
-                    className={`px-3 py-1 rounded-lg transition-all ${activeFilter === 'manufacturing' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
-                  >
-                    CDMO RFP ({submissions.filter(s => s.type === 'manufacturing').length})
+                    <RefreshCw className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
@@ -373,13 +407,23 @@ export const PartnerPortalModal: React.FC = () => {
                       />
                     </div>
                   </div>
-                  <button
-                    onClick={handleUpdateStatus}
-                    disabled={statusUpdateLoading}
-                    className="py-2 px-4 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-all disabled:opacity-50"
-                  >
-                    {statusUpdateLoading ? 'Updating Database...' : 'Save Status Update to Database'}
-                  </button>
+                  <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+                    <button
+                      onClick={handleUpdateStatus}
+                      disabled={statusUpdateLoading}
+                      className="py-2 px-4 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-all disabled:opacity-50"
+                    >
+                      {statusUpdateLoading ? 'Updating Database...' : 'Save Status Update to Neon DB'}
+                    </button>
+                    <button
+                      onClick={handleDeleteInquiry}
+                      disabled={statusUpdateLoading}
+                      className="py-2 px-3 bg-rose-600/20 hover:bg-rose-600 border border-rose-500/40 text-rose-300 hover:text-white rounded-lg text-xs font-semibold transition-all disabled:opacity-50 flex items-center gap-1.5"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      Delete from Neon DB
+                    </button>
+                  </div>
                 </div>
               )}
             </div>

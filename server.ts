@@ -3,7 +3,7 @@ dotenv.config();
 import express from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
-import { requireAuth, optionalAuth, AuthRequest } from './src/middleware/auth.ts';
+import { requireAuth, optionalAuth, type AuthRequest } from './src/middleware/auth.ts';
 import {
   getOrCreateUser,
   upsertUserProfile,
@@ -33,7 +33,7 @@ const ADMIN_EMAILS = ['felixeric813@gmail.com', 'kenemma05@gmail.com', 'emmakenn
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
   app.use(express.json());
 
@@ -342,7 +342,10 @@ async function startServer() {
   } else {
     const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
-    app.get('*', (_req, res) => {
+    app.get('*', (req, res) => {
+      if (req.path.startsWith('/api')) {
+        return res.status(404).json({ error: 'Endpoint not found' });
+      }
       res.sendFile(path.join(distPath, 'index.html'));
     });
   }

@@ -1,8 +1,9 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { Pool, PoolConfig } from 'pg';
+import pg, { type Pool, type PoolConfig } from 'pg';
+const PoolClass = pg.Pool || (pg as any);
 import { drizzle } from 'drizzle-orm/neon-http';
-import { neon, NeonQueryFunction } from '@neondatabase/serverless';
+import { neon, type NeonQueryFunction } from '@neondatabase/serverless';
 import * as schema from '../db/schema.ts';
 
 declare global {
@@ -42,10 +43,10 @@ export const createNeonPool = (): Pool | null => {
       connectionTimeoutMillis: 5000,
     };
 
-    global._neonPgPool = new Pool(poolConfig);
+    global._neonPgPool = new PoolClass(poolConfig) as Pool;
 
-    global._neonPgPool.on('error', (err) => {
-      console.warn('Neon PostgreSQL idle client notice:', err.message);
+    global._neonPgPool.on('error', (err: any) => {
+      console.warn('Neon PostgreSQL idle client notice:', err?.message || err);
     });
   }
 
@@ -153,12 +154,17 @@ export async function testNeonConnection(): Promise<NeonDiagnosticReport> {
       }
 
       const dbName = res[0]?.db_name || 'neondb';
+      const currentTimeVal = res[0]?.current_time;
+      const formattedTime = typeof currentTimeVal?.toISOString === 'function' 
+        ? currentTimeVal.toISOString() 
+        : String(currentTimeVal || new Date().toISOString());
+
       return {
         ok: true,
         status: 'connected',
         message: `Successfully connected to Neon PostgreSQL database: ${dbName}`,
         database: dbName,
-        serverTime: res[0]?.current_time?.toISOString(),
+        serverTime: formattedTime,
         latencyMs,
         projectId,
         branch,

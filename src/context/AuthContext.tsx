@@ -212,6 +212,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const loginAsAdmin = async (rememberMe: boolean = true): Promise<User> => {
+    try {
+      const adminUser = await libSignInAsAdmin(rememberMe);
+      return adminUser;
+    } catch (err) {
+      console.error('Admin login error:', err);
+      throw err;
+    }
+  };
+
   const signUpWithEmail = async (email: string, password: string, displayName?: string) => {
     try {
       const newUser = await libSignUpWithEmail(email, password, displayName);
@@ -328,6 +338,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         loadingAuth,
         loginWithGoogle,
         loginWithApple,
+        loginAsAdmin,
         signUpWithEmail,
         registerPartnerAccount,
         completePartnerProfile,
