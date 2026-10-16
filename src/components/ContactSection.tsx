@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { CORPORATE_DETAILS } from '../data/biotechData';
 import { inquiriesApi } from '../services/api';
-import { useFirebase } from '../context/FirebaseContext';
+import { useAuth } from '../context/AuthContext';
 import { useToast } from './GlobalToast';
 import { submissionDiagnostics } from '../utils/submissionDiagnostics';
 
@@ -22,7 +22,7 @@ interface ContactSectionProps {
 }
 
 export const ContactSection: React.FC<ContactSectionProps> = ({ initialSubject = '' }) => {
-  const { user, openPortal } = useFirebase();
+  const { user, openPortal } = useAuth();
   const { showToast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -402,7 +402,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialSubject =
                 {submitting ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    <span>Transmitting to Firebase...</span>
+                    <span>Transmitting Inquiry...</span>
                   </>
                 ) : (
                   <>

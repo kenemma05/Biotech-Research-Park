@@ -25,7 +25,7 @@ import {
   Users,
   FileCheck2
 } from 'lucide-react';
-import { useFirebase } from '../context/FirebaseContext';
+import { useAuth } from '../context/AuthContext';
 import { useToast } from './GlobalToast';
 import { PageView } from '../types';
 import { PARTNER_TYPES, GLOBAL_COUNTRIES, type CountryEntry } from '../data/countriesData';
@@ -65,7 +65,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate }) => {
     resendVerification,
     logout,
     openPortal
-  } = useFirebase();
+  } = useAuth();
   const { showToast } = useToast();
 
   // Section A: Personal & Account Information
@@ -452,7 +452,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate }) => {
       } else if (msg.includes('weak-password')) {
         setError('Password is too weak. Please choose a stronger password with at least 8 characters.');
       } else if (msg.includes('operation-not-allowed')) {
-        setError('Email/Password registration is currently restricted in the authentication console. Please use Google SSO above or enable Email/Password provider in Firebase Auth.');
+        setError('Email/Password registration is currently restricted for public submissions. Please sign in with Google SSO above or contact executive liaison.');
       } else {
         setError('Unable to complete registration at this moment. Please verify your details or sign in with Google SSO.');
       }
@@ -494,7 +494,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate }) => {
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       if (msg.includes('operation-not-allowed')) {
-        setError('Apple Sign-In is not yet enabled in the Firebase Authentication console. Please enable the Apple provider under Firebase Console > Authentication > Sign-in method, or use Google SSO / Email registration.');
+        setError('Apple Sign-In is not currently enabled for your institution. Please use Google SSO or complete the registration form below.');
       } else if (!msg.includes('popup-closed-by-user')) {
         setError('Apple Sign-In could not be completed. Please try again or complete the registration form below.');
       }

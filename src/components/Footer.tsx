@@ -3,7 +3,7 @@ import { PageView } from '../types';
 import { CORPORATE_DETAILS } from '../data/biotechData';
 import { Dna, MapPin, Phone, Mail, Globe, ExternalLink, ShieldCheck, Database, Loader2, CheckCircle2, ArrowRight } from 'lucide-react';
 import { newsletterApi } from '../services/api';
-import { useFirebase } from '../context/FirebaseContext';
+import { useAuth } from '../context/AuthContext';
 import { useToast } from './GlobalToast';
 
 interface FooterProps {
@@ -12,7 +12,7 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => {
-  const { openPortal, user, submissions } = useFirebase();
+  const { openPortal, user, submissions } = useAuth();
   const { showToast } = useToast();
   const currentYear = new Date().getFullYear();
   const [newsletterEmail, setNewsletterEmail] = useState('');
@@ -257,12 +257,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenContact }) => 
           </div>
         </div>
 
-        {/* Technical Dispatch & Real-Time Firebase Backend Access Banner */}
+        {/* Technical Dispatch & Real-Time Neon Backend Access Banner */}
         <div className="mb-12 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#0F203C] to-[#0A192F] border border-blue-900/60 shadow-xl flex flex-col lg:flex-row items-center justify-between gap-6">
           <div className="max-w-xl space-y-1.5 text-center lg:text-left">
             <div className="flex items-center justify-center lg:justify-start gap-2 text-xs font-mono uppercase text-blue-400 font-bold">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Firebase Cloud Backend · Active Integration</span>
+              <span>Neon Cloud Postgres · Active Integration</span>
             </div>
             <h3 className="text-base sm:text-lg font-bold text-white">
               Subscribe to Life Sciences Technical Dispatches & Whitepapers

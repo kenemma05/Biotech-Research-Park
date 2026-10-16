@@ -24,8 +24,8 @@ import { LoginPage } from './components/LoginPage';
 import { RegisterPage } from './components/RegisterPage';
 import { ContactSection } from './components/ContactSection';
 import { ContactModal } from './components/ContactModal';
-import { FirebasePortalModal } from './components/FirebasePortalModal';
-import { FirebaseProvider } from './context/FirebaseContext';
+import { PartnerPortalModal } from './components/PartnerPortalModal';
+import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './components/GlobalToast';
 import { Footer } from './components/Footer';
 import { CleanroomTourVideoPlayer } from './components/CleanroomTourVideoPlayer';
@@ -124,7 +124,7 @@ export default function App() {
 
   return (
     <ToastProvider>
-      <FirebaseProvider>
+      <AuthProvider>
         <div className="min-h-screen bg-white text-[#0A192F] selection:bg-blue-600/20 selection:text-blue-950 flex flex-col justify-between">
         
         {/* 1. Global Sticky Glassmorphic Navigation Bar (Deep Navy #0A192F with Crisp White Text) */}
@@ -519,11 +519,11 @@ export default function App() {
         onOpenContact={handleOpenContact}
       />
 
-      {/* Real-Time Firebase Backend Inquiries & Admin Portal Modal */}
-      <FirebasePortalModal />
+      {/* Real-Time Neon Inquiries & Partner Portal Modal */}
+      <PartnerPortalModal />
 
     </div>
-  </FirebaseProvider>
+  </AuthProvider>
   </ToastProvider>
   );
 }

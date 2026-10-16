@@ -10,7 +10,7 @@ import {
   ArrowRight,
   Lock
 } from 'lucide-react';
-import { resetPassword } from '../lib/firebase';
+import { resetPassword } from '../lib/auth';
 import { useToast } from './GlobalToast';
 
 export interface PasswordRecoveryModalProps {
@@ -158,7 +158,7 @@ export const PasswordRecoveryModal: React.FC<PasswordRecoveryModalProps> = ({
                   <span>Password Recovery Link Dispatched</span>
                 </div>
                 <p className="text-xs text-emerald-900 leading-relaxed">
-                  A secure Firebase password reset link has been sent to{' '}
+                  A secure password reset link has been sent to{' '}
                   <span className="font-mono font-semibold break-all">{dispatchedEmail}</span>.
                 </p>
               </div>

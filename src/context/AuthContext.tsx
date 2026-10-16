@@ -1,26 +1,19 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import type { User } from 'firebase/auth';
+import type { User, UserProfileData, SubmissionRecord } from '../types/auth.ts';
 import { 
   auth, 
   onAuthStateChanged,
   signInWithGoogle, 
   signInWithApple,
-  signUpWithEmail as fbSignUpWithEmail,
-  signInWithEmail as fbSignInWithEmail,
-  resetPassword as fbResetPassword,
-  resendVerificationEmail as fbResendVerificationEmail,
+  signInAsAdmin as libSignInAsAdmin,
+  signUpWithEmail as libSignUpWithEmail,
+  signInWithEmail as libSignInWithEmail,
+  resetPassword as libResetPassword,
+  resendVerificationEmail as libResendVerificationEmail,
   logOut, 
   isUserAdmin,
   ADMIN_EMAIL 
-} from '../lib/firebase';
-import { 
-  subscribeToUserInquiries, 
-  subscribeToAllInquiriesForAdmin, 
-  subscribeToUserProfile,
-  saveUserProfile,
-  type SubmissionRecord,
-  type UserProfileData
-} from '../services/firebaseService';
+} from '../lib/auth.ts';
 import { inquiriesApi } from '../services/api';
 
 export interface RegistrationPayload {
@@ -40,13 +33,14 @@ export interface RegistrationPayload {
   country: string;
 }
 
-interface FirebaseContextType {
+export interface AuthContextType {
   user: User | null;
   userProfile: UserProfileData | null;
   isAdmin: boolean;
   loadingAuth: boolean;
   loginWithGoogle: (rememberMe?: boolean | unknown) => Promise<User>;
   loginWithApple: (rememberMe?: boolean | unknown) => Promise<User>;
+  loginAsAdmin: (rememberMe?: boolean) => Promise<User>;
   signUpWithEmail: (email: string, password: string, displayName?: string) => Promise<User>;
   registerPartnerAccount: (payload: RegistrationPayload) => Promise<User>;
   completePartnerProfile: (profileData: Omit<UserProfileData, 'userId' | 'emailVerified' | 'accountStatus' | 'createdAt' | 'updatedAt'>) => Promise<void>;
@@ -62,9 +56,9 @@ interface FirebaseContextType {
   adminEmail: string;
 }
 
-const FirebaseContext = createContext<FirebaseContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfileData | null>(null);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
@@ -81,15 +75,42 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       if (currentUser) {
         try {
           const token = await currentUser.getIdToken();
-          await fetch('/api/me', {
+          const res = await fetch('/api/me', {
             method: 'GET',
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
+          if (res.ok) {
+            const data = await res.json();
+            if (data) {
+              setUserProfile({
+                userId: data.uid || currentUser.uid,
+                fullName: data.fullName || currentUser.displayName || '',
+                email: data.email || currentUser.email,
+                username: data.username || currentUser.email.split('@')[0],
+                organization: data.organization || 'Bedfordshire Life Sciences Partner',
+                jobTitle: data.jobTitle || 'Research Investigator',
+                partnerType: data.partnerType || 'Academic Research Institution',
+                phoneNumber: data.phoneNumber || '',
+                addressLine1: data.addressLine1 || '',
+                addressLine2: data.addressLine2 || '',
+                city: data.city || '',
+                stateProvinceRegion: data.stateProvinceRegion || '',
+                zipPostalCode: data.zipPostalCode || '',
+                country: data.country || 'United Kingdom',
+                emailVerified: Boolean(data.emailVerified ?? currentUser.emailVerified),
+                accountStatus: (data.accountStatus as any) || 'active',
+                createdAt: data.createdAt,
+                updatedAt: data.updatedAt,
+              });
+            }
+          }
         } catch (err) {
           console.warn('User profile sync notice:', err);
         }
+      } else {
+        setUserProfile(null);
       }
     });
 
@@ -169,21 +190,6 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   }, [isPortalOpen]);
 
-  useEffect(() => {
-    if (!user) {
-      setUserProfile(null);
-      return;
-    }
-
-    const unsubProfile = subscribeToUserProfile(user.uid, (profile) => {
-      setUserProfile(profile);
-    });
-
-    return () => {
-      unsubProfile();
-    };
-  }, [user]);
-
   const loginWithGoogle = async (rememberMe: boolean | unknown = true): Promise<User> => {
     try {
       const persistLocal = typeof rememberMe === 'boolean' ? rememberMe : true;
@@ -208,7 +214,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const signUpWithEmail = async (email: string, password: string, displayName?: string) => {
     try {
-      const newUser = await fbSignUpWithEmail(email, password, displayName);
+      const newUser = await libSignUpWithEmail(email, password, displayName);
       return newUser;
     } catch (err) {
       console.error('Sign up error:', err);
@@ -219,25 +225,32 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const registerPartnerAccount = async (payload: RegistrationPayload): Promise<User> => {
     try {
       const displayName = `${payload.fullName.trim()} (${payload.organization.trim()})`;
-      const newUser = await fbSignUpWithEmail(payload.email.trim(), payload.password, displayName);
+      const newUser = await libSignUpWithEmail(payload.email.trim(), payload.password, displayName);
 
-      await saveUserProfile({
-        userId: newUser.uid,
-        fullName: payload.fullName.trim(),
-        email: payload.email.trim().toLowerCase(),
-        username: payload.username.trim(),
-        organization: payload.organization.trim(),
-        jobTitle: payload.jobTitle.trim(),
-        partnerType: payload.partnerType.trim(),
-        phoneNumber: payload.phoneNumber.trim(),
-        addressLine1: payload.addressLine1.trim(),
-        addressLine2: payload.addressLine2?.trim(),
-        city: payload.city.trim(),
-        stateProvinceRegion: payload.stateProvinceRegion?.trim(),
-        zipPostalCode: payload.zipPostalCode?.trim(),
-        country: payload.country.trim(),
-        emailVerified: Boolean(newUser.emailVerified),
-        accountStatus: newUser.emailVerified ? 'active' : 'pending_verification'
+      const token = await newUser.getIdToken();
+      await fetch('/api/profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          fullName: payload.fullName.trim(),
+          email: payload.email.trim().toLowerCase(),
+          username: payload.username.trim(),
+          organization: payload.organization.trim(),
+          jobTitle: payload.jobTitle.trim(),
+          partnerType: payload.partnerType.trim(),
+          phoneNumber: payload.phoneNumber.trim(),
+          addressLine1: payload.addressLine1.trim(),
+          addressLine2: payload.addressLine2?.trim(),
+          city: payload.city.trim(),
+          stateProvinceRegion: payload.stateProvinceRegion?.trim(),
+          zipPostalCode: payload.zipPostalCode?.trim(),
+          country: payload.country.trim(),
+          emailVerified: Boolean(newUser.emailVerified),
+          accountStatus: newUser.emailVerified ? 'active' : 'pending_verification',
+        }),
       });
 
       return newUser;
@@ -253,17 +266,24 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (!auth.currentUser) {
       throw new Error('Must be signed in to save partner profile.');
     }
-    await saveUserProfile({
-      userId: auth.currentUser.uid,
-      ...profileData,
-      emailVerified: Boolean(auth.currentUser.emailVerified),
-      accountStatus: auth.currentUser.emailVerified ? 'active' : 'pending_verification'
+    const token = await auth.currentUser.getIdToken();
+    await fetch('/api/profile', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        ...profileData,
+        emailVerified: Boolean(auth.currentUser.emailVerified),
+        accountStatus: auth.currentUser.emailVerified ? 'active' : 'pending_verification',
+      }),
     });
   };
 
   const signInWithEmail = async (email: string, password: string, rememberMe: boolean = true) => {
     try {
-      const loggedUser = await fbSignInWithEmail(email, password, rememberMe);
+      const loggedUser = await libSignInWithEmail(email, password, rememberMe);
       return loggedUser;
     } catch (err) {
       console.error('Sign in error:', err);
@@ -273,7 +293,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const resetPassword = async (email: string) => {
     try {
-      await fbResetPassword(email);
+      await libResetPassword(email);
     } catch (err) {
       console.error('Password reset error:', err);
       throw err;
@@ -282,7 +302,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const resendVerification = async () => {
     try {
-      await fbResendVerificationEmail();
+      await libResendVerificationEmail();
     } catch (err) {
       console.error('Verification email error:', err);
       throw err;
@@ -300,7 +320,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   return (
-    <FirebaseContext.Provider
+    <AuthContext.Provider
       value={{
         user,
         userProfile,
@@ -320,18 +340,18 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         isPortalOpen,
         openPortal: () => setIsPortalOpen(true),
         closePortal: () => setIsPortalOpen(false),
-        adminEmail: ADMIN_EMAIL
+        adminEmail: ADMIN_EMAIL,
       }}
     >
       {children}
-    </FirebaseContext.Provider>
+    </AuthContext.Provider>
   );
 };
 
-export const useFirebase = () => {
-  const context = useContext(FirebaseContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useFirebase must be used within a FirebaseProvider');
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 };

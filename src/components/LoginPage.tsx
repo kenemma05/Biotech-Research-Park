@@ -15,8 +15,8 @@ import {
   Building2,
   MapPin
 } from 'lucide-react';
-import { auth, configureAuthPersistence } from '../lib/firebase';
-import { useFirebase } from '../context/FirebaseContext';
+import { auth, configureAuthPersistence } from '../lib/auth';
+import { useAuth } from '../context/AuthContext';
 import { useToast } from './GlobalToast';
 import { PageView } from '../types';
 import { PasswordRecoveryModal } from './PasswordRecoveryModal';
@@ -36,7 +36,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
     resendVerification,
     logout,
     openPortal
-  } = useFirebase();
+  } = useAuth();
   const { showToast } = useToast();
   
   const [identifier, setIdentifier] = useState('');
@@ -140,7 +140,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       if (msg.includes('operation-not-allowed')) {
-        setError('Apple Sign-In is not yet enabled in the Firebase Authentication console. Please enable the Apple provider under Firebase Console > Authentication > Sign-in method, or sign in with Google / Email.');
+        setError('Apple Sign-In is not currently enabled for your institution. Please sign in with Google SSO or verified partner email.');
       } else if (!msg.includes('popup-closed-by-user')) {
         setError('Apple Sign-In was interrupted or could not be completed.');
       }

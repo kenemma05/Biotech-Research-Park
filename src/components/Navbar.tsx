@@ -37,7 +37,7 @@ import {
   LogOut,
   User
 } from 'lucide-react';
-import { useFirebase } from '../context/FirebaseContext';
+import { useAuth } from '../context/AuthContext';
 import { GlobalSearchModal } from './GlobalSearchModal';
 import { SCIENCE_CAPABILITIES, ScienceCapabilityItem } from '../data/biotechData';
 import { UK_SCIENCE_PAGES } from '../data/ukScienceData';
@@ -56,7 +56,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigate,
   onOpenContact
 }) => {
-  const { user, submissions, openPortal, logout } = useFirebase();
+  const { user, submissions, openPortal, logout } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [globalSearchOpen, setGlobalSearchOpen] = useState(false);

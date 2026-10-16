@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Send, CheckCircle2, Phone, Mail, MapPin, Loader2 } from 'lucide-react';
 import { CORPORATE_DETAILS } from '../data/biotechData';
 import { inquiriesApi } from '../services/api';
-import { useFirebase } from '../context/FirebaseContext';
+import { useAuth } from '../context/AuthContext';
 import { useToast } from './GlobalToast';
 import { submissionDiagnostics } from '../utils/submissionDiagnostics';
 
@@ -17,7 +17,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
   onClose,
   initialSubject = ''
 }) => {
-  const { user, openPortal } = useFirebase();
+  const { user, openPortal } = useAuth();
   const { showToast } = useToast();
 
   const [formData, setFormData] = useState({

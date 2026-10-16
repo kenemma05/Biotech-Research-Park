@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { boolean, integer, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
 
-// Define the 'users' table using Firebase Auth UID as unique identifier
+// Define the 'users' table using Partner Auth UID as unique identifier
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
   uid: text('uid').notNull().unique(),

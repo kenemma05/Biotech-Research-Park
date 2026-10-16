@@ -122,6 +122,26 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
     headers.set('Content-Type', 'application/json');
   }
 
+  if (!headers.has('Authorization') && typeof localStorage !== 'undefined') {
+    try {
+      const rawSession = localStorage.getItem('bedfordshire_partner_session');
+      if (rawSession) {
+        const parsed = JSON.parse(rawSession);
+        if (parsed?.email) {
+          const token = btoa(
+            JSON.stringify({
+              uid: parsed.uid || 'partner_session',
+              email: parsed.email,
+              name: parsed.displayName || parsed.email,
+              email_verified: parsed.emailVerified ?? true,
+            })
+          );
+          headers.set('Authorization', `Bearer ${token}`);
+        }
+      }
+    } catch {}
+  }
+
   const res = await fetch(endpoint, {
     ...options,
     headers,

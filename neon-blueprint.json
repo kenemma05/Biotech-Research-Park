@@ -1,0 +1,140 @@
+{
+  "database": "neondb",
+  "engine": "postgresql",
+  "provider": "neon-lakebase",
+  "version": "16",
+  "branch": "production",
+  "auth": {
+    "provider": "neon-managed-auth",
+    "schema": "neon_auth",
+    "supportedMethods": [
+      "email_password",
+      "google_sso",
+      "apple_sso",
+      "partner_token"
+    ]
+  },
+  "entities": {
+    "users": {
+      "tableName": "users",
+      "description": "Registered partner investigators, biotechnology enterprises, and institutional collaborators",
+      "columns": {
+        "id": { "type": "serial", "primaryKey": true },
+        "uid": { "type": "text", "unique": true, "description": "Unique partner auth identifier" },
+        "email": { "type": "text", "pattern": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$" },
+        "full_name": { "type": "text", "maxLength": 255 },
+        "username": { "type": "text", "maxLength": 100 },
+        "organization": { "type": "text", "maxLength": 255 },
+        "job_title": { "type": "text", "maxLength": 150 },
+        "partner_type": { "type": "text", "enum": ["Academic Research Institution", "Biotech Startup", "Global Pharmaceutical Enterprise", "Contract Research Organization (CRO)", "NHS / Clinical Trial Site"] },
+        "phone_number": { "type": "text", "maxLength": 50 },
+        "address_line_1": { "type": "text", "maxLength": 255 },
+        "address_line_2": { "type": "text", "maxLength": 255, "nullable": true },
+        "city": { "type": "text", "maxLength": 100 },
+        "state_province_region": { "type": "text", "maxLength": 100, "nullable": true },
+        "zip_postal_code": { "type": "text", "maxLength": 30, "nullable": true },
+        "country": { "type": "text", "maxLength": 100 },
+        "email_verified": { "type": "boolean", "default": false },
+        "account_status": { "type": "text", "enum": ["active", "pending_verification", "suspended"], "default": "active" },
+        "created_at": { "type": "timestamp with time zone", "default": "NOW()" },
+        "updated_at": { "type": "timestamp with time zone", "default": "NOW()" }
+      }
+    },
+    "contact_inquiries": {
+      "tableName": "contact_inquiries",
+      "description": "General enterprise correspondence, scientific collaborations, and public inquiries",
+      "columns": {
+        "id": { "type": "serial", "primaryKey": true },
+        "user_id": { "type": "integer", "foreignKey": "users.id", "nullable": true },
+        "name": { "type": "text", "minLength": 2, "maxLength": 255 },
+        "email": { "type": "text", "pattern": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$" },
+        "phone": { "type": "text", "nullable": true },
+        "company": { "type": "text", "nullable": true },
+        "inquiry_type": { "type": "text", "maxLength": 100 },
+        "message": { "type": "text", "minLength": 10, "maxLength": 5000 },
+        "status": { "type": "text", "enum": ["pending", "under_review", "scheduled", "approved", "archived"], "default": "pending" },
+        "admin_notes": { "type": "text", "nullable": true },
+        "created_at": { "type": "timestamp with time zone", "default": "NOW()" },
+        "updated_at": { "type": "timestamp with time zone", "default": "NOW()" }
+      }
+    },
+    "partner_inquiries": {
+      "tableName": "partner_inquiries",
+      "description": "Strategic licensing, co-development, and asset development inquiries",
+      "columns": {
+        "id": { "type": "serial", "primaryKey": true },
+        "user_id": { "type": "integer", "foreignKey": "users.id", "nullable": true },
+        "name": { "type": "text", "minLength": 2, "maxLength": 255 },
+        "email": { "type": "text", "pattern": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$" },
+        "phone": { "type": "text", "nullable": true },
+        "company": { "type": "text", "nullable": true },
+        "subject": { "type": "text", "maxLength": 255 },
+        "message": { "type": "text", "minLength": 10, "maxLength": 5000 },
+        "status": { "type": "text", "enum": ["pending", "under_review", "scheduled", "approved", "archived"], "default": "pending" },
+        "admin_notes": { "type": "text", "nullable": true },
+        "created_at": { "type": "timestamp with time zone", "default": "NOW()" },
+        "updated_at": { "type": "timestamp with time zone", "default": "NOW()" }
+      }
+    },
+    "manufacturing_rfps": {
+      "tableName": "manufacturing_rfps",
+      "description": "CDMO biomanufacturing service requests, batch reservations, and formulation RFPs",
+      "columns": {
+        "id": { "type": "serial", "primaryKey": true },
+        "user_id": { "type": "integer", "foreignKey": "users.id", "nullable": true },
+        "name": { "type": "text", "minLength": 2, "maxLength": 255 },
+        "email": { "type": "text", "pattern": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$" },
+        "company": { "type": "text", "nullable": true },
+        "modality": { "type": "text", "maxLength": 100 },
+        "phase": { "type": "text", "maxLength": 100 },
+        "target_volume": { "type": "text", "maxLength": 100 },
+        "fill_finish_format": { "type": "text", "maxLength": 100 },
+        "project_timeline": { "type": "text", "maxLength": 100 },
+        "notes": { "type": "text", "nullable": true },
+        "status": { "type": "text", "enum": ["pending", "under_review", "feasibility_passed", "contracted", "rejected"], "default": "pending" },
+        "admin_notes": { "type": "text", "nullable": true },
+        "created_at": { "type": "timestamp with time zone", "default": "NOW()" },
+        "updated_at": { "type": "timestamp with time zone", "default": "NOW()" }
+      }
+    },
+    "facility_suite_metrics": {
+      "tableName": "facility_suite_metrics",
+      "description": "Bedfordshire Hub cleanroom suite operational telemetry and capacity ratings",
+      "columns": {
+        "id": { "type": "serial", "primaryKey": true },
+        "suite": { "type": "text", "maxLength": 255 },
+        "short_name": { "type": "text", "maxLength": 50 },
+        "grade": { "type": "text", "maxLength": 50 },
+        "iso_class": { "type": "text", "maxLength": 50 },
+        "area_m2": { "type": "integer" },
+        "utilization_rate": { "type": "integer" },
+        "throughput_capacity": { "type": "text", "maxLength": 255 },
+        "active_status": { "type": "text", "enum": ["Operational", "Validated", "Maintenance", "Under Audit"], "default": "Operational" },
+        "sort_order": { "type": "integer", "default": 0 },
+        "updated_at": { "type": "timestamp with time zone", "default": "NOW()" }
+      }
+    },
+    "research_papers": {
+      "tableName": "research_papers",
+      "description": "Scientific publications, continuous perfusion studies, and formulation whitepapers",
+      "columns": {
+        "id": { "type": "serial", "primaryKey": true },
+        "paper_code": { "type": "text", "maxLength": 50 },
+        "slug": { "type": "text", "maxLength": 255, "unique": true },
+        "title": { "type": "text", "maxLength": 500 },
+        "category": { "type": "text", "maxLength": 100 },
+        "author_name": { "type": "text", "maxLength": 255 },
+        "author_role": { "type": "text", "maxLength": 255 },
+        "author_initials": { "type": "text", "maxLength": 10 },
+        "published_date": { "type": "text", "maxLength": 50 },
+        "read_time": { "type": "text", "maxLength": 50 },
+        "excerpt": { "type": "text" },
+        "content_snippet": { "type": "text" },
+        "tags_json": { "type": "text" },
+        "image_url": { "type": "text" },
+        "created_at": { "type": "timestamp with time zone", "default": "NOW()" },
+        "updated_at": { "type": "timestamp with time zone", "default": "NOW()" }
+      }
+    }
+  }
+}

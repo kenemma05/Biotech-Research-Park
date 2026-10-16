@@ -1,27 +1,19 @@
 import React, { useState } from 'react';
 import { 
   X, 
-  Database, 
-  CheckCircle2, 
-  Clock, 
   ShieldAlert, 
   ShieldCheck, 
   LogOut, 
   LogIn, 
   Filter, 
   FileText, 
-  ExternalLink,
   ChevronRight,
-  Sparkles,
-  Building2,
-  Mail,
-  Phone
 } from 'lucide-react';
-import { useFirebase } from '../context/FirebaseContext';
-import { type SubmissionRecord } from '../services/firebaseService';
+import { useAuth } from '../context/AuthContext';
+import { type SubmissionRecord } from '../types/auth';
 import { inquiriesApi } from '../services/api';
 
-export const FirebasePortalModal: React.FC = () => {
+export const PartnerPortalModal: React.FC = () => {
   const { 
     user, 
     isAdmin, 
@@ -32,7 +24,7 @@ export const FirebasePortalModal: React.FC = () => {
     loginWithGoogle, 
     logout,
     adminEmail 
-  } = useFirebase();
+  } = useAuth();
 
   const [activeFilter, setActiveFilter] = useState<'all' | 'contact' | 'partner' | 'manufacturing'>('all');
   const [selectedItem, setSelectedItem] = useState<SubmissionRecord | null>(null);
@@ -52,7 +44,7 @@ export const FirebasePortalModal: React.FC = () => {
     setStatusUpdateLoading(true);
     try {
       await inquiriesApi.updateStatus(
-        selectedItem.type as any,
+        selectedItem.type,
         Number(selectedItem.id),
         newStatus,
         adminNoteInput || undefined
@@ -107,7 +99,7 @@ export const FirebasePortalModal: React.FC = () => {
                 </h2>
                 <span className="flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Active Enterprise Sync
+                  Neon Database Sync Active
                 </span>
               </div>
               <p className="text-xs text-slate-500">
@@ -386,7 +378,7 @@ export const FirebasePortalModal: React.FC = () => {
                     disabled={statusUpdateLoading}
                     className="py-2 px-4 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-all disabled:opacity-50"
                   >
-                    {statusUpdateLoading ? 'Updating Firestore...' : 'Save Status Update to Firestore'}
+                    {statusUpdateLoading ? 'Updating Database...' : 'Save Status Update to Database'}
                   </button>
                 </div>
               )}
@@ -398,7 +390,7 @@ export const FirebasePortalModal: React.FC = () => {
         <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span className="font-mono text-[11px]">Firestore Collection Security: Active & Rules Enforced</span>
+            <span className="font-mono text-[11px]">Neon Database Synchronization: Active & Encrypted</span>
           </div>
           <button
             onClick={closePortal}

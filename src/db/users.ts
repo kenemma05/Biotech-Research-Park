@@ -289,8 +289,7 @@ export async function createContactInquiryRecord(data: {
 
       return result[0];
     } catch (error) {
-      console.error('[Neon DB Error] Failed to insert contact inquiry into Neon:', error);
-      throw error;
+      console.warn('[Database Fallback] Failed to insert contact inquiry into database, falling back to memory store:', error);
     }
   }
 
@@ -355,8 +354,7 @@ export async function createPartnerInquiryRecord(data: {
 
       return result[0];
     } catch (error) {
-      console.error('[Neon DB Error] Failed to insert partner inquiry into Neon:', error);
-      throw error;
+      console.warn('[Database Fallback] Failed to insert partner inquiry into database, falling back to memory store:', error);
     }
   }
 
@@ -410,8 +408,7 @@ export async function createManufacturingRfpRecord(data: {
         .returning();
       return result[0];
     } catch (error) {
-      console.error('[Neon DB Error] Failed to insert manufacturing RFP into Neon:', error);
-      throw error;
+      console.warn('[Database Fallback] Failed to insert manufacturing RFP into database, falling back to memory store:', error);
     }
   }
 
@@ -454,8 +451,7 @@ export async function createNewsletterSubscription(email: string, source: string
         .returning();
       return result[0];
     } catch (error) {
-      console.error('[Neon DB Error] Failed to insert newsletter subscriber into Neon:', error);
-      throw error;
+      console.warn('[Database Fallback] Failed to insert newsletter subscriber into database, falling back to memory store:', error);
     }
   }
 

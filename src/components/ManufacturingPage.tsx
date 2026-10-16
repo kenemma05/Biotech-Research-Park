@@ -7,7 +7,7 @@ import {
   Database
 } from 'lucide-react';
 import { cdmoApi } from '../services/api';
-import { useFirebase } from '../context/FirebaseContext';
+import { useAuth } from '../context/AuthContext';
 import { useToast } from './GlobalToast';
 
 interface ManufacturingPageProps {
@@ -15,7 +15,7 @@ interface ManufacturingPageProps {
 }
 
 export const ManufacturingPage: React.FC<ManufacturingPageProps> = ({ onOpenInquiry }) => {
-  const { user, openPortal } = useFirebase();
+  const { user, openPortal } = useAuth();
   const { showToast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -380,7 +380,7 @@ export const ManufacturingPage: React.FC<ManufacturingPageProps> = ({ onOpenInqu
                 {submitting ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    <span>Transmitting to Firebase...</span>
+                    <span>Transmitting Dossier...</span>
                   </>
                 ) : (
                   <>

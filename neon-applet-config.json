@@ -1,0 +1,14 @@
+{
+  "projectId": "steep-haze-58773380",
+  "orgId": "org-twilight-rain-03829834",
+  "branch": "production",
+  "database": "neondb",
+  "auth": {
+    "enabled": true,
+    "provider": "neon-managed-auth",
+    "schema": "neon_auth"
+  },
+  "host": "ep-red-pine-zahug5af-pooler.c-2.eu-west-2.aws.neon.tech",
+  "region": "eu-west-2",
+  "ssl": true
+}
