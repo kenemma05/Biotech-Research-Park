@@ -10,7 +10,7 @@ export const PRODUCTS_PAGES: SubTopicPageData[] = [
     heroBadge: 'Commercial API Production',
     heroHeadline: 'Commercial & Clinical cGMP Active Pharmaceutical Ingredient (API) Manufacturing',
     heroSubheadline: 'Specialized chemical synthesis, continuous flow crystallization, cryogenic transformations (-90°C), and high-potency containment down to OEB 5.',
-    heroImage: '/src/assets/images/product_api_synthesis_1791490178665.jpg',
+    heroImage: '/images/product_api_synthesis_1791490178665.jpg',
     valuePropBullets: [
       '45,000 L glass-lined and Hastelloy C22 reactor capacity with inline Process Analytical Technology (PAT)',
       'Occupational Exposure Banding OEB 5 (<0.1 µg/m³) for cytotoxic and high-potency APIs (HPAPIs)',
@@ -18,17 +18,17 @@ export const PRODUCTS_PAGES: SubTopicPageData[] = [
     ],
     galleryImages: [
       {
-        url: '/src/assets/images/product_api_synthesis_1791490178665.jpg',
+        url: '/images/product_api_synthesis_1791490178665.jpg',
         caption: 'High-Containment Hastelloy API Synthesis & Crystallization Skid',
         tag: 'API Synthesis'
       },
       {
-        url: '/src/assets/images/bento_cdmo_manufacturing_1791421387667.jpg',
+        url: '/images/bento_cdmo_manufacturing_1791421387667.jpg',
         caption: 'Automated Continuous Flow Reactor & Cleanroom Isolator',
         tag: 'Continuous Flow'
       },
       {
-        url: '/src/assets/images/specialty_chemicals_molecular_lattice_1791479312275.jpg',
+        url: '/images/specialty_chemicals_molecular_lattice_1791479312275.jpg',
         caption: 'X-Ray Diffraction Polymorph Characterization Laboratory',
         tag: 'Polymorph Verification'
       }
@@ -232,7 +232,7 @@ export const PRODUCTS_PAGES: SubTopicPageData[] = [
     heroBadge: 'Rx Portfolio',
     heroHeadline: 'Prescription Medicines & Ethical Finished Pharmaceuticals',
     heroSubheadline: 'Supplying hospital networks, NHS trusts, and international healthcare distributors with 140+ registered prescription formulations.',
-    heroImage: '/src/assets/images/product_prescription_rx_1791490191025.jpg',
+    heroImage: '/images/product_prescription_rx_1791490191025.jpg',
     valuePropBullets: [
       'Full unit-level 2D DataMatrix serialization and aggregation (FMD / DSCSA compliant)',
       'Sterility Assurance Level SAL 10⁻⁶ validated through continuous robotic media fills',
@@ -240,17 +240,17 @@ export const PRODUCTS_PAGES: SubTopicPageData[] = [
     ],
     galleryImages: [
       {
-        url: '/src/assets/images/product_prescription_rx_1791490191025.jpg',
+        url: '/images/product_prescription_rx_1791490191025.jpg',
         caption: 'High-Speed Unit Serialization & Aseptic Blister Packaging Line',
         tag: 'Serialization'
       },
       {
-        url: '/src/assets/images/bento_cdmo_manufacturing_1791421387667.jpg',
+        url: '/images/bento_cdmo_manufacturing_1791421387667.jpg',
         caption: 'Robotic Isolator Vial Filling & Lyophilization Hub',
         tag: 'Sterile Parenterals'
       },
       {
-        url: '/src/assets/images/capabilities_analytical_stability_testing_1791478166251.jpg',
+        url: '/images/capabilities_analytical_stability_testing_1791478166251.jpg',
         caption: 'Automated Tablet Friability & Disintegration Validation Suite',
         tag: 'Oral Solid Dosage'
       }
@@ -454,7 +454,7 @@ export const PRODUCTS_PAGES: SubTopicPageData[] = [
     heroBadge: 'Precision Medicine',
     heroHeadline: 'Translational Medicine Products & Diagnostic Biomarkers',
     heroSubheadline: 'Precision companion diagnostics, liquid biopsy cfDNA detection panels, and IVDR-certified patient stratification reagents.',
-    heroImage: '/src/assets/images/product_translational_diagnostics_1791490202198.jpg',
+    heroImage: '/images/product_translational_diagnostics_1791490202198.jpg',
     valuePropBullets: [
       '0.01% Variant Allele Frequency (VAF) limit of detection for rare oncogenic mutations',
       'Multiplex digital droplet PCR (ddPCR) and targeted hybrid-capture NGS enrichment',
@@ -462,17 +462,17 @@ export const PRODUCTS_PAGES: SubTopicPageData[] = [
     ],
     galleryImages: [
       {
-        url: '/src/assets/images/product_translational_diagnostics_1791490202198.jpg',
+        url: '/images/product_translational_diagnostics_1791490202198.jpg',
         caption: 'Microfluidic Genetic Biochip & Multiplex Fluorescence Analyzer',
         tag: 'Companion Diagnostics'
       },
       {
-        url: '/src/assets/images/specialty_chemicals_microfluidic_chip_1791479328482.jpg',
+        url: '/images/specialty_chemicals_microfluidic_chip_1791479328482.jpg',
         caption: 'Ultra-Sensitive Liquid Biopsy ctDNA Detection Cartridge',
         tag: 'Liquid Biopsy'
       },
       {
-        url: '/src/assets/images/bento_dna_genomics_1791421378689.jpg',
+        url: '/images/bento_dna_genomics_1791421378689.jpg',
         caption: 'Next-Generation Sequencing (NGS) Flow Cell Hybridization Suite',
         tag: 'Targeted NGS'
       }
@@ -676,7 +676,7 @@ export const PRODUCTS_PAGES: SubTopicPageData[] = [
     heroBadge: 'OTC Healthcare',
     heroHeadline: 'Consumer Health & Over-The-Counter (OTC) Products',
     heroSubheadline: 'Evidence-backed OTC pharmaceuticals, microencapsulated microbiome supplements, and advanced topical barrier restoratives.',
-    heroImage: '/src/assets/images/specialty_chemicals_liquid_handler_1791479344475.jpg',
+    heroImage: '/images/specialty_chemicals_liquid_handler_1791479344475.jpg',
     valuePropBullets: [
       '65M annual unit manufacturing capacity across effervescents, liquids, and tablets',
       'Gastro-resistant microencapsulation preventing stomach acid degradation',
@@ -684,17 +684,17 @@ export const PRODUCTS_PAGES: SubTopicPageData[] = [
     ],
     galleryImages: [
       {
-        url: '/src/assets/images/specialty_chemicals_liquid_handler_1791479344475.jpg',
+        url: '/images/specialty_chemicals_liquid_handler_1791479344475.jpg',
         caption: 'Automated High-Speed Consumer Dosage Blending & Dispensing',
         tag: 'High-Speed Packaging'
       },
       {
-        url: '/src/assets/images/bento_biochemistry_lab_1791421397621.jpg',
+        url: '/images/bento_biochemistry_lab_1791421397621.jpg',
         caption: 'Lamellar Lipid Emulsion & Microbiome Formulation Testing',
         tag: 'Dermaceuticals'
       },
       {
-        url: '/src/assets/images/capabilities_novel_drug_delivery_1791478183702.jpg',
+        url: '/images/capabilities_novel_drug_delivery_1791478183702.jpg',
         caption: 'Microencapsulated Alginate Particle Extrusion Suite',
         tag: 'Microencapsulation'
       }
@@ -898,7 +898,7 @@ export const PRODUCTS_PAGES: SubTopicPageData[] = [
     heroBadge: 'Specialty Portfolio',
     heroHeadline: 'Various Specialized Healthcare & Biopharmaceutical Products',
     heroSubheadline: 'Niche orphan disease formulations, customized pediatric dosing vehicles, and high-level hospital antiseptic chemistries.',
-    heroImage: '/src/assets/images/bento_biochemistry_lab_1791421397621.jpg',
+    heroImage: '/images/bento_biochemistry_lab_1791421397621.jpg',
     valuePropBullets: [
       'Flexible low-volume batching from 100 to 10,000 units for orphan therapeutic targets',
       'Beta-cyclodextrin taste-masked pediatric liquids and dispersible mini-tablets',
@@ -906,17 +906,17 @@ export const PRODUCTS_PAGES: SubTopicPageData[] = [
     ],
     galleryImages: [
       {
-        url: '/src/assets/images/bento_biochemistry_lab_1791421397621.jpg',
+        url: '/images/bento_biochemistry_lab_1791421397621.jpg',
         caption: 'Specialized Small-Batch Modular Processing Suite',
         tag: 'Orphan Drug Batching'
       },
       {
-        url: '/src/assets/images/product_api_synthesis_1791490178665.jpg',
+        url: '/images/product_api_synthesis_1791490178665.jpg',
         caption: 'Custom Formulation Compounding & Lyophilization Unit',
         tag: 'Hospital Compounding'
       },
       {
-        url: '/src/assets/images/capabilities_generic_cro_pipeline_1791478148297.jpg',
+        url: '/images/capabilities_generic_cro_pipeline_1791478148297.jpg',
         caption: 'Negative-Pressure Aseptic Isolator for Cytotoxic Compounding',
         tag: 'Containment Suite'
       }
@@ -1120,7 +1120,7 @@ export const PRODUCTS_PAGES: SubTopicPageData[] = [
     heroBadge: 'Aseptic Ophthalmic',
     heroHeadline: 'Ophthalmic & Advanced Eye Care Solutions',
     heroSubheadline: 'Preservative-free Blow-Fill-Seal eye drops, lubricating hyaluronate micro-emulsions, and sustained intraocular delivery systems.',
-    heroImage: '/src/assets/images/product_ophthalmic_eyecare_1791490212137.jpg',
+    heroImage: '/images/product_ophthalmic_eyecare_1791490212137.jpg',
     valuePropBullets: [
       '40M annual ophthalmic container capacity in Grade A aseptic blow-fill-seal isolators',
       'Zero preservatives eliminating corneal cytotoxic damage in chronic dry eye care',
@@ -1128,17 +1128,17 @@ export const PRODUCTS_PAGES: SubTopicPageData[] = [
     ],
     galleryImages: [
       {
-        url: '/src/assets/images/product_ophthalmic_eyecare_1791490212137.jpg',
+        url: '/images/product_ophthalmic_eyecare_1791490212137.jpg',
         caption: 'Grade A Aseptic Blow-Fill-Seal (BFS) Single-Dose Eye Drop Filling',
         tag: 'BFS Technology'
       },
       {
-        url: '/src/assets/images/product_prescription_rx_1791490191025.jpg',
+        url: '/images/product_prescription_rx_1791490191025.jpg',
         caption: 'Multi-Dose Preservative-Free (MDPF) Tip-Valve Packaging Line',
         tag: 'MDPF Sterile Valve'
       },
       {
-        url: '/src/assets/images/capabilities_analytical_stability_testing_1791478166251.jpg',
+        url: '/images/capabilities_analytical_stability_testing_1791478166251.jpg',
         caption: 'Micro-Osmometry & Ocular Surface Surface Tension Testing Suite',
         tag: 'Tear-Film Optics'
       }
@@ -1342,7 +1342,7 @@ export const PRODUCTS_PAGES: SubTopicPageData[] = [
     heroBadge: 'Veterinary Health',
     heroHeadline: 'Veterinary Pharmaceuticals & Animal Health Formulations',
     heroSubheadline: '104 registered veterinary medicines spanning companion pet care, poultry water-solubles, and commercial herd injectables.',
-    heroImage: '/src/assets/images/product_veterinary_pharma_1791490233453.jpg',
+    heroImage: '/images/product_veterinary_pharma_1791490233453.jpg',
     valuePropBullets: [
       'VMD-licensed manufacturing of anti-infectives, parasiticides, and metabolic tonics',
       'Cold-extruded palatable soft chew technology achieving 98.5% spontaneous pet acceptance',
@@ -1350,17 +1350,17 @@ export const PRODUCTS_PAGES: SubTopicPageData[] = [
     ],
     galleryImages: [
       {
-        url: '/src/assets/images/product_veterinary_pharma_1791490233453.jpg',
+        url: '/images/product_veterinary_pharma_1791490233453.jpg',
         caption: 'Commercial Veterinary Injection Vials, Powders, and Pet Health Formulations',
         tag: 'Animal Health'
       },
       {
-        url: '/src/assets/images/bento_cdmo_manufacturing_1791421387667.jpg',
+        url: '/images/bento_cdmo_manufacturing_1791421387667.jpg',
         caption: 'Large-Scale Ruminant Bolus Compaction & Powder Blending Cleanroom',
         tag: 'Livestock Formulations'
       },
       {
-        url: '/src/assets/images/capabilities_analytical_stability_testing_1791478166251.jpg',
+        url: '/images/capabilities_analytical_stability_testing_1791478166251.jpg',
         caption: 'HPLC Veterinary Drug Residue Depletion & Quality Testing',
         tag: 'VMD Testing'
       }
@@ -1564,7 +1564,7 @@ export const PRODUCTS_PAGES: SubTopicPageData[] = [
     heroBadge: 'Custom Reagents',
     heroHeadline: 'Other Products & Custom Biological Reagents',
     heroSubheadline: 'Spectroscopy-grade chemical building blocks, WFI bioprocessing buffer concentrates, and certified analytical reference materials.',
-    heroImage: '/src/assets/images/specialty_chemicals_molecular_lattice_1791479312275.jpg',
+    heroImage: '/images/specialty_chemicals_molecular_lattice_1791479312275.jpg',
     valuePropBullets: [
       'Ultra-pure certified standards with quantitative NMR (qNMR) traceable SI uncertainties',
       'WFI water systems producing buffers with <100 ppb TOC and <0.005 EU/mL endotoxin',
@@ -1572,17 +1572,17 @@ export const PRODUCTS_PAGES: SubTopicPageData[] = [
     ],
     galleryImages: [
       {
-        url: '/src/assets/images/specialty_chemicals_molecular_lattice_1791479312275.jpg',
+        url: '/images/specialty_chemicals_molecular_lattice_1791479312275.jpg',
         caption: 'Molecular Reagent Synthesis & Analytical Crystal Characterization',
         tag: 'Custom Reagents'
       },
       {
-        url: '/src/assets/images/product_translational_diagnostics_1791490202198.jpg',
+        url: '/images/product_translational_diagnostics_1791490202198.jpg',
         caption: 'High-Purity Bio-Buffers & Certified Reference Material Testing',
         tag: 'Analytical Standards'
       },
       {
-        url: '/src/assets/images/specialty_chemicals_liquid_handler_1791479344475.jpg',
+        url: '/images/specialty_chemicals_liquid_handler_1791479344475.jpg',
         caption: 'Automated Cryogenic Reagent Dispensing & Nitrogen Purging Suite',
         tag: 'Cryo-Aliquots'
       }

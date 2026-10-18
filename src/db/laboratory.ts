@@ -85,7 +85,7 @@ const memoryPapers = [
     excerpt: 'Benchmarking 2.5x volumetric productivity gains and hollow-fiber filtration yields across 500L perfusion suites.',
     contentSnippet: 'Evaluation of hollow-fiber tangential flow filtration modules linked to alternating tangential flow (ATF) loops.',
     tagsJson: '["Perfusion", "ATF", "Continuous Bioprocessing", "GMP"]',
-    imageUrl: '/src/assets/images/pub_continuous_perfusion_bioreactor_1791520285599.jpg',
+    imageUrl: '/images/pub_continuous_perfusion_bioreactor_1791520285599.jpg',
     createdAt: new Date(),
   },
   {
@@ -102,7 +102,7 @@ const memoryPapers = [
     excerpt: 'Turbulent jet-mixing parameters for narrow PDI lipid nanoparticles holding self-amplifying mRNA payloads.',
     contentSnippet: 'High-throughput microfluidic array chips demonstrating >95% encapsulation efficiency under 80 kPa inline pressure.',
     tagsJson: '["mRNA", "LNP", "Microfluidics", "Targeted Delivery"]',
-    imageUrl: '/src/assets/images/pub_mrna_lnp_microfluidics_1791520265708.jpg',
+    imageUrl: '/images/pub_mrna_lnp_microfluidics_1791520265708.jpg',
     createdAt: new Date(),
   },
 ];
